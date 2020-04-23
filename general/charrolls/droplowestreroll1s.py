@@ -1,10 +1,4 @@
 ﻿
-def l_roll():
-	output = 1
-	while (output == 1):
-		output = roll(6)
-	return output
-
 def rollstat():
-	rset = [l_roll(), l_roll(), l_roll(), l_roll()]
+	rset = [roll(5) + 1, roll(5) + 1, roll(5) + 1, roll(5) + 1]
 	return (sum(rset) - min(rset))

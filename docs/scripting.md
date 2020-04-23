@@ -10,3 +10,6 @@ VCS is scripted with IronPython.
 
 ### mod(s)
 `mod(s)` returns the modifier of a score `s`. It accepts a score, `s `, as a `byte` and returns a `short` back.
+
+### getopenchar()
+`getopenchar()` returns the `Character` object for the currently loaded by the character sheet viewer, or `null` if there is no character currently open.
