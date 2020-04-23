@@ -30,6 +30,12 @@ namespace VirtualCharacterSheet {
 		public static Random rng = new Random();
 
 		public static ushort Roll(ushort d) { return (ushort)rng.Next(1,d); }
+		public static ushort Rolln(byte n, ushort d) {
+			ushort output = 0;
+			for(byte x = 0; x < n; x++)
+				output += Roll(d);
+			return output;
+		}
 
 	}
 

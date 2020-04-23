@@ -10,19 +10,26 @@ namespace VirtualCharacterSheet {
 
 		public static void Sandbox() {
 			Core.AllocateConsole();
+			init();
 			do {
 				string inp = Console.In.ReadLine();
 				if(inp == "quit")
 					break;
 				try { engine.Execute(inp); }
-				catch { Console.WriteLine("An error happen :("); break; }
+				catch(Exception e) { Console.WriteLine(e); break; }
 			} while(true);
 			Core.HideConsole();
 		}
 
 		private static void init() {
+			engine.Execute("import clr");
+			Func<ushort,ushort> RollFunc = Die.Roll;
+			Func<byte,ushort,ushort> RollnFunc = Die.Rolln;
+			SetGlobal("roll", RollFunc);
+			SetGlobal("rolln", RollnFunc);
 		}
 
+		private static void SetGlobal(string n, object o) { engine.GetBuiltinModule().SetVariable(n, o); }
 	}
 
 	public class MacroRoll {
