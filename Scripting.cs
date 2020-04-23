@@ -25,11 +25,15 @@ namespace VirtualCharacterSheet {
 			engine.Execute("import clr");
 			Func<ushort,ushort> RollFunc = Die.Roll;
 			Func<byte,ushort,ushort> RollnFunc = Die.Rolln;
+			Func<byte,short> ModFunc = Core.Modifier;
 			SetGlobal("roll", RollFunc);
 			SetGlobal("rolln", RollnFunc);
+			SetGlobal("mod", ModFunc);
 		}
 
 		private static void SetGlobal(string n, object o) { engine.GetBuiltinModule().SetVariable(n, o); }
+		private static dynamic GetGlobal(string n) { return engine.GetBuiltinModule().GetVariable(n); }
+
 	}
 
 	public class MacroRoll {

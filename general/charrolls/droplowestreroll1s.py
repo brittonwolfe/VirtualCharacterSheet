@@ -1,12 +1,10 @@
-﻿import math
-import random
-
-def roll():
+﻿
+def l_roll():
 	output = 1
 	while (output == 1):
-		output = math.floor(random.random() * 6) + 1
+		output = roll(6)
 	return output
 
 def rollstat():
-	rset = [roll(), roll(), roll(), roll()]
+	rset = [l_roll(), l_roll(), l_roll(), l_roll()]
 	return (sum(rset) - min(rset))

@@ -1,9 +1,4 @@
-﻿import math
-import random
-
-def roll():
-    return math.floor(random.random() * 6) + 1
-
+﻿
 def rollstat():
-    rset = [roll(), roll(), roll(), roll()]
+    rset = [roll(6), roll(6), roll(6), roll(6)]
     return (sum(rset) - min(rset))

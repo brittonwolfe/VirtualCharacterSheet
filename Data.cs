@@ -6,6 +6,7 @@ namespace VirtualCharacterSheet {
 
 	public static class Core {
 		private static bool allocated = false;
+		private static Character? currchar = null;
 
 		public static void AllocateConsole() {
 			if(!allocated) {
@@ -15,6 +16,9 @@ namespace VirtualCharacterSheet {
 		}
 		public static void ShowConsole() { ShowWindow(GetConsoleWindow(),5); }
 		public static void HideConsole() { ShowWindow(GetConsoleWindow(),0); }
+
+		public static Character? GetCurrentCharacter() { return currchar; }
+
 		public static short Modifier(byte stat) { return (short)((stat / 2) - 5); }
 
 		[DllImport("kernel32.dll")]
@@ -62,6 +66,9 @@ namespace VirtualCharacterSheet {
 
 	}
 
-	
+	public class Class {
+		public readonly string Name;
+
+	}
 
 }
