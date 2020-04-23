@@ -6,18 +6,20 @@ namespace VirtualCharacterSheet {
 
 	public static class Core {
 		private static bool allocated = false;
-		private static Character? currchar = null;
+		private static Character currchar = null;
 
 		public static void AllocateConsole() {
 			if(!allocated) {
 				AllocConsole();
+				Console.Title = "VCS Python Command Line";
 				allocated = true;
 			}
 		}
 		public static void ShowConsole() { ShowWindow(GetConsoleWindow(),5); }
 		public static void HideConsole() { ShowWindow(GetConsoleWindow(),0); }
 
-		public static Character? GetCurrentCharacter() { return currchar; }
+		public static Character GetCurrentCharacter() { return currchar; }
+		public static Character GetCharacter() { return null; }
 
 		public static short Modifier(byte stat) { return (short)((stat / 2) - 5); }
 
@@ -59,7 +61,7 @@ namespace VirtualCharacterSheet {
 	}
 
 	public class Item {
-
+		public string Name;
 	}
 
 	public class Feature {
