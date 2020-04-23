@@ -1,0 +1,11 @@
+﻿
+
+namespace VirtualCharacterSheet {
+
+	namespace IO {
+
+		
+
+	}
+
+}
