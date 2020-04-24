@@ -19,7 +19,6 @@ namespace VirtualCharacterSheet {
 		public static void HideConsole() { ShowWindow(GetConsoleWindow(),0); }
 
 		public static Character GetCurrentCharacter() { return currchar; }
-		public static Character GetCharacter() { return null; }
 
 		public static short Modifier(byte stat) { return (short)((stat / 2) - 5); }
 
@@ -29,6 +28,35 @@ namespace VirtualCharacterSheet {
 		private static extern IntPtr GetConsoleWindow();
 		[DllImport("user32.dll")]
 		private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+	}
+
+	public static class Data {
+		private static Dictionary<ushort,Item> item = new Dictionary<ushort, Item>();
+		private static Dictionary<ushort,Character> character = new Dictionary<ushort, Character>();
+		private static Dictionary<ushort,NPC> npc = new Dictionary<ushort, NPC>();
+
+		public static Item GetItem(ushort id) { return item[id]; }
+		public static Character GetCharacter(ushort id) { return character[id]; }
+		public static NPC GetNPC(ushort id) { return npc[id]; }
+
+		public static void SetItem(ushort id, Item i) { item[id] = i; }
+		public static void SetCharacter(ushort id, Character c) { character[id] = c; }
+		public static void SetNPC(ushort id, NPC n) { npc[id] = n; }
+
+		public static bool HasItem(ushort id) { return item.ContainsKey(id); }
+		public static bool HasCharacter(ushort id) { return character.ContainsKey(id); }
+		public static bool HasNPC(ushort id) { return npc.ContainsKey(id); }
+
+		public static ushort AddItem(Item i) {
+			ushort output = 0;
+			for(output = 0; output < ushort.MaxValue; output++)
+				if(!HasItem(output)) {
+					item[output] = i;
+					return output;
+				}
+			throw new Exception("item array is full!");
+		}
 
 	}
 
@@ -56,12 +84,19 @@ namespace VirtualCharacterSheet {
 		public short CHA { get { return Core.Modifier(Charisma); } }
 		public bool Inspiration { get; private set; }
 
+		public Character() {}
 
+	}
+
+	public class NPC {
 
 	}
 
 	public class Item {
 		public string Name;
+
+		public Item() { }
+
 	}
 
 	public class Feature {

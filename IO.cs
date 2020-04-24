@@ -4,8 +4,6 @@ namespace VirtualCharacterSheet {
 
 	namespace IO {
 
-		
-
 	}
 
 }

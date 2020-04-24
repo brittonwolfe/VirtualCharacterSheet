@@ -33,11 +33,19 @@ namespace VirtualCharacterSheet {
 			Func<byte,ushort,ushort> RollnFunc = Die.Rolln;
 			Func<byte,short> ModFunc = Core.Modifier;
 			Func<Character> GetCCharFunc = Core.GetCurrentCharacter;
+			Func<ushort,Item> GetItem = Data.GetItem;
+			Action<string> CreateItemFunc = CreateItem;
+			Func<ushort,Character> GetCharacter = Data.GetCharacter;
+			Func<ushort,NPC> GetNPC = Data.GetNPC;
 			SetGlobal("help", HelpFunc);
 			SetGlobal("roll", RollFunc);
 			SetGlobal("rolln", RollnFunc);
 			SetGlobal("mod", ModFunc);
 			SetGlobal("getopenchar", GetCCharFunc);
+			SetGlobal("_i", GetItem);
+			SetGlobal("_c", GetCharacter);
+			SetGlobal("_n", GetNPC);
+			SetGlobal("new_i", CreateItemFunc);
 		}
 
 		private static void SetGlobal(string n, object o) { engine.GetBuiltinModule().SetVariable(n, o); }
@@ -75,6 +83,13 @@ namespace VirtualCharacterSheet {
 				break;
 			}
 			Console.WriteLine();
+		}
+
+		public static void CreateItem(string n) {
+			Item i = new Item();
+			i.Name = n;
+			ushort id = Data.AddItem(i);
+			Console.WriteLine("Created new item \"" + n + "\" at _i(" + id + ")");
 		}
 
 	}
