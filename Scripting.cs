@@ -21,7 +21,7 @@ namespace VirtualCharacterSheet {
 					continue;
 				}
 				try { engine.Execute(inp); }
-				catch(Exception e) { Console.WriteLine(e); break; }
+				catch(Exception e) { Console.WriteLine(e); Console.ReadLine(); break; }
 			} while(true);
 			Core.HideConsole();
 		}
@@ -37,6 +37,9 @@ namespace VirtualCharacterSheet {
 			Action<string> CreateItemFunc = CreateItem;
 			Func<ushort,Character> GetCharacter = Data.GetCharacter;
 			Func<ushort,NPC> GetNPC = Data.GetNPC;
+			Func<string,RawPyScript> GetPy = Data.GetPy;
+			Action<string> OpenScriptEditor = ScriptEditor;
+			Action<string> RunScriptFunc = RunScript;
 			SetGlobal("help", HelpFunc);
 			SetGlobal("roll", RollFunc);
 			SetGlobal("rolln", RollnFunc);
@@ -45,7 +48,10 @@ namespace VirtualCharacterSheet {
 			SetGlobal("_i", GetItem);
 			SetGlobal("_c", GetCharacter);
 			SetGlobal("_n", GetNPC);
+			SetGlobal("_py", GetPy);
 			SetGlobal("new_i", CreateItemFunc);
+			SetGlobal("edit_script", OpenScriptEditor);
+			SetGlobal("do_script", RunScriptFunc);
 		}
 
 		private static void SetGlobal(string n, object o) { engine.GetBuiltinModule().SetVariable(n, o); }
@@ -91,6 +97,36 @@ namespace VirtualCharacterSheet {
 			ushort id = Data.AddItem(i);
 			Console.WriteLine("Created new item \"" + n + "\" at _i(" + id + ")");
 		}
+
+		private static void ScriptEditor(string key) {
+			bool wantsbreak = false;
+			Console.Clear();
+			string output = "";
+			while(true) {
+				string nl = Console.ReadLine();
+				if(nl == "")
+					if(wantsbreak)
+						break;
+					else
+						wantsbreak = true;
+				else
+					wantsbreak = false;
+				output += nl + "\n";
+			}
+			Data.SetPy(key, new RawPyScript(output));
+			Console.Clear();
+			Console.WriteLine("script created at _py(\"" + key + "\")");
+		}
+		private static void RunScript(string key) { Data.GetPy(key).Run(); }
+
+	}
+
+	internal class RawPyScript {
+		string src;
+
+		internal RawPyScript(string py) { src = py; }
+
+		internal void Run() { Scripting.engine.Execute(src); }
 
 	}
 

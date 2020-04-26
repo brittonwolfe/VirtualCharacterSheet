@@ -32,21 +32,25 @@ namespace VirtualCharacterSheet {
 	}
 
 	public static class Data {
-		private static Dictionary<ushort,Item> item = new Dictionary<ushort, Item>();
-		private static Dictionary<ushort,Character> character = new Dictionary<ushort, Character>();
-		private static Dictionary<ushort,NPC> npc = new Dictionary<ushort, NPC>();
+		private static Dictionary<uint, Item> item = new Dictionary<uint, Item>();
+		private static Dictionary<uint, Character> character = new Dictionary<uint, Character>();
+		private static Dictionary<uint, NPC> npc = new Dictionary<uint, NPC>();
+		private static Dictionary<string, RawPyScript> py = new Dictionary<string, RawPyScript>();
 
-		public static Item GetItem(ushort id) { return item[id]; }
-		public static Character GetCharacter(ushort id) { return character[id]; }
-		public static NPC GetNPC(ushort id) { return npc[id]; }
+		public static Item GetItem(uint id) { return item[id]; }
+		public static Character GetCharacter(uint id) { return character[id]; }
+		public static NPC GetNPC(uint id) { return npc[id]; }
+		internal static RawPyScript GetPy(string key) { return py[key]; }
 
-		public static void SetItem(ushort id, Item i) { item[id] = i; }
-		public static void SetCharacter(ushort id, Character c) { character[id] = c; }
-		public static void SetNPC(ushort id, NPC n) { npc[id] = n; }
+		public static void SetItem(uint id, Item i) { item[id] = i; }
+		public static void SetCharacter(uint id, Character c) { character[id] = c; }
+		public static void SetNPC(uint id, NPC n) { npc[id] = n; }
+		internal static void SetPy(string key, RawPyScript src) { py[key] = src; }
 
-		public static bool HasItem(ushort id) { return item.ContainsKey(id); }
-		public static bool HasCharacter(ushort id) { return character.ContainsKey(id); }
-		public static bool HasNPC(ushort id) { return npc.ContainsKey(id); }
+		public static bool HasItem(uint id) { return item.ContainsKey(id); }
+		public static bool HasCharacter(uint id) { return character.ContainsKey(id); }
+		public static bool HasNPC(uint id) { return npc.ContainsKey(id); }
+		internal static bool HasPy(string key) { return py.ContainsKey(key); }
 
 		public static ushort AddItem(Item i) {
 			ushort output = 0;
