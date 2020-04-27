@@ -98,12 +98,27 @@ namespace VirtualCharacterSheet {
 
 	public class Item {
 		public string Name;
+		private Script Behavior;
 
 		public Item() { }
+		public Item(string name) {
+			Name = name;
+		}
+		public Item(string name, Script behavior) {
+			Name = name;
+			Behavior = behavior;
+		}
+
+		public void SetBehavior(Script s) { Behavior = s; }
+		public void SetBehavior(RawPyScript s) { SetBehavior(new Script(s)); }
+		public void DoBehavior() { Behavior.Run(); }
 
 	}
 
-	public class Feature {
+	public class Feat {
+		public string Name;
+		public string Description;
+		public Script Behavior;
 
 	}
 

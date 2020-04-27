@@ -28,28 +28,33 @@ namespace VirtualCharacterSheet {
 
 		private static void init() {
 			engine.Execute("import clr");
+
 			Action<string> HelpFunc = GetHelp;
-			Func<ushort,ushort> RollFunc = Die.Roll;
-			Func<byte,ushort,ushort> RollnFunc = Die.Rolln;
-			Func<byte,short> ModFunc = Core.Modifier;
+			Func<ushort, ushort> RollFunc = Die.Roll;
+			Func<byte, ushort, ushort> RollnFunc = Die.Rolln;
+			Func<byte, short> ModFunc = Core.Modifier;
 			Func<Character> GetCCharFunc = Core.GetCurrentCharacter;
-			Func<ushort,Item> GetItem = Data.GetItem;
+			Func<uint,Item> GetItem = Data.GetItem;
 			Action<string> CreateItemFunc = CreateItem;
-			Func<ushort,Character> GetCharacter = Data.GetCharacter;
-			Func<ushort,NPC> GetNPC = Data.GetNPC;
+			Func<uint,Character> GetCharacter = Data.GetCharacter;
+			Func<uint,NPC> GetNPC = Data.GetNPC;
 			Func<string,RawPyScript> GetPy = Data.GetPy;
 			Action<string> OpenScriptEditor = ScriptEditor;
 			Action<string> RunScriptFunc = RunScript;
+
 			SetGlobal("help", HelpFunc);
 			SetGlobal("roll", RollFunc);
 			SetGlobal("rolln", RollnFunc);
 			SetGlobal("mod", ModFunc);
+
 			SetGlobal("getopenchar", GetCCharFunc);
 			SetGlobal("_i", GetItem);
 			SetGlobal("_c", GetCharacter);
 			SetGlobal("_n", GetNPC);
 			SetGlobal("_py", GetPy);
+
 			SetGlobal("new_i", CreateItemFunc);
+			
 			SetGlobal("edit_script", OpenScriptEditor);
 			SetGlobal("do_script", RunScriptFunc);
 		}
@@ -59,6 +64,8 @@ namespace VirtualCharacterSheet {
 
 		public static void Help() {
 			Console.WriteLine("roll(d)\t\trolln(n,d)\t\tmod(s)\t\tgetopenchar()");
+			Console.WriteLine("_i(id)\t\t_c(id)\t\t_n(id)\t\t_py(key)");
+			Console.WriteLine("edit_script(key)\t\tdo_script(key)");
 		}
 		public static void GetHelp(string c) {
 			Console.WriteLine();
@@ -121,38 +128,38 @@ namespace VirtualCharacterSheet {
 
 	}
 
-	internal class RawPyScript {
-		string src;
+	public class RawPyScript {
+		private string src;
 
 		internal RawPyScript(string py) { src = py; }
 
-		internal void Run() { Scripting.engine.Execute(src); }
+		public void Run() { Scripting.engine.Execute(src); }
 
 	}
 
 	public class Script {
 		private bool isFile;
-		private string src;
+		private IO.Path path;
+		private RawPyScript raw;
 
-		public Script(string py) {
+		internal Script(RawPyScript py) {
 			isFile = false;
-			src = py;
+			raw = py;
 		}
+		public Script(IO.Path fp) {
+			isFile = true;
+			path = fp;
+		}
+
+		internal void Set(IO.Path p) { path = p; }
+		internal void Set(RawPyScript py) { raw = py; }
 
 		public void Run() {
-			if(isFile) {
-				
-			} else {
-				Scripting.engine.Execute<dynamic>(src);
-			}
+			if(isFile)
+				Scripting.engine.ExecuteFile(path.ToString());
+			else
+				raw.Run();
 		}
-
-	}
-
-	public class MacroRoll {
-		private readonly string src;
-
-		public MacroRoll(string pysrc) { src = pysrc; }
 
 	}
 
