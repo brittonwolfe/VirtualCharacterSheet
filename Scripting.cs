@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Dynamic;
 using Microsoft.Scripting.Hosting;
 
 using IronPython.Hosting;
@@ -7,6 +8,7 @@ namespace VirtualCharacterSheet {
 
 	public static class Scripting {
 		internal static ScriptEngine engine = Python.CreateEngine();
+		public static dynamic locals = new ExpandoObject();
 
 		public static void Sandbox() {
 			Core.AllocateConsole();
@@ -42,6 +44,8 @@ namespace VirtualCharacterSheet {
 			Action<string> OpenScriptEditor = ScriptEditor;
 			Action<string> RunScriptFunc = RunScript;
 
+			SetGlobal("local", locals);
+
 			SetGlobal("help", HelpFunc);
 			SetGlobal("roll", RollFunc);
 			SetGlobal("rolln", RollnFunc);
@@ -55,8 +59,7 @@ namespace VirtualCharacterSheet {
 
 			SetGlobal("new_i", CreateItemFunc);
 			
-			SetGlobal("edit_script", OpenScriptEditor);
-			SetGlobal("do_script", RunScriptFunc);
+			SetGlobal("new_py", OpenScriptEditor);
 		}
 
 		private static void SetGlobal(string n, object o) { engine.GetBuiltinModule().SetVariable(n, o); }
@@ -65,7 +68,6 @@ namespace VirtualCharacterSheet {
 		public static void Help() {
 			Console.WriteLine("roll(d)\t\trolln(n,d)\t\tmod(s)\t\tgetopenchar()");
 			Console.WriteLine("_i(id)\t\t_c(id)\t\t_n(id)\t\t_py(key)");
-			Console.WriteLine("edit_script(key)\t\tdo_script(key)");
 		}
 		public static void GetHelp(string c) {
 			Console.WriteLine();
@@ -87,6 +89,14 @@ namespace VirtualCharacterSheet {
 				break;
 			case "quit":
 				Console.WriteLine("quit\n\texits the Python console");
+				break;
+			case "type":
+			case "types":
+				Console.WriteLine("-- Data Types --");
+				Console.WriteLine("_c(id)\tCharacter\n\tUses a numeric key to return a reference to a character.");
+				Console.WriteLine("_i(id)\tItem\n\tUses a numeric key to return a reference to an item.");
+				Console.WriteLine("_n(id)\tNPC\n\tUses a numeric key to return a reference to an NPC.");
+				Console.WriteLine("_py(key)\tPython Script\n\tUses a string key to return a reference to a dynamically loaded script.");
 				break;
 			case "":
 				Help();
@@ -134,6 +144,11 @@ namespace VirtualCharacterSheet {
 		internal RawPyScript(string py) { src = py; }
 
 		public void Run() { Scripting.engine.Execute(src); }
+		public void Run(dynamic arg) {
+			Scripting.locals.arg = arg;
+			Run();
+			Scripting.locals.arg = null;
+		}
 
 	}
 
@@ -151,8 +166,14 @@ namespace VirtualCharacterSheet {
 			path = fp;
 		}
 
-		internal void Set(IO.Path p) { path = p; }
-		internal void Set(RawPyScript py) { raw = py; }
+		internal void Set(IO.Path p) {
+			isFile = true;
+			path = p;
+		}
+		internal void Set(RawPyScript py) {
+			isFile = false;
+			raw = py;
+		}
 
 		public void Run() {
 			if(isFile)
