@@ -7,7 +7,7 @@ _s(id).Material = False
 _s(id).Range = 60
 
 def Behavior(caster, target):
-    if(not target.Save(caster.SaveDC()))
+    if(not target.DexSave(caster.SaveDC())):
         target.Damage(roll(6))
 
-_py("core_5e:Acid_Splash.Behavior") = Behavior
+set_pyf("core_5e:Acid_Splash.Behavior", Behavior)

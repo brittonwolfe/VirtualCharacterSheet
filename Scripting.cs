@@ -16,14 +16,21 @@ namespace VirtualCharacterSheet {
 			do {
 				Console.Write("> ");
 				string inp = Console.In.ReadLine();
-				if(inp == "quit")
+				if(inp == "exit")
 					break;
 				if(inp.ToLower() == "help") {
 					Help();
 					continue;
 				}
 				try { engine.Execute(inp); }
-				catch(Exception e) { Console.WriteLine(e); Console.ReadLine(); break; }
+				catch(Exception e) {
+					Console.WriteLine(e);
+					Console.Write("Continue (Y/N)? ");
+					var choice = Console.ReadKey(true);
+					if(choice.Key != ConsoleKey.Y)
+						break;
+					Console.WriteLine();
+				}
 			} while(true);
 			Core.HideConsole();
 		}
@@ -35,12 +42,18 @@ namespace VirtualCharacterSheet {
 			Func<ushort, ushort> RollFunc = Die.Roll;
 			Func<byte, ushort, ushort> RollnFunc = Die.Rolln;
 			Func<byte, short> ModFunc = Core.Modifier;
+
 			Func<Character> GetCCharFunc = Core.GetCurrentCharacter;
-			Func<uint,Item> GetItem = Data.GetItem;
+			Func<uint, Item> GetItem = Data.GetItem;
 			Action<string> CreateItemFunc = CreateItem;
-			Func<uint,Character> GetCharacter = Data.GetCharacter;
-			Func<uint,NPC> GetNPC = Data.GetNPC;
-			Func<string,RawPyScript> GetPy = Data.GetPy;
+			Action<string, object> SetScriptFFunc = SetScriptF;
+			Func<uint, Character> GetCharacter = Data.GetCharacter;
+			Func<uint, NPC> GetNPC = Data.GetNPC;
+			Func<string, RawPyScript> GetPy = Data.GetPy;
+			Func<string, object> GetPyF = Data.GetPyF;
+
+			Func<>
+
 			Action<string> OpenScriptEditor = ScriptEditor;
 			Action<string> RunScriptFunc = RunScript;
 
@@ -56,8 +69,11 @@ namespace VirtualCharacterSheet {
 			SetGlobal("_c", GetCharacter);
 			SetGlobal("_n", GetNPC);
 			SetGlobal("_py", GetPy);
+			SetGlobal("_pyf", GetPyF);
 
 			SetGlobal("new_i", CreateItemFunc);
+
+			SetGlobal("set_pyf", SetScriptFFunc);
 			
 			SetGlobal("new_py", OpenScriptEditor);
 		}
@@ -87,8 +103,8 @@ namespace VirtualCharacterSheet {
 			case "help":
 				Console.WriteLine("help(c)\n\tI take it you figured it out, huh?");
 				break;
-			case "quit":
-				Console.WriteLine("quit\n\texits the Python console");
+			case "exit":
+				Console.WriteLine("exit\n\texits the Python console");
 				break;
 			case "type":
 			case "types":
@@ -97,6 +113,7 @@ namespace VirtualCharacterSheet {
 				Console.WriteLine("_i(id)\tItem\n\tUses a numeric key to return a reference to an item.");
 				Console.WriteLine("_n(id)\tNPC\n\tUses a numeric key to return a reference to an NPC.");
 				Console.WriteLine("_py(key)\tPython Script\n\tUses a string key to return a reference to a dynamically loaded script.");
+				Console.WriteLine("_pyf(key)\tPython Function\n\tUses a string key to return a reference to a python function.");
 				break;
 			case "":
 				Help();
@@ -114,6 +131,8 @@ namespace VirtualCharacterSheet {
 			ushort id = Data.AddItem(i);
 			Console.WriteLine("Created new item \"" + n + "\" at _i(" + id + ")");
 		}
+
+		public static Class DefineClass(string n) { return new Class(n); }
 
 		private static void ScriptEditor(string key) {
 			bool wantsbreak = false;
@@ -135,6 +154,8 @@ namespace VirtualCharacterSheet {
 			Console.WriteLine("script created at _py(\"" + key + "\")");
 		}
 		private static void RunScript(string key) { Data.GetPy(key).Run(); }
+
+		private static void SetScriptF(string key, object f) { Data.SetPyF(key, f); }
 
 	}
 
@@ -180,6 +201,11 @@ namespace VirtualCharacterSheet {
 				Scripting.engine.ExecuteFile(path.ToString());
 			else
 				raw.Run();
+		}
+		public void Run(dynamic arg) {
+			Scripting.locals.arg = arg;
+			Run();
+			Scripting.locals.arg = null;
 		}
 
 	}
