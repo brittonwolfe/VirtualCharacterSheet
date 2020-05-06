@@ -19,6 +19,14 @@ returns the NPC with the given `id`.
 
 returns the spell with the given `id`.
 
+## Accessing Local Variables
+
+Accessing locals is done entirely through the `local` variable. It's a dynamic object, so its values are assignable at runtime.
+
+### `arg`
+
+`local.arg` is the argument sent to the script, if there is one.
+
 ## Global Functions
 
 ### `getopenchar()`
@@ -47,6 +55,6 @@ I'd like to at least try to have some rules and best practices put forward for c
 
 Returns the runtime-defined Python script with the given name. 
 
-###`edit_script(name)`
+###`new_py(name)`
 
-Opens the console script editor. It's not vim, so you can just exit by making two blank lines in a row.
+Opens the command line script editor. It can be exited by entering two blank lines.
