@@ -1,3 +1,4 @@
-﻿def Name() : return "Fighter"
-def HitDice(): return 10
-def InitialHealth(character): return (10 + character.CON)
+﻿fighter = def_class("Fighter")
+fighter.HitDie = 10
+fighter.Book = "Player's Handbook"
+figther.Pages = ""
