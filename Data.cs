@@ -46,7 +46,7 @@ namespace VirtualCharacterSheet {
 		public static NPC GetNPC(uint id) { return npc[id]; }
 		public static RawPyScript GetPy(string key) { return py[key]; }
 		public static object GetPyF(string key) { return pyf[key]; }
-		public static object GetClass(string key) { return classes[key.ToLower()]; }
+		public static Class GetClass(string key) { return classes[key.ToLower()]; }
 
 		public static void SetItem(uint id, Item i) { item[id] = i; }
 		public static void SetCharacter(uint id, Character c) { character[id] = c; }

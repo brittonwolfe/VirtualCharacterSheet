@@ -39,20 +39,21 @@ namespace VirtualCharacterSheet {
 			engine.Execute("import clr");
 
 			Action<string> HelpFunc = GetHelp;
-			Func<ushort, ushort> RollFunc = Die.Roll;
-			Func<byte, ushort, ushort> RollnFunc = Die.Rolln;
+			Func<ushort, uint> RollFunc = Die.Roll;
+			Func<byte, ushort, uint> RollnFunc = Die.Rolln;
 			Func<byte, short> ModFunc = Core.Modifier;
 
 			Func<Character> GetCCharFunc = Core.GetCurrentCharacter;
 			Func<uint, Item> GetItem = Data.GetItem;
-			Action<string> CreateItemFunc = CreateItem;
 			Action<string, object> SetScriptFFunc = SetScriptF;
 			Func<uint, Character> GetCharacter = Data.GetCharacter;
+			Func<string, Class> GetClass = Data.GetClass;
 			Func<uint, NPC> GetNPC = Data.GetNPC;
 			Func<string, RawPyScript> GetPy = Data.GetPy;
 			Func<string, object> GetPyF = Data.GetPyF;
 
-			Func<>
+			Action<string> CreateItemFunc = CreateItem;
+			Func<string, Class> DefClassF = DefineClass;
 
 			Action<string> OpenScriptEditor = ScriptEditor;
 			Action<string> RunScriptFunc = RunScript;
@@ -67,10 +68,12 @@ namespace VirtualCharacterSheet {
 			SetGlobal("getopenchar", GetCCharFunc);
 			SetGlobal("_i", GetItem);
 			SetGlobal("_c", GetCharacter);
+			SetGlobal("_class", GetClass);
 			SetGlobal("_n", GetNPC);
 			SetGlobal("_py", GetPy);
 			SetGlobal("_pyf", GetPyF);
 
+			SetGlobal("def_class", DefClassF);
 			SetGlobal("new_i", CreateItemFunc);
 
 			SetGlobal("set_pyf", SetScriptFFunc);
@@ -128,7 +131,7 @@ namespace VirtualCharacterSheet {
 		public static void CreateItem(string n) {
 			Item i = new Item();
 			i.Name = n;
-			ushort id = Data.AddItem(i);
+			uint id = Data.AddItem(i);
 			Console.WriteLine("Created new item \"" + n + "\" at _i(" + id + ")");
 		}
 
