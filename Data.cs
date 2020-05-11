@@ -135,12 +135,14 @@ namespace VirtualCharacterSheet {
 	public class Class {
 		public readonly string Name;
 		public ushort HitDie;
+		public bool[] Saves;
 
 		public Class(string n) {
 			Name = n;
 			if(Data.HasClass(n))
 				throw new ClassAlreadyExistsException(Name);
 			Data.SetClass(Name, this);
+			Saves = new bool[6];
 		}
 
 	}

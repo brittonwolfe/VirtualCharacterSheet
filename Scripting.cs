@@ -11,7 +11,6 @@ namespace VirtualCharacterSheet {
 		public static dynamic locals = new ExpandoObject();
 
 		public static void Sandbox() {
-			Core.AllocateConsole();
 			init();
 			do {
 				Console.Write("> ");
@@ -178,19 +177,19 @@ namespace VirtualCharacterSheet {
 
 	public class Script {
 		private bool isFile;
-		private IO.Path path;
+		private IO.File path;
 		private RawPyScript raw;
 
 		internal Script(RawPyScript py) {
 			isFile = false;
 			raw = py;
 		}
-		public Script(IO.Path fp) {
+		public Script(IO.File fp) {
 			isFile = true;
 			path = fp;
 		}
 
-		internal void Set(IO.Path p) {
+		internal void Set(IO.File p) {
 			isFile = true;
 			path = p;
 		}
