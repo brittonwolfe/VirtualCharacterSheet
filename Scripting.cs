@@ -155,6 +155,7 @@ namespace VirtualCharacterSheet {
 			Console.WriteLine("Press enter to resume...");
 			Console.ReadLine();
 			Data.SetPy(key, new RawPyScript(temp.ReadText()));
+			System.IO.File.Delete(temp.Path);
 		}
 
 		private static void ScriptEditor(string key) {

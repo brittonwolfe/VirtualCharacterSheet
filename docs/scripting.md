@@ -49,12 +49,20 @@ Metascripting is a weird idea, but I wanted to at least include an explanation: 
 
 ### Naming Conventions
 
-I'd like to at least try to have some rules and best practices put forward for consistency and sanity; if you are defining scripts during runtime through a module, please use the naming structure `"package:name"` to avoid conflicts at runtime.
+I'd like to at least try to have some rules and best practices put forward for consistency and sanity; if you are defining scripts during runtime through a module, please use the naming structure `"package;name"` to avoid conflicts at runtime.
 
 ### `_py(name)`
 
 Returns the runtime-defined Python script with the given name. 
 
-###`new_py(name)`
+### `edit_py(name)`
 
-Opens the command line script editor. It can be exited by entering two blank lines.
+Edits the given Python script in Visual Studio Code if it is installed, or in the terminal script editor if not. The advantage to VS Code is that it doesn't clear the script before editing.
+
+### `_pyf(name)`
+
+Gets the Python function at the given key. The difference between `_py` and `_pyf` is that `_pyf` is an actual function *object* rather than a string of interpretable code.
+
+### `set_pyf(name, func)`
+
+Assigns a Python function to the given key.
