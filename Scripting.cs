@@ -57,7 +57,6 @@ namespace VirtualCharacterSheet {
 			Action<string> CreateItemFunc = CreateItem;
 			Func<string, Class> DefClassF = DefineClass;
 
-			Action<string> OpenScriptEditor = ScriptEditor;
 			Action<string> OpenVSCode = CodeScript;
 			Action<string> RunScriptFunc = RunScript;
 
@@ -81,7 +80,6 @@ namespace VirtualCharacterSheet {
 
 			SetGlobal("set_pyf", SetScriptFFunc);
 			
-			SetGlobal("new_py", OpenScriptEditor);
 			SetGlobal("edit_py", OpenVSCode);
 		}
 
@@ -152,7 +150,8 @@ namespace VirtualCharacterSheet {
 			info.FileName = "CMD.exe";
 			info.Arguments = ("/C code \"" + temp.Path + "\"");
 			process.StartInfo = info;
-			process.Start();
+			try { process.Start(); }
+			catch { ScriptEditor(key); }
 			Console.WriteLine("Press enter to resume...");
 			Console.ReadLine();
 			Data.SetPy(key, new RawPyScript(temp.ReadText()));
