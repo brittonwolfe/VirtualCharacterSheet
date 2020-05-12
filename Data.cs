@@ -120,7 +120,7 @@ namespace VirtualCharacterSheet {
 		}
 
 		public void SetBehavior(Script s) { Behavior = s; }
-		public void SetBehavior(RawPyScript s) { SetBehavior(new Script(s)); }
+		public void SetBehavior(RawPyScript s) { SetBehavior(s); }
 		public void DoBehavior() { Behavior.Run(); }
 
 	}

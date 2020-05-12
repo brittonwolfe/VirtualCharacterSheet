@@ -11,10 +11,13 @@ namespace VirtualCharacterSheet {
 		public static dynamic locals = new ExpandoObject();
 
 		public static void Sandbox() {
+			Core.AllocateConsole();
 			init();
 			do {
 				Console.Write("> ");
 				string inp = Console.In.ReadLine();
+				if(inp == null)
+					continue;
 				if(inp == "exit")
 					break;
 				if(inp.ToLower() == "help") {
@@ -55,6 +58,7 @@ namespace VirtualCharacterSheet {
 			Func<string, Class> DefClassF = DefineClass;
 
 			Action<string> OpenScriptEditor = ScriptEditor;
+			Action<string> OpenVSCode = CodeScript;
 			Action<string> RunScriptFunc = RunScript;
 
 			SetGlobal("local", locals);
@@ -78,6 +82,7 @@ namespace VirtualCharacterSheet {
 			SetGlobal("set_pyf", SetScriptFFunc);
 			
 			SetGlobal("new_py", OpenScriptEditor);
+			SetGlobal("edit_py", OpenVSCode);
 		}
 
 		private static void SetGlobal(string n, object o) { engine.GetBuiltinModule().SetVariable(n, o); }
@@ -136,6 +141,23 @@ namespace VirtualCharacterSheet {
 
 		public static Class DefineClass(string n) { return new Class(n); }
 
+		private static void CodeScript(string key) {
+			IO.File temp = FileLoad.GetTempFile("vcs_py_" + key + ".py");
+			if(Data.HasPy(key))
+				temp.WriteText(Data.GetPy(key).src);
+			else
+				temp.WriteText("");
+			var process = new System.Diagnostics.Process();
+			var info = new System.Diagnostics.ProcessStartInfo();
+			info.FileName = "CMD.exe";
+			info.Arguments = ("/C code \"" + temp.Path + "\"");
+			process.StartInfo = info;
+			process.Start();
+			Console.WriteLine("Press enter to resume...");
+			Console.ReadLine();
+			Data.SetPy(key, new RawPyScript(temp.ReadText()));
+		}
+
 		private static void ScriptEditor(string key) {
 			bool wantsbreak = false;
 			Console.Clear();
@@ -161,49 +183,40 @@ namespace VirtualCharacterSheet {
 
 	}
 
-	public class RawPyScript {
-		private string src;
+	public class PyFScript : Script {
+		private dynamic Object;
 
-		internal RawPyScript(string py) { src = py; }
+		public PyFScript(dynamic o) { Object = o; }
 
-		public void Run() { Scripting.engine.Execute(src); }
-		public void Run(dynamic arg) {
-			Scripting.locals.arg = arg;
-			Run();
-			Scripting.locals.arg = null;
-		}
+		public override void Run() { Object(); }
+
+		public static PyFScript FromKey(string key) { return new PyFScript(Data.GetPyF(key)); }
 
 	}
 
-	public class Script {
-		private bool isFile;
-		private IO.File path;
-		private RawPyScript raw;
+	public class RawPyScript : Script {
+		internal string src;
 
-		internal Script(RawPyScript py) {
-			isFile = false;
-			raw = py;
-		}
-		public Script(IO.File fp) {
-			isFile = true;
-			path = fp;
-		}
+		internal RawPyScript(string py) { src = py; }
 
-		internal void Set(IO.File p) {
-			isFile = true;
-			path = p;
-		}
-		internal void Set(RawPyScript py) {
-			isFile = false;
-			raw = py;
+		public override void Run() { Scripting.engine.Execute(src); }
+
+	}
+
+	public class FileScript : Script {
+		public IO.File File;
+
+		public FileScript(IO.File file) {
+			File = file;
 		}
 
-		public void Run() {
-			if(isFile)
-				Scripting.engine.ExecuteFile(path.ToString());
-			else
-				raw.Run();
-		}
+		public override void Run() { }
+
+	}
+
+	public abstract class Script {
+
+		public abstract void Run();
 		public void Run(dynamic arg) {
 			Scripting.locals.arg = arg;
 			Run();

@@ -10,7 +10,7 @@ namespace VirtualCharacterSheet.Net {
 	}
 
 	public static class Client {
-		private static NetworkStream stream;
+		//private static NetworkStream stream;
 
 	}
 
