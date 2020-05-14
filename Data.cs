@@ -87,25 +87,6 @@ namespace VirtualCharacterSheet {
 
 	}
 
-	public class Character {
-		public string Name;
-		protected byte Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma;
-		public short STR { get { return Core.Modifier(Strength); } }
-		public short DEX { get { return Core.Modifier(Dexterity); } }
-		public short CON { get { return Core.Modifier(Constitution); } }
-		public short INT { get { return Core.Modifier(Intelligence); } }
-		public short WIS { get { return Core.Modifier(Wisdom); } }
-		public short CHA { get { return Core.Modifier(Charisma); } }
-		public bool Inspiration { get; private set; }
-
-		public Character() {}
-
-	}
-
-	public class NPC {
-
-	}
-
 	public class Item {
 		public string Name;
 		private Script Behavior;
@@ -122,28 +103,6 @@ namespace VirtualCharacterSheet {
 		public void SetBehavior(Script s) { Behavior = s; }
 		public void SetBehavior(RawPyScript s) { SetBehavior(s); }
 		public void DoBehavior() { Behavior.Run(); }
-
-	}
-
-	public class Feat {
-		public string Name;
-		public string Description;
-		public Script Behavior;
-
-	}
-
-	public class Class {
-		public readonly string Name;
-		public ushort HitDie;
-		public bool[] Saves;
-
-		public Class(string n) {
-			Name = n;
-			if(Data.HasClass(n))
-				throw new ClassAlreadyExistsException(Name);
-			Data.SetClass(Name, this);
-			Saves = new bool[6];
-		}
 
 	}
 

@@ -60,13 +60,16 @@ namespace VirtualCharacterSheet {
 			Action<string> OpenVSCode = CodeScript;
 			Action<string> RunScriptFunc = RunScript;
 
+			//global variables
 			SetGlobal("local", locals);
 
+			//global functions
 			SetGlobal("help", HelpFunc);
 			SetGlobal("roll", RollFunc);
 			SetGlobal("rolln", RollnFunc);
 			SetGlobal("mod", ModFunc);
 
+			//accessors
 			SetGlobal("getopenchar", GetCCharFunc);
 			SetGlobal("_i", GetItem);
 			SetGlobal("_c", GetCharacter);
@@ -75,11 +78,12 @@ namespace VirtualCharacterSheet {
 			SetGlobal("_py", GetPy);
 			SetGlobal("_pyf", GetPyF);
 
+			//initializers and instantiators
 			SetGlobal("def_class", DefClassF);
 			SetGlobal("new_i", CreateItemFunc);
 
+			//metaprogrammatical functions
 			SetGlobal("set_pyf", SetScriptFFunc);
-			
 			SetGlobal("edit_py", OpenVSCode);
 		}
 
