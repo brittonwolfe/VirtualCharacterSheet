@@ -1,35 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace VirtualCharacterSheet {
-
-	public static class Core {
-		private static bool allocated = false;
-		private static Character currchar = null;
-
-		public static void AllocateConsole() {
-			if(!allocated) {
-				AllocConsole();
-				Console.Title = "VCS Python Command Line";
-				allocated = true;
-			}
-		}
-		public static void ShowConsole() { ShowWindow(GetConsoleWindow(),5); }
-		public static void HideConsole() { ShowWindow(GetConsoleWindow(),0); }
-
-		public static Character GetCurrentCharacter() { return currchar; }
-
-		public static short Modifier(byte stat) { return (short)((stat / 2) - 5); }
-
-		[DllImport("kernel32.dll")]
-		private static extern bool AllocConsole();
-		[DllImport("kernel32.dll")]
-		private static extern IntPtr GetConsoleWindow();
-		[DllImport("user32.dll")]
-		private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-	}
 
 	public static class Data {
 		private static Dictionary<uint, Item> item = new Dictionary<uint, Item>();
@@ -91,6 +63,8 @@ namespace VirtualCharacterSheet {
 
 	public class Item : ScriptedObject {
 		public string Name;
+		public string Description;
+
 		public Item() { }
 		public Item(string name) {
 			Name = name;

@@ -1,11 +1,24 @@
 # Python Scripting
 VCS is scripted with IronPython.
 
+## For guides on defining objects
+
+- [Classes](ClassDef.md)
+- 
+
 ## Global Accessors
 
 ### `_c(id)`
 
 returns the character with the given `id`.
+
+### `_class(name)`
+
+returns the class with the given `name`.
+
+### `_feat(name)`
+
+returns the feat with the given `name`.
 
 ### `_i(id)`
 

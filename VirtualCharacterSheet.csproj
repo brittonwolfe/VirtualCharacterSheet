@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <Folder Include="core_3p5e\" />
-    <Folder Include="core_5e\NewFolder\" />
+    <Folder Include="core_5e\background\" />
   </ItemGroup>
 
 </Project>

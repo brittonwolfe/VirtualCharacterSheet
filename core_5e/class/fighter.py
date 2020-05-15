@@ -5,3 +5,4 @@ fighter.Pages = "70-75"
 
 fighter.Saves[0] = True;
 fighter.Saves[2] = True;
+
