@@ -3,8 +3,6 @@ using System.Dynamic;
 using Microsoft.Scripting.Hosting;
 
 using IronPython.Hosting;
-using System.Net.NetworkInformation;
-using System.Runtime.InteropServices;
 
 namespace VirtualCharacterSheet {
 
@@ -240,7 +238,15 @@ namespace VirtualCharacterSheet {
 
 		public void SetBehavior(Script script) { Behavior = script; }
 
-		public void DoBehavior() { Behavior.Run(); }
+		public void DoBehavior() {
+			Scripting.locals.This = this;
+			try{ Behavior.Run(); }
+			catch(Exception e) {
+				Core.ShowConsole();
+				Console.WriteLine("An error occurred in behavior of " + this);
+				Console.WriteLine(e);
+			} finally { Scripting.locals.This = null; }
+		}
 		public void DoBehavior(dynamic arg) { Behavior.Run(arg); }
 
 	}
