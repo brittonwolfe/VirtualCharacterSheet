@@ -1,6 +1,6 @@
-bin
-obj
-general
+bin/**
+obj/**
+general/**
 *.sln
 *.csproj
 
@@ -364,3 +364,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+*.cache
