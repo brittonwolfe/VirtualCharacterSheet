@@ -4,6 +4,7 @@ using Microsoft.Scripting.Hosting;
 
 using IronPython.Hosting;
 using System.Net.NetworkInformation;
+using System.Runtime.InteropServices;
 
 namespace VirtualCharacterSheet {
 
@@ -47,18 +48,19 @@ namespace VirtualCharacterSheet {
 			Func<byte, short> ModFunc = Core.Modifier;
 
 			Func<Character> GetCCharFunc = Core.GetCurrentCharacter;
-			Func<uint, Item> GetItem = Data.GetItem;
+			Func<string, Item> GetItem = Data.GetItem;
 			Action<string, object> SetScriptFFunc = SetScriptF;
-			Func<uint, Character> GetCharacter = Data.GetCharacter;
+			Func<string, Character> GetCharacter = Data.GetCharacter;
 			Func<string, Class> GetClass = Data.GetClass;
 			Func<string, Feat> GetFeat = Data.GetFeat;
-			Func<uint, NPC> GetNPC = Data.GetNPC;
+			Func<string, NPC> GetNPC = Data.GetNPC;
 			Func<string, RawPyScript> GetPy = Data.GetPy;
 			Func<string, object> GetPyF = Data.GetPyF;
 
-			Action<string> CreateItemFunc = CreateItem;
+			Func<string, string, Character> DefCharF = DefineCharacter;
 			Func<string, Class> DefClassF = DefineClass;
 			Func<string, Feat> DefFeatF = DefineFeat;
+			Func<string, Item> CreateItemFunc = DefineItem;
 
 			Action<string> OpenVSCode = CodeScript;
 			Action<string> RunScriptFunc = RunScript;
@@ -83,9 +85,10 @@ namespace VirtualCharacterSheet {
 			SetGlobal("_pyf", GetPyF);
 
 			//initializers and instantiators
+			SetGlobal("def_c", DefCharF);
 			SetGlobal("def_class", DefClassF);
 			SetGlobal("def_feat", DefFeatF);
-			SetGlobal("new_i", CreateItemFunc);
+			SetGlobal("def_i", CreateItemFunc);
 
 			//metaprogrammatical functions
 			SetGlobal("set_pyf", SetScriptFFunc);
@@ -139,15 +142,14 @@ namespace VirtualCharacterSheet {
 			Console.WriteLine();
 		}
 
-		public static void CreateItem(string n) {
-			Item i = new Item();
-			i.Name = n;
-			uint id = Data.AddItem(i);
-			Console.WriteLine("Created new item \"" + n + "\" at _i(" + id + ")");
-		}
-
+		public static Character DefineCharacter(string n, string p) { return new Character(n, p); }
 		public static Class DefineClass(string n) { return new Class(n); }
 		public static Feat DefineFeat(string n) { return new Feat(n); }
+		public static Item DefineItem(string n) {
+			Item i = new Item(n);
+			Console.WriteLine("Created new at _i(\"" + n + "\")");
+			return i;
+		}
 
 		private static void CodeScript(string key) {
 			IO.File temp = FileLoad.GetTempFile("vcs_py_" + key + ".py");

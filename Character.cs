@@ -1,4 +1,5 @@
-﻿using VirtualCharacterSheet.Exceptions;
+﻿using System.Dynamic;
+using VirtualCharacterSheet.Exceptions;
 
 namespace VirtualCharacterSheet {
 
@@ -17,6 +18,7 @@ namespace VirtualCharacterSheet {
 	public class Character {
 		public string Name;
 		public string Player;
+		public string Identifier { get { return (Player + ":" + Name); } }
 		protected byte Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma;
 		public short STR { get { return Core.Modifier(Strength); } }
 		public short DEX { get { return Core.Modifier(Dexterity); } }
@@ -25,8 +27,13 @@ namespace VirtualCharacterSheet {
 		public short WIS { get { return Core.Modifier(Wisdom); } }
 		public short CHA { get { return Core.Modifier(Charisma); } }
 		public bool Inspiration { get; private set; }
+		public dynamic Info = new ExpandoObject();
 
-		public Character() { }
+		public Character(string name, string player) {
+			Name = name;
+			Player = player;
+			Data.SetCharacter(Identifier, this);
+		}
 
 	}
 
