@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-using VirtualCharacterSheet.Exceptions;
-
 namespace VirtualCharacterSheet {
 
 	public static class Core {
@@ -101,8 +99,8 @@ namespace VirtualCharacterSheet {
 		}
 
 		public void SetBehavior(Script s) { Behavior = s; }
-		public void SetBehavior(RawPyScript s) { SetBehavior(s); }
 		public void DoBehavior() { Behavior.Run(); }
+		public void DoBehavior(dynamic arg){ Behavior.Run(arg); }
 
 	}
 

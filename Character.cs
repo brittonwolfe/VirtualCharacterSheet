@@ -1,4 +1,5 @@
-﻿
+﻿using VirtualCharacterSheet.Exceptions;
+
 namespace VirtualCharacterSheet {
 
 	public class HitDice {
@@ -15,6 +16,7 @@ namespace VirtualCharacterSheet {
 
 	public class Character {
 		public string Name;
+		public string Player;
 		protected byte Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma;
 		public short STR { get { return Core.Modifier(Strength); } }
 		public short DEX { get { return Core.Modifier(Dexterity); } }
