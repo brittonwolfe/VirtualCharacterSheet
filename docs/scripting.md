@@ -3,8 +3,8 @@ VCS is scripted with IronPython.
 
 ## For guides on defining objects
 
+- [Characters](CharacterDef.md)
 - [Classes](ClassDef.md)
-- 
 
 ## Global Accessors
 

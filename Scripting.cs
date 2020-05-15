@@ -63,7 +63,6 @@ namespace VirtualCharacterSheet {
 			Func<string, Item> CreateItemFunc = DefineItem;
 
 			Action<string> OpenVSCode = CodeScript;
-			Action<string> RunScriptFunc = RunScript;
 
 			//global variables
 			SetGlobal("local", locals);
@@ -147,7 +146,7 @@ namespace VirtualCharacterSheet {
 		public static Feat DefineFeat(string n) { return new Feat(n); }
 		public static Item DefineItem(string n) {
 			Item i = new Item(n);
-			Console.WriteLine("Created new at _i(\"" + n + "\")");
+			Console.WriteLine("Created new item at _i(\"" + n + "\")");
 			return i;
 		}
 
@@ -189,7 +188,6 @@ namespace VirtualCharacterSheet {
 			Console.Clear();
 			Console.WriteLine("script created at _py(\"" + key + "\")");
 		}
-		private static void RunScript(string key) { Data.GetPy(key).Run(); }
 
 		private static void SetScriptF(string key, object f) { Data.SetPyF(key, f); }
 
