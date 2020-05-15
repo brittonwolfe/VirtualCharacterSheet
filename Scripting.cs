@@ -3,6 +3,7 @@ using System.Dynamic;
 using Microsoft.Scripting.Hosting;
 
 using IronPython.Hosting;
+using System.Net.NetworkInformation;
 
 namespace VirtualCharacterSheet {
 
@@ -50,12 +51,14 @@ namespace VirtualCharacterSheet {
 			Action<string, object> SetScriptFFunc = SetScriptF;
 			Func<uint, Character> GetCharacter = Data.GetCharacter;
 			Func<string, Class> GetClass = Data.GetClass;
+			Func<string, Feat> GetFeat = Data.GetFeat;
 			Func<uint, NPC> GetNPC = Data.GetNPC;
 			Func<string, RawPyScript> GetPy = Data.GetPy;
 			Func<string, object> GetPyF = Data.GetPyF;
 
 			Action<string> CreateItemFunc = CreateItem;
 			Func<string, Class> DefClassF = DefineClass;
+			Func<string, Feat> DefFeatF = DefineFeat;
 
 			Action<string> OpenVSCode = CodeScript;
 			Action<string> RunScriptFunc = RunScript;
@@ -74,12 +77,14 @@ namespace VirtualCharacterSheet {
 			SetGlobal("_i", GetItem);
 			SetGlobal("_c", GetCharacter);
 			SetGlobal("_class", GetClass);
+			SetGlobal("_feat", GetFeat);
 			SetGlobal("_n", GetNPC);
 			SetGlobal("_py", GetPy);
 			SetGlobal("_pyf", GetPyF);
 
 			//initializers and instantiators
 			SetGlobal("def_class", DefClassF);
+			SetGlobal("def_feat", DefFeatF);
 			SetGlobal("new_i", CreateItemFunc);
 
 			//metaprogrammatical functions
@@ -142,6 +147,7 @@ namespace VirtualCharacterSheet {
 		}
 
 		public static Class DefineClass(string n) { return new Class(n); }
+		public static Feat DefineFeat(string n) { return new Feat(n); }
 
 		private static void CodeScript(string key) {
 			IO.File temp = FileLoad.GetTempFile("vcs_py_" + key + ".py");
@@ -214,7 +220,7 @@ namespace VirtualCharacterSheet {
 			File = file;
 		}
 
-		public override void Run() { }
+		public override void Run() { Scripting.engine.ExecuteFile(this.File.Path); }
 
 	}
 
@@ -226,6 +232,16 @@ namespace VirtualCharacterSheet {
 			Run();
 			Scripting.locals.arg = null;
 		}
+
+	}
+
+	public abstract class ScriptedObject {
+		protected Script Behavior;
+
+		public void SetBehavior(Script script) { Behavior = script; }
+
+		public void DoBehavior() { Behavior.Run(); }
+		public void DoBehavior(dynamic arg) { Behavior.Run(arg); }
 
 	}
 

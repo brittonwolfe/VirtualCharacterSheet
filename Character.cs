@@ -34,10 +34,14 @@ namespace VirtualCharacterSheet {
 
 	}
 
-	public class Feat {
+	public class Feat : ScriptedObject {
 		public string Name;
 		public string Description;
-		public Script Behavior;
+
+		public Feat(string title) {
+			Name = title;
+			Data.SetFeat(Name, this);
+		}
 
 	}
 

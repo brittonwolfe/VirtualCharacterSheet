@@ -17,3 +17,5 @@ C:\Users\Britton\source\repos\VirtualCharacterSheet\VirtualCharacterSheet\bin\De
 C:\Users\Britton\source\repos\VirtualCharacterSheet\VirtualCharacterSheet\bin\Debug\netcoreapp3.1\IronPython.dll
 C:\Users\Britton\source\repos\VirtualCharacterSheet\VirtualCharacterSheet\obj\Debug\netcoreapp3.1\VirtualCharacterSheet.dll
 C:\Users\Britton\source\repos\VirtualCharacterSheet\VirtualCharacterSheet\obj\Debug\netcoreapp3.1\VirtualCharacterSheet.pdb
+C:\Users\Britton\source\repos\VirtualCharacterSheet\VirtualCharacterSheet\obj\Debug\netcoreapp3.1\VirtualCharacterSheet.csproj.CoreCompileInputs.cache
+C:\Users\Britton\source\repos\VirtualCharacterSheet\VirtualCharacterSheet\obj\Debug\netcoreapp3.1\VirtualCharacterSheet.genruntimeconfig.cache
