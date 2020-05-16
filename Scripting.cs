@@ -9,6 +9,7 @@ namespace VirtualCharacterSheet {
 	public static class Scripting {
 		internal static ScriptEngine engine = Python.CreateEngine();
 		public static dynamic locals = new ExpandoObject();
+		public static dynamic homebrew = new ExpandoObject();
 
 		public static void Sandbox() {
 			Core.AllocateConsole();
@@ -60,10 +61,13 @@ namespace VirtualCharacterSheet {
 			Func<string, Feat> DefFeatF = DefineFeat;
 			Func<string, Item> CreateItemFunc = DefineItem;
 
+			Func<Modifier> NewModifier = ConstructModifier;
+
 			Action<string> OpenVSCode = CodeScript;
 
 			//global variables
 			SetGlobal("local", locals);
+			SetGlobal("brew", homebrew);
 
 			//global functions
 			SetGlobal("help", HelpFunc);
@@ -147,6 +151,10 @@ namespace VirtualCharacterSheet {
 			Console.WriteLine("Created new item at _i(\"" + n + "\")");
 			return i;
 		}
+
+		public static Modifier CreateModifier() { return new Modifier(); }
+		public static Modifier CreateModifier(short m) { return new Modifier(m); }
+		public static Modifier CreateModifier(Script s) { return new Modifier(s); }
 
 		private static void CodeScript(string key) {
 			IO.File temp = FileLoad.GetTempFile("vcs_py_" + key + ".py");

@@ -51,6 +51,14 @@ namespace VirtualCharacterSheet {
 
 	}
 
+	public class Modifier : ScriptedObject{
+
+		public Modifier() {}
+		public Modifier(short mod) { Behavior = new RawPyScript("return " + mod); }
+		public Modifier(Script script) { Behavior = script; }
+
+	}
+
 	public class Item : ScriptedObject {
 		public string Name;
 		public readonly string Identifier;
