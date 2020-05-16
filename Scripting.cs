@@ -4,12 +4,17 @@ using Microsoft.Scripting.Hosting;
 
 using IronPython.Hosting;
 
+using VirtualCharacterSheet.IO;
+using System.Threading;
+using System.Runtime.InteropServices.ComTypes;
+
 namespace VirtualCharacterSheet {
 
 	public static class Scripting {
 		internal static ScriptEngine engine = Python.CreateEngine();
 		public static dynamic locals = new ExpandoObject();
 		public static dynamic homebrew = new ExpandoObject();
+		private static bool Initialized = false;
 
 		public static void Sandbox() {
 			Core.AllocateConsole();
@@ -38,7 +43,14 @@ namespace VirtualCharacterSheet {
 			Core.HideConsole();
 		}
 
+		public static void Brew(File src) {
+			init();
+
+		}
+
 		private static void init() {
+			if(Initialized)
+				return;
 			engine.Execute("import clr");
 
 			Action<string> HelpFunc = GetHelp;
@@ -61,7 +73,7 @@ namespace VirtualCharacterSheet {
 			Func<string, Feat> DefFeatF = DefineFeat;
 			Func<string, Item> CreateItemFunc = DefineItem;
 
-			Func<Modifier> NewModifier = ConstructModifier;
+			Func<Modifier> NewModifier = CreateModifier;
 
 			Action<string> OpenVSCode = CodeScript;
 
@@ -94,6 +106,8 @@ namespace VirtualCharacterSheet {
 			//metaprogrammatical functions
 			SetGlobal("set_pyf", SetScriptFFunc);
 			SetGlobal("edit_py", OpenVSCode);
+
+			Initialized = true;
 		}
 
 		private static void SetGlobal(string n, object o) { engine.GetBuiltinModule().SetVariable(n, o); }
@@ -157,7 +171,7 @@ namespace VirtualCharacterSheet {
 		public static Modifier CreateModifier(Script s) { return new Modifier(s); }
 
 		private static void CodeScript(string key) {
-			IO.File temp = FileLoad.GetTempFile("vcs_py_" + key + ".py");
+			File temp = FileLoad.GetTempFile("vcs_py_" + key + ".py");
 			if(Data.HasPy(key))
 				temp.WriteText(Data.GetPy(key).src);
 			else
@@ -169,7 +183,7 @@ namespace VirtualCharacterSheet {
 			process.StartInfo = info;
 			try { process.Start(); }
 			catch { ScriptEditor(key); }
-			Console.WriteLine("Press enter to resume...");
+			Console.WriteLine("Press enter to resume after editing...");
 			Console.ReadLine();
 			Data.SetPy(key, new RawPyScript(temp.ReadText()));
 			System.IO.File.Delete(temp.Path);
