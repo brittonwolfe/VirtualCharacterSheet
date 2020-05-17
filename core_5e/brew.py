@@ -1,16 +1,16 @@
 ﻿core = brew.def_brew("core_5e")
-core.Title = "D&D Fifth Edition"
-core.Description = "The core rules for Dungeons and Dragons Fifth Edition"
+core.Meta.Title = "D&D Fifth Edition"
+core.Meta.Description = "The core rules for Dungeons and Dragons Fifth Edition"
 core.Dir = brew.Path;
 
 # I don't have the groundwork right now to actually define all the saves,
 # so I'm doing some placeholders.
-core.def_save("Strength", lambda src: src.Save.STR)
-core.def_save("Dexterity", lambda src: src.Save.DEX)
-core.def_save("Constitution", lambda src: src.Save.CON)
-core.def_save("Intelligence", lambda src: src.Save.INT)
-core.def_save("Wisdom", lambda src: src.Save.WIS)
-core.def_save("Charisma", lambda src: src.Save.CHA)
+core.def_save("Strength", lambda dc: (local.This.Save.STR >= dc))
+core.def_save("Dexterity", lambda dc: (local.This.Save.DEX >= dc))
+core.def_save("Constitution", lambda dc: (local.This.Save.CON >= dc))
+core.def_save("Intelligence", lambda dc: (local.This.Save.INT >= dc))
+core.def_save("Wisdom", lambda dc: (local.This.Save.WIS >= dc))
+core.def_save("Charisma", lambda dc: (local.This.Save.CHA >= dc))
 
 # Again, the groundwork is a little more "there" for the skills, but
 # I'm not really at the point where I can make those dynamic.
