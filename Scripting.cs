@@ -73,6 +73,14 @@ namespace VirtualCharacterSheet {
 			Func<string, Feat> DefFeatF = DefineFeat;
 			Func<string, Item> CreateItemFunc = DefineItem;
 
+			Func<string, bool> HasCharFunc = Data.HasCharacter;
+			Func<string, bool> HasClassFunc = Data.HasClass;
+			Func<string, bool> HasFeatFunc = Data.HasFeat;
+			Func<string, bool> HasItemFunc = Data.HasItem;
+			Func<string, bool> HasNPCFunc = Data.HasNPC;
+			Func<string, bool> HasPyFunc = Data.HasPy;
+			Func<string, bool> HasPyFFunc = Data.HasPyF;
+
 			Func<Modifier> NewModifier = CreateModifier;
 
 			Action<string> OpenVSCode = CodeScript;
@@ -89,10 +97,10 @@ namespace VirtualCharacterSheet {
 
 			//accessors
 			SetGlobal("getopenchar", GetCCharFunc);
-			SetGlobal("_i", GetItem);
 			SetGlobal("_c", GetCharacter);
 			SetGlobal("_class", GetClass);
 			SetGlobal("_feat", GetFeat);
+			SetGlobal("_i", GetItem);
 			SetGlobal("_n", GetNPC);
 			SetGlobal("_py", GetPy);
 			SetGlobal("_pyf", GetPyF);
@@ -102,6 +110,15 @@ namespace VirtualCharacterSheet {
 			SetGlobal("def_class", DefClassF);
 			SetGlobal("def_feat", DefFeatF);
 			SetGlobal("def_i", CreateItemFunc);
+
+			//queries
+			SetGlobal("has_c", HasCharFunc);
+			SetGlobal("has_class", HasClassFunc);
+			SetGlobal("has_feat", HasFeatFunc);
+			SetGlobal("has_i", HasItemFunc);
+			SetGlobal("has_n", HasNPCFunc);
+			SetGlobal("has_py", HasPyFunc);
+			SetGlobal("has_pyf", HasPyFFunc);
 
 			//metaprogrammatical functions
 			SetGlobal("set_pyf", SetScriptFFunc);
