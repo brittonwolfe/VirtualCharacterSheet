@@ -15,8 +15,9 @@ namespace VirtualCharacterSheet {
 		public static dynamic homebrew = new ExpandoObject();
 		private static bool Initialized = false;
 
-		public static void Sandbox() {
-			Core.AllocateConsole();
+		public static void Sandbox(bool console = true) {
+			if(console)
+				Core.AllocateConsole();
 			init();
 			do {
 				Console.Write("> ");
@@ -39,7 +40,8 @@ namespace VirtualCharacterSheet {
 					Console.WriteLine();
 				}
 			} while(true);
-			Core.HideConsole();
+			if(console)
+				Core.HideConsole();
 		}
 
 		public static void Brew(FileScript src) {

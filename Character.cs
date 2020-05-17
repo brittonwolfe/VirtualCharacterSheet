@@ -1,4 +1,6 @@
-﻿using System.Dynamic;
+﻿using Microsoft.Scripting.Ast;
+using System;
+using System.Dynamic;
 
 using VirtualCharacterSheet.Event;
 using VirtualCharacterSheet.Exceptions;
@@ -31,9 +33,7 @@ namespace VirtualCharacterSheet {
 
 		private static event InjectionEvent Injection;
 
-		protected Character() {
-			Injection(this);
-		}
+		protected void Inject() { if(Injection != null) Injection.Invoke(this); }
 
 	}
 
@@ -42,10 +42,11 @@ namespace VirtualCharacterSheet {
 		public string Identifier { get { return (Player + ":" + Name); } }
 		public bool Inspiration { get; private set; }
 
-		public PlayerCharacter(string name, string player) : base() {
+		public PlayerCharacter(string name, string player) {
 			Name = name;
 			Player = player;
 			Data.SetCharacter(this);
+			Inject();
 		}
 
 	}
@@ -54,9 +55,10 @@ namespace VirtualCharacterSheet {
 		public string Module;
 		public string Identifier { get { return (Module + ":" + Name); } }
 
-		public NPC(string name, string module) : base() {
+		public NPC(string name, string module) {
 			Name = name;
 			Module = module;
+			Inject();
 		}
 
 	}
