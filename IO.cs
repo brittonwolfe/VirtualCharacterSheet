@@ -33,6 +33,16 @@ namespace VirtualCharacterSheet {
 
 		}
 
+		public class Dir {
+			public string Path;
+
+			public Dir(string path) {
+			}
+
+			//public File FromDir(string sub) { }
+
+		}
+
 	}
 
 }

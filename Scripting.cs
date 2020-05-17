@@ -46,6 +46,9 @@ namespace VirtualCharacterSheet {
 		public static void Brew(File src) {
 			init();
 
+			Func<string, Brew> defBrew = (string n) => { return new Brew(n); };
+
+			SetGlobal("def_brew", defBrew);
 		}
 
 		private static void init() {
@@ -60,7 +63,7 @@ namespace VirtualCharacterSheet {
 
 			Func<Character> GetCCharFunc = Core.GetCurrentCharacter;
 			Func<string, Item> GetItem = Data.GetItem;
-			Action<string, object> SetScriptFFunc = SetScriptF;
+			Action<string, object> SetScriptFFunc = Data.SetPyF;
 			Func<string, Character> GetCharacter = Data.GetCharacter;
 			Func<string, Class> GetClass = Data.GetClass;
 			Func<string, Feat> GetFeat = Data.GetFeat;
@@ -68,10 +71,10 @@ namespace VirtualCharacterSheet {
 			Func<string, RawPyScript> GetPy = Data.GetPy;
 			Func<string, object> GetPyF = Data.GetPyF;
 
-			Func<string, string, Character> DefCharF = DefineCharacter;
-			Func<string, Class> DefClassF = DefineClass;
-			Func<string, Feat> DefFeatF = DefineFeat;
-			Func<string, Item> CreateItemFunc = DefineItem;
+			Func<string, string, Character> DefCharF = (string c, string p) => { return new Character(c, p); };
+			Func<string, Class> DefClassF = (string n) => { return new Class(n); };
+			Func<string, Feat> DefFeatF = (string n) => { return new Feat(n); };
+			Func<string, Item> CreateItemFunc = (string n) => {return new Item(n); };
 
 			Func<string, bool> HasCharFunc = Data.HasCharacter;
 			Func<string, bool> HasClassFunc = Data.HasClass;
@@ -95,6 +98,9 @@ namespace VirtualCharacterSheet {
 			SetGlobal("rolln", RollnFunc);
 			SetGlobal("mod", ModFunc);
 
+			//helper object functions
+			SetGlobal("new_mod", NewModifier);
+
 			//accessors
 			SetGlobal("getopenchar", GetCCharFunc);
 			SetGlobal("_c", GetCharacter);
@@ -111,7 +117,7 @@ namespace VirtualCharacterSheet {
 			SetGlobal("def_feat", DefFeatF);
 			SetGlobal("def_i", CreateItemFunc);
 
-			//queries
+			//checkers
 			SetGlobal("has_c", HasCharFunc);
 			SetGlobal("has_class", HasClassFunc);
 			SetGlobal("has_feat", HasFeatFunc);
@@ -174,15 +180,6 @@ namespace VirtualCharacterSheet {
 			Console.WriteLine();
 		}
 
-		public static Character DefineCharacter(string n, string p) { return new Character(n, p); }
-		public static Class DefineClass(string n) { return new Class(n); }
-		public static Feat DefineFeat(string n) { return new Feat(n); }
-		public static Item DefineItem(string n) {
-			Item i = new Item(n);
-			Console.WriteLine("Created new item at _i(\"" + n + "\")");
-			return i;
-		}
-
 		public static Modifier CreateModifier() { return new Modifier(); }
 		public static Modifier CreateModifier(short m) { return new Modifier(m); }
 		public static Modifier CreateModifier(Script s) { return new Modifier(s); }
@@ -225,8 +222,6 @@ namespace VirtualCharacterSheet {
 			Console.Clear();
 			Console.WriteLine("script created at _py(\"" + key + "\")");
 		}
-
-		private static void SetScriptF(string key, object f) { Data.SetPyF(key, f); }
 
 	}
 

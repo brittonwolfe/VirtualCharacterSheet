@@ -32,7 +32,7 @@ namespace VirtualCharacterSheet {
 		public Character(string name, string player) {
 			Name = name;
 			Player = player;
-			Data.SetCharacter(Identifier, this);
+			Data.SetCharacter(this);
 		}
 
 	}

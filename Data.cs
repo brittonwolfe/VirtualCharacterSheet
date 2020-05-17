@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 
 namespace VirtualCharacterSheet {
 
 	public static class Data {
-		private static Dictionary<string, Item> item = new Dictionary<string, Item>();
 		private static Dictionary<string, Character> character = new Dictionary<string, Character>();
+		private static Dictionary<string, Class> classes = new Dictionary<string, Class>();
+		private static Dictionary<string, Feat> feat = new Dictionary<string, Feat>();
+		private static Dictionary<string, Item> item = new Dictionary<string, Item>();
 		private static Dictionary<string, NPC> npc = new Dictionary<string, NPC>();
 		private static Dictionary<string, RawPyScript> py = new Dictionary<string, RawPyScript>();
 		private static Dictionary<string, object> pyf = new Dictionary<string, object>();
-		private static Dictionary<string, Class> classes = new Dictionary<string, Class>();
-		private static Dictionary<string, Feat> feat = new Dictionary<string, Feat>();
+
+		private static Dictionary<string, Brew> brew = new Dictionary<string, Brew>();
 
 		public static Item GetItem(string key) { return item[key.ToLower()]; }
 		public static Character GetCharacter(string key) { return character[key.ToLower()]; }
@@ -20,8 +23,8 @@ namespace VirtualCharacterSheet {
 		public static Class GetClass(string key) { return classes[key.ToLower()]; }
 		public static Feat GetFeat(string key) { return feat[key.ToLower()]; }
 
-		public static void SetItem(string key, Item i) { item[key.ToLower()] = i; }
-		public static void SetCharacter(string key, Character c) { character[key.ToLower()] = c; }
+		public static void SetItem(Item i) { item[i.Identifier.ToLower()] = i; }
+		public static void SetCharacter(Character c) { character[c.Identifier.ToLower()] = c; }
 		public static void SetNPC(string key, NPC n) { npc[key.ToLower()] = n; }
 		public static void SetPy(string key, RawPyScript src) { py[key.ToLower()] = src; }
 		public static void SetPyF(string key, object func) { pyf[key.ToLower()] = func; }
@@ -35,6 +38,19 @@ namespace VirtualCharacterSheet {
 		public static bool HasPyF(string key) { return pyf.ContainsKey(key.ToLower()); }
 		public static bool HasClass(string key) { return classes.ContainsKey(key.ToLower()); }
 		public static bool HasFeat(string key) { return feat.ContainsKey(key.ToLower()); }
+
+		internal static void AddBrew(Brew b) { brew[b.Name] = b; }
+
+	}
+
+	public class Brew {
+		public dynamic Meta = new ExpandoObject();
+		public readonly string Name;
+
+		public Brew(string name) {
+			Name = name;
+			Data.AddBrew(this);
+		}
 
 	}
 
@@ -66,7 +82,7 @@ namespace VirtualCharacterSheet {
 
 		public Item(string id) {
 			Identifier = id;
-			Data.SetItem(Identifier, this);
+			Data.SetItem(this);
 		}
 
 	}
