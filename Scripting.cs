@@ -5,8 +5,6 @@ using Microsoft.Scripting.Hosting;
 using IronPython.Hosting;
 
 using VirtualCharacterSheet.IO;
-using System.Threading;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace VirtualCharacterSheet {
 
@@ -43,12 +41,16 @@ namespace VirtualCharacterSheet {
 			Core.HideConsole();
 		}
 
-		public static void Brew(File src) {
+		public static void Brew(FileScript src) {
 			init();
 
 			Func<string, Brew> defBrew = (string n) => { return new Brew(n); };
 
-			SetGlobal("def_brew", defBrew);
+			homebrew.add_module = defBrew;
+
+			src.Run();
+
+			homebrew.add_module = null;
 		}
 
 		private static void init() {
@@ -62,11 +64,11 @@ namespace VirtualCharacterSheet {
 			Func<byte, short> ModFunc = Core.Modifier;
 
 			Func<Character> GetCCharFunc = Core.GetCurrentCharacter;
-			Func<string, Item> GetItem = Data.GetItem;
-			Action<string, object> SetScriptFFunc = Data.SetPyF;
+			Func<string, Brew> GetBrew = Data.GetBrew;
 			Func<string, Character> GetCharacter = Data.GetCharacter;
 			Func<string, Class> GetClass = Data.GetClass;
 			Func<string, Feat> GetFeat = Data.GetFeat;
+			Func<string, Item> GetItem = Data.GetItem;
 			Func<string, NPC> GetNPC = Data.GetNPC;
 			Func<string, RawPyScript> GetPy = Data.GetPy;
 			Func<string, object> GetPyF = Data.GetPyF;
@@ -75,6 +77,7 @@ namespace VirtualCharacterSheet {
 			Func<string, Class> DefClassF = (string n) => { return new Class(n); };
 			Func<string, Feat> DefFeatF = (string n) => { return new Feat(n); };
 			Func<string, Item> CreateItemFunc = (string n) => {return new Item(n); };
+			Action<string, object> SetScriptFFunc = Data.SetPyF;
 
 			Func<string, bool> HasCharFunc = Data.HasCharacter;
 			Func<string, bool> HasClassFunc = Data.HasClass;
@@ -84,7 +87,7 @@ namespace VirtualCharacterSheet {
 			Func<string, bool> HasPyFunc = Data.HasPy;
 			Func<string, bool> HasPyFFunc = Data.HasPyF;
 
-			Func<Modifier> NewModifier = CreateModifier;
+			Func<short, Modifier> NewModifier = (short m) => { return new Modifier(m); };
 
 			Action<string> OpenVSCode = CodeScript;
 
@@ -103,6 +106,7 @@ namespace VirtualCharacterSheet {
 
 			//accessors
 			SetGlobal("getopenchar", GetCCharFunc);
+			SetGlobal("_brew", GetBrew);
 			SetGlobal("_c", GetCharacter);
 			SetGlobal("_class", GetClass);
 			SetGlobal("_feat", GetFeat);
@@ -246,13 +250,19 @@ namespace VirtualCharacterSheet {
 	}
 
 	public class FileScript : Script {
-		public IO.File File;
+		public File File;
 
 		public FileScript(IO.File file) {
 			File = file;
 		}
 
-		public override void Run() { Scripting.engine.ExecuteFile(this.File.Path); }
+		public override void Run() {
+			Scripting.locals.Path = File;
+			try{ Scripting.engine.ExecuteFile(File.Path); }
+			catch(Exception inner) {
+				
+			} finally { Scripting.locals.Path = null; }
+		}
 
 	}
 

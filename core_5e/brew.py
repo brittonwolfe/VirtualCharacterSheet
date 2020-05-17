@@ -1,4 +1,4 @@
-﻿brew.add_module("core_5e")
+﻿core = brew.add_module("core_5e")
 
 # I don't have the groundwork right now to actually define all the saves,
 # so I'm doing some placeholders.

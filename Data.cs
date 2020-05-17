@@ -40,6 +40,7 @@ namespace VirtualCharacterSheet {
 		public static bool HasFeat(string key) { return feat.ContainsKey(key.ToLower()); }
 
 		internal static void AddBrew(Brew b) { brew[b.Name] = b; }
+		public static Brew GetBrew(string n) { return brew[n]; }
 
 	}
 
