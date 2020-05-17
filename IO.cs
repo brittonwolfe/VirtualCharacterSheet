@@ -15,8 +15,15 @@ namespace VirtualCharacterSheet {
 
 		public class File {
 			public string Path;
+			public Dir Directory {
+				get;
+				private set;
+			}
 
-			public File(string p) { Path = p; }
+			public File(string p) {
+				Path = p;
+				Directory = new Dir(new FileInfo(Path).Directory.ToString());
+			}
 
 			public string ReadText() {
 				string output = "";
@@ -37,6 +44,7 @@ namespace VirtualCharacterSheet {
 			public string Path;
 
 			public Dir(string path) {
+				Path = path;
 			}
 
 			//public File FromDir(string sub) { }

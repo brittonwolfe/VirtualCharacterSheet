@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using Microsoft.Scripting.Hosting;
 
@@ -46,11 +47,13 @@ namespace VirtualCharacterSheet {
 
 			Func<string, Brew> defBrew = (string n) => { return new Brew(n); };
 
-			homebrew.add_module = defBrew;
+			homebrew.def_brew = defBrew;
+			homebrew.Path = src.File.Directory;
 
 			src.Run();
 
-			homebrew.add_module = null;
+			Remove(homebrew, "def_brew");
+			Remove(homebrew, "Path");
 		}
 
 		private static void init() {
@@ -60,12 +63,12 @@ namespace VirtualCharacterSheet {
 
 			Action<string> HelpFunc = GetHelp;
 			Func<ushort, uint> RollFunc = Die.Roll;
-			Func<byte, ushort, uint> RollnFunc = Die.Rolln;
+			Func<ushort, ushort, uint> RollnFunc = Die.Rolln;
 			Func<byte, short> ModFunc = Core.Modifier;
 
-			Func<Character> GetCCharFunc = Core.GetCurrentCharacter;
+			Func<PlayerCharacter> GetCCharFunc = Core.GetCurrentCharacter;
 			Func<string, Brew> GetBrew = Data.GetBrew;
-			Func<string, Character> GetCharacter = Data.GetCharacter;
+			Func<string, PlayerCharacter> GetCharacter = Data.GetCharacter;
 			Func<string, Class> GetClass = Data.GetClass;
 			Func<string, Feat> GetFeat = Data.GetFeat;
 			Func<string, Item> GetItem = Data.GetItem;
@@ -73,7 +76,7 @@ namespace VirtualCharacterSheet {
 			Func<string, RawPyScript> GetPy = Data.GetPy;
 			Func<string, object> GetPyF = Data.GetPyF;
 
-			Func<string, string, Character> DefCharF = (string c, string p) => { return new Character(c, p); };
+			Func<string, string, PlayerCharacter> DefCharF = (string c, string p) => { return new PlayerCharacter(c, p); };
 			Func<string, Class> DefClassF = (string n) => { return new Class(n); };
 			Func<string, Feat> DefFeatF = (string n) => { return new Feat(n); };
 			Func<string, Item> CreateItemFunc = (string n) => {return new Item(n); };
@@ -88,6 +91,7 @@ namespace VirtualCharacterSheet {
 			Func<string, bool> HasPyFFunc = Data.HasPyF;
 
 			Func<short, Modifier> NewModifier = (short m) => { return new Modifier(m); };
+			Func<ushort, ushort, Roll> NewRoll = (ushort n, ushort d) => { return new Roll(n, d); };
 
 			Action<string> OpenVSCode = CodeScript;
 
@@ -103,6 +107,7 @@ namespace VirtualCharacterSheet {
 
 			//helper object functions
 			SetGlobal("new_mod", NewModifier);
+			SetGlobal("new_roll", NewRoll);
 
 			//accessors
 			SetGlobal("getopenchar", GetCCharFunc);
@@ -139,6 +144,7 @@ namespace VirtualCharacterSheet {
 
 		private static void SetGlobal(string n, object o) { engine.GetBuiltinModule().SetVariable(n, o); }
 		private static dynamic GetGlobal(string n) { return engine.GetBuiltinModule().GetVariable(n); }
+		internal static void Remove(dynamic obj, string key) { ((IDictionary<string, object>)obj).Remove(key); }
 
 		public static void Help() {
 			Console.WriteLine("roll(d)\t\trolln(n,d)\t\tmod(s)\t\tgetopenchar()");
@@ -252,16 +258,15 @@ namespace VirtualCharacterSheet {
 	public class FileScript : Script {
 		public File File;
 
-		public FileScript(IO.File file) {
+		public FileScript(File file) {
 			File = file;
 		}
 
 		public override void Run() {
 			Scripting.locals.Path = File;
 			try{ Scripting.engine.ExecuteFile(File.Path); }
-			catch(Exception inner) {
-				
-			} finally { Scripting.locals.Path = null; }
+			catch { }
+			finally { Scripting.Remove(Scripting.locals, "Path"); }
 		}
 
 	}
@@ -289,7 +294,7 @@ namespace VirtualCharacterSheet {
 				Core.ShowConsole();
 				Console.WriteLine("An error occurred in behavior of " + this);
 				Console.WriteLine(e);
-			} finally { Scripting.locals.This = null; }
+			} finally { Scripting.Remove(Scripting.locals, "This"); }
 		}
 		public void DoBehavior(dynamic arg) { Behavior.Run(arg); }
 

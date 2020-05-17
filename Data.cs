@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Dynamic;
 
 namespace VirtualCharacterSheet {
 
 	public static class Data {
-		private static Dictionary<string, Character> character = new Dictionary<string, Character>();
+		private static Dictionary<string, PlayerCharacter> character = new Dictionary<string, PlayerCharacter>();
 		private static Dictionary<string, Class> classes = new Dictionary<string, Class>();
 		private static Dictionary<string, Feat> feat = new Dictionary<string, Feat>();
 		private static Dictionary<string, Item> item = new Dictionary<string, Item>();
@@ -16,7 +17,7 @@ namespace VirtualCharacterSheet {
 		private static Dictionary<string, Brew> brew = new Dictionary<string, Brew>();
 
 		public static Item GetItem(string key) { return item[key.ToLower()]; }
-		public static Character GetCharacter(string key) { return character[key.ToLower()]; }
+		public static PlayerCharacter GetCharacter(string key) { return character[key.ToLower()]; }
 		public static NPC GetNPC(string key) { return npc[key.ToLower()]; }
 		public static RawPyScript GetPy(string key) { return py[key.ToLower()]; }
 		public static object GetPyF(string key) { return pyf[key.ToLower()]; }
@@ -24,7 +25,7 @@ namespace VirtualCharacterSheet {
 		public static Feat GetFeat(string key) { return feat[key.ToLower()]; }
 
 		public static void SetItem(Item i) { item[i.Identifier.ToLower()] = i; }
-		public static void SetCharacter(Character c) { character[c.Identifier.ToLower()] = c; }
+		public static void SetCharacter(PlayerCharacter c) { character[c.Identifier.ToLower()] = c; }
 		public static void SetNPC(string key, NPC n) { npc[key.ToLower()] = n; }
 		public static void SetPy(string key, RawPyScript src) { py[key.ToLower()] = src; }
 		public static void SetPyF(string key, object func) { pyf[key.ToLower()] = func; }
@@ -47,10 +48,16 @@ namespace VirtualCharacterSheet {
 	public class Brew {
 		public dynamic Meta = new ExpandoObject();
 		public readonly string Name;
+		public string Description;
+		public string Title;
 
 		public Brew(string name) {
 			Name = name;
 			Data.AddBrew(this);
+		}
+
+		public void DefineSave() {
+			
 		}
 
 	}
@@ -59,10 +66,32 @@ namespace VirtualCharacterSheet {
 		public static Random rng = new Random();
 
 		public static uint Roll(ushort d) { return (ushort)rng.Next(1,d); }
-		public static uint Rolln(byte n, ushort d) {
+		public static uint Rolln(ushort n, ushort d) {
 			uint output = 0;
-			for(byte x = 0; x < n; x++)
+			for(ushort x = 0; x < n; x++)
 				output += Roll(d);
+			return output;
+		}
+		public static uint Rolln((ushort, ushort) d) { return Rolln(d.Item1, d.Item2); }
+
+	}
+
+	public struct Roll {
+		public List<Modifier> Mods;
+		public (ushort, ushort) Dice;
+
+		public Roll(ushort n, ushort d, params Modifier[] mods) {
+			Dice = (n, d);
+			Mods = new List<Modifier>();
+			foreach(Modifier m in mods)
+				Add(m);
+		}
+
+		public void Add(Modifier m) { Mods.Add(m); }
+
+		public int Do() {
+			int output = (int)Die.Rolln(Dice);
+			foreach(Modifier m in Mods) { }
 			return output;
 		}
 

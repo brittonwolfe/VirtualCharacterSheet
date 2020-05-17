@@ -1,4 +1,6 @@
 ﻿using System.Dynamic;
+
+using VirtualCharacterSheet.Event;
 using VirtualCharacterSheet.Exceptions;
 
 namespace VirtualCharacterSheet {
@@ -15,10 +17,8 @@ namespace VirtualCharacterSheet {
 
 	}
 
-	public class Character {
+	public abstract class Character {
 		public string Name;
-		public string Player;
-		public string Identifier { get { return (Player + ":" + Name); } }
 		protected byte Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma;
 		public short STR { get { return Core.Modifier(Strength); } }
 		public short DEX { get { return Core.Modifier(Dexterity); } }
@@ -26,10 +26,23 @@ namespace VirtualCharacterSheet {
 		public short INT { get { return Core.Modifier(Intelligence); } }
 		public short WIS { get { return Core.Modifier(Wisdom); } }
 		public short CHA { get { return Core.Modifier(Charisma); } }
-		public bool Inspiration { get; private set; }
 		public dynamic Info = new ExpandoObject();
+		public dynamic Save = new ExpandoObject();
 
-		public Character(string name, string player) {
+		private static event InjectionEvent Injection;
+
+		protected Character() {
+			Injection(this);
+		}
+
+	}
+
+	public class PlayerCharacter : Character {
+		public string Player;
+		public string Identifier { get { return (Player + ":" + Name); } }
+		public bool Inspiration { get; private set; }
+
+		public PlayerCharacter(string name, string player) : base() {
 			Name = name;
 			Player = player;
 			Data.SetCharacter(this);
@@ -37,7 +50,14 @@ namespace VirtualCharacterSheet {
 
 	}
 
-	public class NPC {
+	public class NPC : Character {
+		public string Module;
+		public string Identifier { get { return (Module + ":" + Name); } }
+
+		public NPC(string name, string module) : base() {
+			Name = name;
+			Module = module;
+		}
 
 	}
 
