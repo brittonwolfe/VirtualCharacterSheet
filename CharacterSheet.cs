@@ -10,10 +10,10 @@ namespace VirtualCharacterSheet.Forms {
 		}
 
 		private void consoleToolStripMenuItem_Click(object sender, EventArgs e) {
-			if (consoleToolStripMenuItem.Checked)
+			//if(consoleToolStripMenuItem.Checked) {
 				Core.ShowConsole();
-			else
-				Core.HideConsole();
+			//} else
+				//Core.HideConsole();
 		}
 
 	}

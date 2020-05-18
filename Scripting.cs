@@ -15,18 +15,27 @@ namespace VirtualCharacterSheet {
 		public static dynamic homebrew = new ExpandoObject();
 		public static dynamic settings = new ExpandoObject();
 		private static bool Initialized = false;
+		public static bool IsRunning = false;
 
 		public static void Sandbox() {
 			init();
+			IsRunning = true;
 			do {
 				Console.Write("> ");
 				string inp = Console.In.ReadLine();
 				if(inp == null)
 					continue;
-				if(inp == "exit")
-					break;
+				if(inp == "exit") {
+					Core.HideConsole();
+					Console.Clear();
+					continue;
+				}
 				if(inp.ToLower() == "help") {
 					Help();
+					continue;
+				}
+				if(inp.ToLower() == "cls") {
+					Console.Clear();
 					continue;
 				}
 				try {
@@ -142,6 +151,8 @@ namespace VirtualCharacterSheet {
 			//metaprogrammatical functions
 			SetGlobal("set_pyf", SetScriptFFunc);
 			SetGlobal("edit_py", OpenVSCode);
+
+			settings.ShowOutput = false;
 
 			Initialized = true;
 		}

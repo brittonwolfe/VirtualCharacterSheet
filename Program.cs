@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace VirtualCharacterSheet {
@@ -11,10 +12,11 @@ namespace VirtualCharacterSheet {
 		[STAThread]
 		static void Main() {
 			Core.HideConsole();
+			new Thread(() => { Scripting.Sandbox(); }).Start();
 			Application.SetHighDpiMode(HighDpiMode.SystemAware);
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new Form1());
+			Application.Run(new Forms.CharacterSheet());
 		}
 	}
 

@@ -150,9 +150,11 @@
 			// 
 			// consoleToolStripMenuItem
 			// 
+			//this.consoleToolStripMenuItem.CheckOnClick = true;
 			this.consoleToolStripMenuItem.Name = "consoleToolStripMenuItem";
 			this.consoleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.consoleToolStripMenuItem.Text = "Console";
+			this.consoleToolStripMenuItem.Click += new System.EventHandler(this.consoleToolStripMenuItem_Click);
 			// 
 			// CharacterSheet
 			// 
