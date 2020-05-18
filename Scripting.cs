@@ -15,11 +15,9 @@ namespace VirtualCharacterSheet {
 		public static dynamic homebrew = new ExpandoObject();
 		public static dynamic settings = new ExpandoObject();
 		private static bool Initialized = false;
-		public static bool IsRunning = false;
 
 		public static void Sandbox() {
 			init();
-			IsRunning = true;
 			do {
 				Console.Write("> ");
 				string inp = Console.In.ReadLine();
@@ -45,10 +43,10 @@ namespace VirtualCharacterSheet {
 				}
 				catch(Exception e) {
 					Console.WriteLine(e);
-					Console.Write("Continue (Y/N)? ");
+					/*Console.Write("Continue (Y/N)? ");
 					var choice = Console.ReadKey(true);
 					if(choice.Key != ConsoleKey.Y)
-						break;
+						break;*/
 					Console.WriteLine();
 				}
 			} while(true);
@@ -71,88 +69,68 @@ namespace VirtualCharacterSheet {
 		private static void init() {
 			if(Initialized)
 				return;
-			engine.Execute("import clr");
+			engine.Execute("import clr");;
 
-			Action<string> HelpFunc = GetHelp;
-			Func<ushort, uint> RollFunc = Die.Roll;
-			Func<ushort, ushort, uint> RollnFunc = Die.Rolln;
-			Func<byte, short> ModFunc = Core.Modifier;
-
-			Func<PlayerCharacter> GetCCharFunc = Core.GetCurrentCharacter;
-			Func<string, Brew> GetBrew = Data.GetBrew;
-			Func<string, PlayerCharacter> GetCharacter = Data.GetCharacter;
-			Func<string, Class> GetClass = Data.GetClass;
-			Func<string, Feat> GetFeat = Data.GetFeat;
-			Func<string, Item> GetItem = Data.GetItem;
-			Func<string, NPC> GetNPC = Data.GetNPC;
-			Func<string, RawPyScript> GetPy = Data.GetPy;
-			Func<string, object> GetPyF = Data.GetPyF;
-
-			Func<string, string, PlayerCharacter> DefCharF = (string c, string p) => { return new PlayerCharacter(c, p); };
-			Func<string, Class> DefClassF = (string n) => { return new Class(n); };
-			Func<string, Feat> DefFeatF = (string n) => { return new Feat(n); };
-			Func<string, Item> CreateItemFunc = (string n) => {return new Item(n); };
-			Action<string, object> SetScriptFFunc = Data.SetPyF;
-
-			Func<string, bool> HasCharFunc = Data.HasCharacter;
-			Func<string, bool> HasClassFunc = Data.HasClass;
-			Func<string, bool> HasFeatFunc = Data.HasFeat;
-			Func<string, bool> HasItemFunc = Data.HasItem;
-			Func<string, bool> HasNPCFunc = Data.HasNPC;
-			Func<string, bool> HasPyFunc = Data.HasPy;
-			Func<string, bool> HasPyFFunc = Data.HasPyF;
-
-			Func<short, Modifier> NewModifier = (short m) => { return new Modifier(m); };
-			Func<ushort, ushort, Roll> NewRoll = (ushort n, ushort d) => { return new Roll(n, d); };
-
-			Action<string> OpenVSCode = CodeScript;
-
-			//global variables
+# region global variables
 			SetGlobal("local", locals);
 			SetGlobal("brew", homebrew);
 			SetGlobal("_setting", settings);
+# endregion
 
-			//global functions
-			SetGlobal("help", HelpFunc);
-			SetGlobal("roll", RollFunc);
-			SetGlobal("rolln", RollnFunc);
-			SetGlobal("mod", ModFunc);
+# region global functions
+			SetGlobal("help", new Action<string>(GetHelp));
+			SetGlobal("roll", new Func<ushort, uint>(Die.Roll));
+			SetGlobal("rolln", new Func<ushort, ushort, uint>(Die.Rolln));
+			SetGlobal("mod", new Func<byte, short>(Core.Modifier));
+# endregion
 
-			//helper object functions
-			SetGlobal("new_mod", NewModifier);
-			SetGlobal("new_roll", NewRoll);
+# region casts
+			SetGlobal("byte", new Func<object, byte>((object o) => { return (byte)o; }));
+			SetGlobal("short", new Func<object, short>((object o) => { return (short)o; }));
+# endregion
 
-			//accessors
-			SetGlobal("getopenchar", GetCCharFunc);
-			SetGlobal("_brew", GetBrew);
-			SetGlobal("_c", GetCharacter);
-			SetGlobal("_class", GetClass);
-			SetGlobal("_feat", GetFeat);
-			SetGlobal("_i", GetItem);
-			SetGlobal("_n", GetNPC);
-			SetGlobal("_py", GetPy);
-			SetGlobal("_pyf", GetPyF);
+# region helper object functions
+			SetGlobal("new_mod", new Func<short, Modifier>((short m) => { return new Modifier(m); }));
+			SetGlobal("new_roll", new Func<ushort, ushort, Roll>((ushort n, ushort d) => { return new Roll(n, d); }));
+# endregion
 
-			//initializers and instantiators
-			SetGlobal("def_c", DefCharF);
-			SetGlobal("def_class", DefClassF);
-			SetGlobal("def_feat", DefFeatF);
-			SetGlobal("def_i", CreateItemFunc);
+# region accessors
+			SetGlobal("getopenchar", new Func<Character>(Core.GetCurrentCharacter));
+			SetGlobal("_brew", new Func<string, Brew>(Data.GetBrew));
+			SetGlobal("_c", new Func<string, Character>(Data.GetCharacter));
+			SetGlobal("_class", new Func<string, Class>(Data.GetClass));
+			SetGlobal("_feat", new Func<string, Feat>(Data.GetFeat));
+			SetGlobal("_i", new Func<string, Item>(Data.GetItem));
+			SetGlobal("_n", new Func<string, NPC>(Data.GetNPC));
+			SetGlobal("_py", new Func<string, RawPyScript>(Data.GetPy));
+			SetGlobal("_pyf", new Func<string, object>(Data.GetPyF));
+# endregion
 
-			//checkers
-			SetGlobal("has_c", HasCharFunc);
-			SetGlobal("has_class", HasClassFunc);
-			SetGlobal("has_feat", HasFeatFunc);
-			SetGlobal("has_i", HasItemFunc);
-			SetGlobal("has_n", HasNPCFunc);
-			SetGlobal("has_py", HasPyFunc);
-			SetGlobal("has_pyf", HasPyFFunc);
+# region initializers and instantiators
+			SetGlobal("def_c", new Func<string, string, PlayerCharacter>((string c, string p) => { return new PlayerCharacter(c, p); }));
+			SetGlobal("def_class", new Func<string, Class>((string n) => { return new Class(n); }));
+			SetGlobal("def_feat", new Func<string, Feat>((string n) => { return new Feat(n); }));
+			SetGlobal("def_i", new Func<string, Item>((string n) => { return new Item(n); }));
+			#endregion
 
-			//metaprogrammatical functions
-			SetGlobal("set_pyf", SetScriptFFunc);
-			SetGlobal("edit_py", OpenVSCode);
+# region checkers
+			SetGlobal("has_c", new Func<string, bool>(Data.HasCharacter));
+			SetGlobal("has_class", new Func<string, bool>(Data.HasClass));
+			SetGlobal("has_feat", new Func<string, bool>(Data.HasFeat));
+			SetGlobal("has_i", new Func<string, bool>(Data.HasItem));
+			SetGlobal("has_n", new Func<string, bool>(Data.HasNPC));
+			SetGlobal("has_py", new Func<string, bool>(Data.HasPy));
+			SetGlobal("has_pyf", new Func<string, bool>(Data.HasPyF));
+# endregion
 
+# region metaprogrammatical functions
+			SetGlobal("set_pyf", new Action<string, object>(Data.SetPyF));
+			SetGlobal("edit_py", new Action<string>(CodeScript));
+# endregion
+
+# region finalize
 			settings.ShowOutput = false;
+# endregion
 
 			Initialized = true;
 		}
