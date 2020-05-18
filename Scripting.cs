@@ -144,7 +144,7 @@ namespace VirtualCharacterSheet {
 			Console.WriteLine("_i(id)\t\t_c(id)\t\t_n(id)\t\t_py(key)");
 		}
 		public static void GetHelp(string c) {
-			Console.WriteLine();
+			Console.WriteLine("All of this is super out of date. Pester me until I update it\n");
 			switch(c.ToLower()) {
 			case "roll":
 				Console.WriteLine("roll(d)\n\trolls a [d]-sided die");
@@ -209,6 +209,7 @@ namespace VirtualCharacterSheet {
 		private static void ScriptEditor(string key) {
 			bool wantsbreak = false;
 			Console.Clear();
+			Console.Title = "You should install Visual Studio Code";
 			string output = "";
 			while(true) {
 				string nl = Console.ReadLine();
@@ -270,7 +271,7 @@ namespace VirtualCharacterSheet {
 		public void Run(dynamic arg) {
 			Scripting.locals.arg = arg;
 			Run();
-			Scripting.locals.arg = null;
+			Scripting.Remove(Scripting.locals, "arg");
 		}
 
 	}

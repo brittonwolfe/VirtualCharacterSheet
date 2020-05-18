@@ -1,4 +1,5 @@
-﻿namespace VirtualCharacterSheet.Forms {
+﻿
+namespace VirtualCharacterSheet.Forms {
 	partial class CharacterSheet {
 		/// <summary>
 		/// Required designer variable.
@@ -31,11 +32,13 @@
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.fooToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.characterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.sampleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.consoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.sandboxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.CharHeader.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
@@ -95,7 +98,7 @@
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(436, 473);
+			this.tabPage2.Size = new System.Drawing.Size(436, 456);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "tabPage2";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -104,7 +107,8 @@
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fooToolStripMenuItem,
-            this.viewToolStripMenuItem});
+            this.viewToolStripMenuItem,
+            this.consoleToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(569, 24);
@@ -116,14 +120,19 @@
 			this.fooToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveToolStripMenuItem});
 			this.fooToolStripMenuItem.Name = "fooToolStripMenuItem";
-			this.fooToolStripMenuItem.Size = new System.Drawing.Size(122, 20);
+			this.fooToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
 			this.fooToolStripMenuItem.Text = "Character";
+			// 
+			// saveToolStripMenuItem
+			// 
+			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+			this.saveToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+			this.saveToolStripMenuItem.Text = "Save";
 			// 
 			// viewToolStripMenuItem
 			// 
 			this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.characterToolStripMenuItem,
-            this.consoleToolStripMenuItem});
+            this.characterToolStripMenuItem});
 			this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
 			this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
 			this.viewToolStripMenuItem.Text = "View";
@@ -139,22 +148,31 @@
 			// sampleToolStripMenuItem
 			// 
 			this.sampleToolStripMenuItem.Name = "sampleToolStripMenuItem";
-			this.sampleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.sampleToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
 			this.sampleToolStripMenuItem.Text = "Sample";
-			// 
-			// saveToolStripMenuItem
-			// 
-			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-			this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.saveToolStripMenuItem.Text = "Save";
 			// 
 			// consoleToolStripMenuItem
 			// 
-			//this.consoleToolStripMenuItem.CheckOnClick = true;
+			this.consoleToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showToolStripMenuItem,
+            this.sandboxToolStripMenuItem});
 			this.consoleToolStripMenuItem.Name = "consoleToolStripMenuItem";
-			this.consoleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.consoleToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
 			this.consoleToolStripMenuItem.Text = "Console";
-			this.consoleToolStripMenuItem.Click += new System.EventHandler(this.consoleToolStripMenuItem_Click);
+			// 
+			// showToolStripMenuItem
+			// 
+			this.showToolStripMenuItem.Name = "showToolStripMenuItem";
+			this.showToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.showToolStripMenuItem.Text = "Show";
+			this.showToolStripMenuItem.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
+			// 
+			// sandboxToolStripMenuItem
+			// 
+			this.sandboxToolStripMenuItem.Name = "sandboxToolStripMenuItem";
+			this.sandboxToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.sandboxToolStripMenuItem.Text = "Sandbox";
+			this.sandboxToolStripMenuItem.Click += new System.EventHandler(this.sandboxToolStripMenuItem_Click);
 			// 
 			// CharacterSheet
 			// 
@@ -193,6 +211,8 @@
 		private System.Windows.Forms.ToolStripMenuItem characterToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem sampleToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem consoleToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem sandboxToolStripMenuItem;
 	}
 }
 

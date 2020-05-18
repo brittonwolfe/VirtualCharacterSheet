@@ -12,17 +12,17 @@ namespace VirtualCharacterSheet {
 		[STAThread]
 		static void Main() {
 			Core.HideConsole();
-			new Thread(() => { Scripting.Sandbox(); }).Start();
 			Application.SetHighDpiMode(HighDpiMode.SystemAware);
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new Forms.CharacterSheet());
+			Application.Run(new Forms.Splash());
 		}
 	}
 
 	public static class Core {
 		private static bool allocated = false;
 		private static PlayerCharacter currchar = null;
+		private static Thread SandboxThread = new Thread(() => { Scripting.Sandbox(); });
 
 		public static void AllocateConsole() {
 			if (!allocated) {
@@ -44,6 +44,12 @@ namespace VirtualCharacterSheet {
 		internal static extern IntPtr GetConsoleWindow();
 		[DllImport("user32.dll")]
 		private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+		public static void StartSandbox() {
+			if(SandboxThread.IsAlive)
+				return;
+			SandboxThread.Start();
+		}
 
 	}
 
