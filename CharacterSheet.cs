@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace VirtualCharacterSheet {
-	public partial class CharSheet : Form {
-		public CharSheet() {
+namespace VirtualCharacterSheet.Forms {
+
+	public partial class CharacterSheet : Form {
+
+		public CharacterSheet() {
 			InitializeComponent();
 		}
+
 	}
 }

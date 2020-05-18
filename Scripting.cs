@@ -13,11 +13,13 @@ namespace VirtualCharacterSheet {
 		internal static ScriptEngine engine = Python.CreateEngine();
 		public static dynamic locals = new ExpandoObject();
 		public static dynamic homebrew = new ExpandoObject();
+		public static dynamic settings = new ExpandoObject();
 		private static bool Initialized = false;
 
 		public static void Sandbox(bool console = true) {
 			if(console)
 				Core.AllocateConsole();
+			settings.ShowOutput = false;
 			init();
 			do {
 				Console.Write("> ");
@@ -30,7 +32,11 @@ namespace VirtualCharacterSheet {
 					Help();
 					continue;
 				}
-				try { engine.Execute(inp); }
+				try {
+					dynamic tmp = engine.Execute(inp);
+					if(settings.ShowOutput && tmp != null)
+						Console.WriteLine(tmp);
+				}
 				catch(Exception e) {
 					Console.WriteLine(e);
 					Console.Write("Continue (Y/N)? ");
@@ -100,6 +106,7 @@ namespace VirtualCharacterSheet {
 			//global variables
 			SetGlobal("local", locals);
 			SetGlobal("brew", homebrew);
+			SetGlobal("_setting", settings);
 
 			//global functions
 			SetGlobal("help", HelpFunc);
