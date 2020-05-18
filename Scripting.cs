@@ -16,10 +16,7 @@ namespace VirtualCharacterSheet {
 		public static dynamic settings = new ExpandoObject();
 		private static bool Initialized = false;
 
-		public static void Sandbox(bool console = true) {
-			if(console)
-				Core.AllocateConsole();
-			settings.ShowOutput = false;
+		public static void Sandbox() {
 			init();
 			do {
 				Console.Write("> ");
@@ -46,8 +43,6 @@ namespace VirtualCharacterSheet {
 					Console.WriteLine();
 				}
 			} while(true);
-			if(console)
-				Core.HideConsole();
 		}
 
 		public static void Brew(FileScript src) {

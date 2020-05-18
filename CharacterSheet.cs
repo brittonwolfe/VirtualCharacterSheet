@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace VirtualCharacterSheet.Forms {
@@ -14,6 +7,13 @@ namespace VirtualCharacterSheet.Forms {
 
 		public CharacterSheet() {
 			InitializeComponent();
+		}
+
+		private void consoleToolStripMenuItem_Click(object sender, EventArgs e) {
+			if (consoleToolStripMenuItem.Checked)
+				Core.ShowConsole();
+			else
+				Core.HideConsole();
 		}
 
 	}

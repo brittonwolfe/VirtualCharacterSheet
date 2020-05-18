@@ -10,6 +10,7 @@ namespace VirtualCharacterSheet {
 		/// </summary>
 		[STAThread]
 		static void Main() {
+			Core.HideConsole();
 			Application.SetHighDpiMode(HighDpiMode.SystemAware);
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
