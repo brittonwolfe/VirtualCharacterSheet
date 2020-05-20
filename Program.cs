@@ -11,6 +11,7 @@ namespace VirtualCharacterSheet {
 		/// </summary>
 		[STAThread]
 		static void Main() {
+			Console.Title = "VCS Console";
 			Core.HideConsole();
 			Application.SetHighDpiMode(HighDpiMode.SystemAware);
 			Application.EnableVisualStyles();

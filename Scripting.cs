@@ -26,11 +26,7 @@ namespace VirtualCharacterSheet {
 				if(inp == "exit") {
 					Core.HideConsole();
 					Console.Clear();
-					continue;
-				}
-				if(inp.ToLower() == "help") {
-					Help();
-					continue;
+					break;
 				}
 				if(inp.ToLower() == "cls") {
 					Console.Clear();
@@ -69,7 +65,7 @@ namespace VirtualCharacterSheet {
 		private static void init() {
 			if(Initialized)
 				return;
-			engine.Execute("import clr");;
+			engine.Execute("import clr");
 
 # region global variables
 			SetGlobal("local", locals);
@@ -78,7 +74,6 @@ namespace VirtualCharacterSheet {
 # endregion
 
 # region global functions
-			SetGlobal("help", new Action<string>(GetHelp));
 			SetGlobal("roll", new Func<ushort, uint>(Die.Roll));
 			SetGlobal("rolln", new Func<ushort, ushort, uint>(Die.Rolln));
 			SetGlobal("mod", new Func<byte, short>(Core.Modifier));
@@ -138,50 +133,6 @@ namespace VirtualCharacterSheet {
 		private static void SetGlobal(string n, object o) { engine.GetBuiltinModule().SetVariable(n, o); }
 		private static dynamic GetGlobal(string n) { return engine.GetBuiltinModule().GetVariable(n); }
 		internal static void Remove(dynamic obj, string key) { ((IDictionary<string, object>)obj).Remove(key); }
-
-		public static void Help() {
-			Console.WriteLine("roll(d)\t\trolln(n,d)\t\tmod(s)\t\tgetopenchar()");
-			Console.WriteLine("_i(id)\t\t_c(id)\t\t_n(id)\t\t_py(key)");
-		}
-		public static void GetHelp(string c) {
-			Console.WriteLine("All of this is super out of date. Pester me until I update it\n");
-			switch(c.ToLower()) {
-			case "roll":
-				Console.WriteLine("roll(d)\n\trolls a [d]-sided die");
-				break;
-			case "rolln":
-				Console.WriteLine("rolln(n,d)\n\trolls a [d]-sided die [n] times.");
-				break;
-			case "mod":
-				Console.WriteLine("mod(s)\n\tgets the modifier for a stat with value [s].");
-				break;
-			case "getopenchar":
-				Console.WriteLine("getopenchar()\n\treturns the character whose sheet is currently open, or null if no such character exists.");
-				break;
-			case "help":
-				Console.WriteLine("help(c)\n\tI take it you figured it out, huh?");
-				break;
-			case "exit":
-				Console.WriteLine("exit\n\texits the Python console");
-				break;
-			case "type":
-			case "types":
-				Console.WriteLine("-- Data Types --");
-				Console.WriteLine("_c(id)\tCharacter\n\tUses a numeric key to return a reference to a character.");
-				Console.WriteLine("_i(id)\tItem\n\tUses a numeric key to return a reference to an item.");
-				Console.WriteLine("_n(id)\tNPC\n\tUses a numeric key to return a reference to an NPC.");
-				Console.WriteLine("_py(key)\tPython Script\n\tUses a string key to return a reference to a dynamically loaded script.");
-				Console.WriteLine("_pyf(key)\tPython Function\n\tUses a string key to return a reference to a python function.");
-				break;
-			case "":
-				Help();
-				break;
-			default:
-				Console.WriteLine("Found no documentation for \"" + c + "\"");
-				break;
-			}
-			Console.WriteLine();
-		}
 
 		public static Modifier CreateModifier() { return new Modifier(); }
 		public static Modifier CreateModifier(short m) { return new Modifier(m); }
@@ -258,7 +209,7 @@ namespace VirtualCharacterSheet {
 
 		public override void Run() {
 			Scripting.locals.Path = File;
-			try{ Scripting.engine.ExecuteFile(File.Path); }
+			try { Scripting.engine.ExecuteFile(File.Path); }
 			catch { }
 			finally { Scripting.Remove(Scripting.locals, "Path"); }
 		}
