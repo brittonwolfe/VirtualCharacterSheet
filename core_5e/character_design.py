@@ -26,3 +26,9 @@ if mode == 'manual':
 
 if mode == 'script':
 	pass
+
+# only do this if the user wants to
+character.Info.Traits = input('Personality Trait(s): ')
+character.Info.Ideals = input('Ideal(s): ')
+character.Info.Bonds = input('Bond(s): ')
+character.Info.Flaws = input('Flaw(s): ')

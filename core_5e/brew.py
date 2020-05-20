@@ -1,7 +1,7 @@
 ﻿core = brew.def_brew("core_5e")
 core.Meta.Title = "D&D Fifth Edition"
 core.Meta.Description = "The core rules for Dungeons and Dragons Fifth Edition"
-core.Dir = brew.Path;
+core.Dir = brew.Path
 
 # I don't have the groundwork right now to actually define all the saves,
 # so I'm doing some placeholders.
