@@ -6,6 +6,7 @@ using Microsoft.Scripting.Hosting;
 using IronPython.Hosting;
 
 using VirtualCharacterSheet.IO;
+using VirtualCharacterSheet.Forms;
 
 namespace VirtualCharacterSheet {
 
@@ -90,7 +91,6 @@ namespace VirtualCharacterSheet {
 # endregion
 
 # region accessors
-			SetGlobal("getopenchar", new Func<Character>(Core.GetCurrentCharacter));
 			SetGlobal("_brew", new Func<string, Brew>(Data.GetBrew));
 			SetGlobal("_c", new Func<string, Character>(Data.GetCharacter));
 			SetGlobal("_class", new Func<string, Class>(Data.GetClass));
@@ -116,6 +116,10 @@ namespace VirtualCharacterSheet {
 			SetGlobal("has_n", new Func<string, bool>(Data.HasNPC));
 			SetGlobal("has_py", new Func<string, bool>(Data.HasPy));
 			SetGlobal("has_pyf", new Func<string, bool>(Data.HasPyF));
+# endregion
+
+# region viewers
+			SetGlobal("view", new Action<object>(ViewObject));
 # endregion
 
 # region metaprogrammatical functions
@@ -156,7 +160,6 @@ namespace VirtualCharacterSheet {
 			Data.SetPy(key, new RawPyScript(temp.ReadText()));
 			System.IO.File.Delete(temp.Path);
 		}
-
 		private static void ScriptEditor(string key) {
 			bool wantsbreak = false;
 			Console.Clear();
@@ -176,6 +179,19 @@ namespace VirtualCharacterSheet {
 			Data.SetPy(key, new RawPyScript(output));
 			Console.Clear();
 			Console.WriteLine("script created at _py(\"" + key + "\")");
+		}
+
+		private static void ViewObject(object o) {
+			if(o is PlayerCharacter) {
+				PlayerCharacter tmp = (PlayerCharacter)o;
+				if(tmp.HasMeta("Window")) {
+					tmp.Meta.Window.Show();
+					return;
+				}
+				CharacterSheet window = new CharacterSheet();
+				tmp.Meta.Window = window;
+				window.Show();
+			}
 		}
 
 	}

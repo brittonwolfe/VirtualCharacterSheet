@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.Serialization;
 
 namespace VirtualCharacterSheet {
 
@@ -37,6 +38,8 @@ namespace VirtualCharacterSheet {
 				using(StreamWriter output = new StreamWriter(FileLoad.GetStream(this)))
 					output.Write(t);
 			}
+
+			internal BinaryWriter GetBinaryWriter() { return new BinaryWriter(System.IO.File.OpenWrite(this.Path)); }
 
 		}
 

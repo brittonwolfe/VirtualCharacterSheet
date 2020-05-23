@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Dynamic;
+using VirtualCharacterSheet.IO;
 
 namespace VirtualCharacterSheet {
 
@@ -57,6 +56,11 @@ namespace VirtualCharacterSheet {
 		public void DefineSave() {
 			
 		}
+		public void DefineView() {
+			
+		}
+
+		public static void Load(File src) { Scripting.Brew(new FileScript(src)); }
 
 	}
 

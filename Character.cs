@@ -1,7 +1,9 @@
 ﻿using Microsoft.Scripting.Ast;
 using System;
+using System.Collections;
 using System.Dynamic;
-
+using System.IO;
+using System.Linq;
 using VirtualCharacterSheet.Event;
 using VirtualCharacterSheet.Exceptions;
 
@@ -21,7 +23,7 @@ namespace VirtualCharacterSheet {
 
 	public abstract class Character {
 		public string Name;
-		protected byte Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma;
+		public byte Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma;
 		public short STR { get { return Core.Modifier(Strength); } }
 		public short DEX { get { return Core.Modifier(Dexterity); } }
 		public short CON { get { return Core.Modifier(Constitution); } }
@@ -30,10 +32,15 @@ namespace VirtualCharacterSheet {
 		public short CHA { get { return Core.Modifier(Charisma); } }
 		public dynamic Info = new ExpandoObject();
 		public dynamic Save = new ExpandoObject();
+		public dynamic Meta = new ExpandoObject();
 
 		private static event InjectionEvent Injection;
 
 		protected void Inject() { if(Injection != null) Injection.Invoke(this); }
+
+		public bool HasInfo(string name) { return ((IDictionary)Info).Contains(name); }
+		public bool HasSave(string name) { return ((IDictionary)Save).Contains(name); }
+		public bool HasMeta(string name) { return ((IDictionary)Meta).Contains(name); }
 
 	}
 
