@@ -33,6 +33,7 @@ namespace VirtualCharacterSheet {
 		public dynamic Info = new ExpandoObject();
 		public dynamic Save = new ExpandoObject();
 		public dynamic Meta = new ExpandoObject();
+		public dynamic Check = new ExpandoObject();
 
 		private static event InjectionEvent Injection;
 
@@ -41,6 +42,7 @@ namespace VirtualCharacterSheet {
 		public bool HasInfo(string name) { return ((IDictionary)Info).Contains(name); }
 		public bool HasSave(string name) { return ((IDictionary)Save).Contains(name); }
 		public bool HasMeta(string name) { return ((IDictionary)Meta).Contains(name); }
+		public bool HasCheck(string name) { return ((IDictionary)Check).Contains(name); }
 
 	}
 

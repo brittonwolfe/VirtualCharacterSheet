@@ -1,5 +1,5 @@
 ﻿namespace vcsuis {
-	partial class ItemDesign {
+	partial class ItemViewer {
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -25,13 +25,13 @@
 		private void InitializeComponent() {
 			this.SuspendLayout();
 			// 
-			// ItemDesign
+			// ItemViewer
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(647, 450);
-			this.Name = "ItemDesign";
-			this.Text = "ItemDesign";
+			this.ClientSize = new System.Drawing.Size(393, 450);
+			this.Name = "ItemViewer";
+			this.Text = "ItemViewer";
 			this.ResumeLayout(false);
 
 		}

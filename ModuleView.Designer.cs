@@ -1,5 +1,5 @@
 ﻿namespace vcsuis {
-	partial class ItemDesign {
+	partial class ModuleView {
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -25,13 +25,13 @@
 		private void InitializeComponent() {
 			this.SuspendLayout();
 			// 
-			// ItemDesign
+			// ModuleView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(647, 450);
-			this.Name = "ItemDesign";
-			this.Text = "ItemDesign";
+			this.ClientSize = new System.Drawing.Size(605, 450);
+			this.Name = "ModuleView";
+			this.Text = "ModuleView";
 			this.ResumeLayout(false);
 
 		}

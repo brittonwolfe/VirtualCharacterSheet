@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace VirtualCharacterSheet.Forms {
+namespace vcsuis {
 	public partial class ItemDesign : Form {
 		public ItemDesign() {
 			InitializeComponent();

@@ -1,6 +1,5 @@
 ﻿
 namespace VirtualCharacterSheet.Forms {
-
 	partial class Splash {
 		/// <summary>
 		/// Required designer variable.
@@ -26,6 +25,8 @@ namespace VirtualCharacterSheet.Forms {
 		/// </summary>
 		private void InitializeComponent() {
 			this.CharacterBox = new System.Windows.Forms.GroupBox();
+			this.OpenCharacter = new System.Windows.Forms.Button();
+			this.NewCharacter = new System.Windows.Forms.Button();
 			this.DesignBox = new System.Windows.Forms.GroupBox();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -33,9 +34,9 @@ namespace VirtualCharacterSheet.Forms {
 			this.consoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.sandboxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.NewCharacter = new System.Windows.Forms.Button();
-			this.OpenCharacter = new System.Windows.Forms.Button();
 			this.GameMasterBox = new System.Windows.Forms.GroupBox();
+			this.ModuleBox = new System.Windows.Forms.GroupBox();
+			this.BrewBox = new System.Windows.Forms.GroupBox();
 			this.CharacterBox.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
@@ -46,16 +47,35 @@ namespace VirtualCharacterSheet.Forms {
 			this.CharacterBox.Controls.Add(this.NewCharacter);
 			this.CharacterBox.Location = new System.Drawing.Point(12, 27);
 			this.CharacterBox.Name = "CharacterBox";
-			this.CharacterBox.Size = new System.Drawing.Size(178, 411);
+			this.CharacterBox.Size = new System.Drawing.Size(178, 83);
 			this.CharacterBox.TabIndex = 0;
 			this.CharacterBox.TabStop = false;
 			this.CharacterBox.Text = "Character";
 			// 
+			// OpenCharacter
+			// 
+			this.OpenCharacter.Location = new System.Drawing.Point(6, 48);
+			this.OpenCharacter.Name = "OpenCharacter";
+			this.OpenCharacter.Size = new System.Drawing.Size(166, 23);
+			this.OpenCharacter.TabIndex = 1;
+			this.OpenCharacter.Text = "Open an existing Character";
+			this.OpenCharacter.UseVisualStyleBackColor = true;
+			// 
+			// NewCharacter
+			// 
+			this.NewCharacter.Location = new System.Drawing.Point(6, 19);
+			this.NewCharacter.Name = "NewCharacter";
+			this.NewCharacter.Size = new System.Drawing.Size(166, 23);
+			this.NewCharacter.TabIndex = 0;
+			this.NewCharacter.Text = "Create a new Character";
+			this.NewCharacter.UseVisualStyleBackColor = true;
+			this.NewCharacter.Click += new System.EventHandler(this.NewCharacter_Click);
+			// 
 			// DesignBox
 			// 
-			this.DesignBox.Location = new System.Drawing.Point(196, 27);
+			this.DesignBox.Location = new System.Drawing.Point(196, 155);
 			this.DesignBox.Name = "DesignBox";
-			this.DesignBox.Size = new System.Drawing.Size(222, 411);
+			this.DesignBox.Size = new System.Drawing.Size(171, 283);
 			this.DesignBox.TabIndex = 1;
 			this.DesignBox.TabStop = false;
 			this.DesignBox.Text = "Design";
@@ -98,48 +118,47 @@ namespace VirtualCharacterSheet.Forms {
 			this.showToolStripMenuItem.Name = "showToolStripMenuItem";
 			this.showToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.showToolStripMenuItem.Text = "Show";
-			this.showToolStripMenuItem.Click += new System.EventHandler((object o, System.EventArgs e) => { Core.ShowConsole(); });
 			// 
 			// sandboxToolStripMenuItem
 			// 
 			this.sandboxToolStripMenuItem.Name = "sandboxToolStripMenuItem";
 			this.sandboxToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.sandboxToolStripMenuItem.Text = "Sandbox";
-			this.sandboxToolStripMenuItem.Click += new System.EventHandler((object o, System.EventArgs e) => { Core.StartSandbox(); });
-			// 
-			// NewCharacter
-			// 
-			this.NewCharacter.Location = new System.Drawing.Point(7, 20);
-			this.NewCharacter.Name = "NewCharacter";
-			this.NewCharacter.Size = new System.Drawing.Size(165, 23);
-			this.NewCharacter.TabIndex = 0;
-			this.NewCharacter.Text = "Create a new Character";
-			this.NewCharacter.UseVisualStyleBackColor = true;
-			this.NewCharacter.Click += new System.EventHandler(this.button1_Click);
-			// 
-			// OpenCharacter
-			// 
-			this.OpenCharacter.Location = new System.Drawing.Point(7, 50);
-			this.OpenCharacter.Name = "OpenCharacter";
-			this.OpenCharacter.Size = new System.Drawing.Size(165, 23);
-			this.OpenCharacter.TabIndex = 1;
-			this.OpenCharacter.Text = "Open an existing Character";
-			this.OpenCharacter.UseVisualStyleBackColor = true;
 			// 
 			// GameMasterBox
 			// 
-			this.GameMasterBox.Location = new System.Drawing.Point(425, 27);
+			this.GameMasterBox.Location = new System.Drawing.Point(373, 27);
 			this.GameMasterBox.Name = "GameMasterBox";
-			this.GameMasterBox.Size = new System.Drawing.Size(363, 411);
+			this.GameMasterBox.Size = new System.Drawing.Size(415, 411);
 			this.GameMasterBox.TabIndex = 3;
 			this.GameMasterBox.TabStop = false;
 			this.GameMasterBox.Text = "GM";
+			// 
+			// ModuleBox
+			// 
+			this.ModuleBox.Location = new System.Drawing.Point(196, 27);
+			this.ModuleBox.Name = "ModuleBox";
+			this.ModuleBox.Size = new System.Drawing.Size(171, 122);
+			this.ModuleBox.TabIndex = 4;
+			this.ModuleBox.TabStop = false;
+			this.ModuleBox.Text = "Modules";
+			// 
+			// BrewBox
+			// 
+			this.BrewBox.Location = new System.Drawing.Point(12, 116);
+			this.BrewBox.Name = "BrewBox";
+			this.BrewBox.Size = new System.Drawing.Size(178, 322);
+			this.BrewBox.TabIndex = 5;
+			this.BrewBox.TabStop = false;
+			this.BrewBox.Text = "Brews";
 			// 
 			// Splash
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(800, 450);
+			this.Controls.Add(this.BrewBox);
+			this.Controls.Add(this.ModuleBox);
 			this.Controls.Add(this.GameMasterBox);
 			this.Controls.Add(this.DesignBox);
 			this.Controls.Add(this.CharacterBox);
@@ -168,6 +187,7 @@ namespace VirtualCharacterSheet.Forms {
 		private System.Windows.Forms.Button NewCharacter;
 		private System.Windows.Forms.Button OpenCharacter;
 		private System.Windows.Forms.GroupBox GameMasterBox;
+		private System.Windows.Forms.GroupBox ModuleBox;
+		private System.Windows.Forms.GroupBox BrewBox;
 	}
-
 }

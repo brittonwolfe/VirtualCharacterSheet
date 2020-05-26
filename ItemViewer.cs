@@ -8,12 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace VirtualCharacterSheet.Forms {
-	public partial class Splash : Form {
-
-		public Splash() {
+namespace vcsuis {
+	public partial class ItemViewer : Form {
+		public ItemViewer() {
 			InitializeComponent();
 		}
-
 	}
 }

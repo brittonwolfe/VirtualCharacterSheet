@@ -44,7 +44,6 @@ namespace VirtualCharacterSheet.Forms {
 			this.StrengthMod = new System.Windows.Forms.GroupBox();
 			this.InfoPage = new System.Windows.Forms.TabControl();
 			this.BasicTab = new System.Windows.Forms.TabPage();
-			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.InventoryPage = new System.Windows.Forms.TabPage();
 			this.SpellPage = new System.Windows.Forms.TabPage();
 			this.BioPage = new System.Windows.Forms.TabPage();
@@ -60,6 +59,7 @@ namespace VirtualCharacterSheet.Forms {
 			this.consoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.sandboxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.BasicView = new System.Windows.Forms.WebBrowser();
 			this.CharHeader.SuspendLayout();
 			this.StatBox.SuspendLayout();
 			this.InfoPage.SuspendLayout();
@@ -119,6 +119,7 @@ namespace VirtualCharacterSheet.Forms {
 			// 
 			// CharismaScore
 			// 
+			this.CharismaScore.Enabled = false;
 			this.CharismaScore.Location = new System.Drawing.Point(29, 410);
 			this.CharismaScore.Name = "CharismaScore";
 			this.CharismaScore.ReadOnly = true;
@@ -137,6 +138,7 @@ namespace VirtualCharacterSheet.Forms {
 			// 
 			// WisdomScore
 			// 
+			this.WisdomScore.Enabled = false;
 			this.WisdomScore.Location = new System.Drawing.Point(29, 341);
 			this.WisdomScore.Name = "WisdomScore";
 			this.WisdomScore.ReadOnly = true;
@@ -155,6 +157,7 @@ namespace VirtualCharacterSheet.Forms {
 			// 
 			// IntelligenceScore
 			// 
+			this.IntelligenceScore.Enabled = false;
 			this.IntelligenceScore.Location = new System.Drawing.Point(29, 272);
 			this.IntelligenceScore.Name = "IntelligenceScore";
 			this.IntelligenceScore.ReadOnly = true;
@@ -173,6 +176,7 @@ namespace VirtualCharacterSheet.Forms {
 			// 
 			// ConstitutionScore
 			// 
+			this.ConstitutionScore.Enabled = false;
 			this.ConstitutionScore.Location = new System.Drawing.Point(29, 203);
 			this.ConstitutionScore.Name = "ConstitutionScore";
 			this.ConstitutionScore.ReadOnly = true;
@@ -242,7 +246,7 @@ namespace VirtualCharacterSheet.Forms {
 			// 
 			// BasicTab
 			// 
-			this.BasicTab.Controls.Add(this.groupBox1);
+			this.BasicTab.Controls.Add(this.BasicView);
 			this.BasicTab.Location = new System.Drawing.Point(4, 22);
 			this.BasicTab.Name = "BasicTab";
 			this.BasicTab.Padding = new System.Windows.Forms.Padding(3);
@@ -250,16 +254,6 @@ namespace VirtualCharacterSheet.Forms {
 			this.BasicTab.TabIndex = 0;
 			this.BasicTab.Text = "Basic";
 			this.BasicTab.UseVisualStyleBackColor = true;
-			// 
-			// groupBox1
-			// 
-			this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F);
-			this.groupBox1.Location = new System.Drawing.Point(7, 4);
-			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(48, 46);
-			this.groupBox1.TabIndex = 0;
-			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Initiative";
 			// 
 			// InventoryPage
 			// 
@@ -319,7 +313,7 @@ namespace VirtualCharacterSheet.Forms {
             this.consoleToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(569, 24);
+			this.menuStrip1.Size = new System.Drawing.Size(570, 24);
 			this.menuStrip1.TabIndex = 3;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -389,11 +383,23 @@ namespace VirtualCharacterSheet.Forms {
 			this.sandboxToolStripMenuItem.Text = "Sandbox";
 			this.sandboxToolStripMenuItem.Click += new System.EventHandler(this.sandboxToolStripMenuItem_Click);
 			// 
+			// BasicView
+			// 
+			this.BasicView.AllowNavigation = false;
+			this.BasicView.AllowWebBrowserDrop = false;
+			this.BasicView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.BasicView.IsWebBrowserContextMenuEnabled = false;
+			this.BasicView.Location = new System.Drawing.Point(3, 3);
+			this.BasicView.MinimumSize = new System.Drawing.Size(20, 20);
+			this.BasicView.Name = "BasicView";
+			this.BasicView.Size = new System.Drawing.Size(430, 454);
+			this.BasicView.TabIndex = 0;
+			// 
 			// CharacterSheet
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.ClientSize = new System.Drawing.Size(569, 595);
+			this.ClientSize = new System.Drawing.Size(570, 594);
 			this.Controls.Add(this.InfoPage);
 			this.Controls.Add(this.StatBox);
 			this.Controls.Add(this.CharHeader);
@@ -439,7 +445,6 @@ namespace VirtualCharacterSheet.Forms {
 		private System.Windows.Forms.GroupBox StrengthMod;
 		private System.Windows.Forms.TextBox StrengthScore;
 		private System.Windows.Forms.TabPage BioPage;
-		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.TextBox CharismaScore;
 		private System.Windows.Forms.GroupBox CharismaMod;
 		private System.Windows.Forms.TextBox WisdomScore;
@@ -451,6 +456,7 @@ namespace VirtualCharacterSheet.Forms {
 		private System.Windows.Forms.TextBox DexterityScore;
 		private System.Windows.Forms.GroupBox DexterityMod;
 		private System.Windows.Forms.ToolStripMenuItem planToolStripMenuItem;
+		private System.Windows.Forms.WebBrowser BasicView;
 	}
 }
 
