@@ -1,8 +1,14 @@
 ﻿<html>
+	<head>
+		<link rel="stylesheet" href="basic_char.css">
+	</head>
+	@{ VirtualCharacterSheet.PlayerCharacter Character = VirtualCharacterSheet.Scripting.locals.This; }
 	<body>
-		@{ VirtualCharacterSheet.PlayerCharacter Character = VirtualCharacterSheet.Scripting.locals.This; }
 		<div>
-			@Character.Meta.Initiative
+			<span>
+				Initiative:
+				@Character.Meta.Initiative
+			</span>
 		</div>
 	</body>
 </html>

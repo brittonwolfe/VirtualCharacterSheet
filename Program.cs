@@ -1,14 +1,18 @@
 using IronPython.Compiler.Ast;
+using IronPython.Runtime;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using VirtualCharacterSheet.IO;
 
 namespace VirtualCharacterSheet {
 
 	static class Program {
+
 		/// <summary>
 		///  The main entry point for the application.
 		/// </summary>
@@ -17,11 +21,20 @@ namespace VirtualCharacterSheet {
 			Console.Title = "VCS Console";
 			Core.HideConsole();
 			Scripting.init();
+
+			AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnExit);
+
 			Application.SetHighDpiMode(HighDpiMode.SystemAware);
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(new Forms.Splash());
 		}
+
+		private static void OnExit(object sender, EventArgs e) {
+			foreach(IO.File file in Core.temp_scripts)
+				System.IO.File.Delete(file.Path);
+		}
+
 	}
 
 	public static class Core {
@@ -29,6 +42,7 @@ namespace VirtualCharacterSheet {
 		private static PlayerCharacter currchar = null;
 		private static Thread SandboxThread = new Thread(() => { Scripting.Sandbox(); });
 		internal static bool SandboxAwaits = false;
+		internal static List<IO.File> temp_scripts = new List<IO.File>();
 
 		static Core() {
 			SandboxThread.SetApartmentState(ApartmentState.STA);

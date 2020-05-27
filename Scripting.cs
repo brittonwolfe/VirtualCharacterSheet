@@ -167,8 +167,10 @@ namespace VirtualCharacterSheet {
 			catch { ScriptEditor(key); }
 			Console.WriteLine("Press enter to resume after editing...");
 			Console.ReadLine();
-			Data.SetPy(key, new RawPyScript(temp.ReadText()));
-			System.IO.File.Delete(temp.Path);
+			var script = new RawPyScript(temp.ReadText());
+			script.AddTempFile(temp);
+			Data.SetPy(key, script);
+			Core.temp_scripts.Add(temp);
 		}
 		private static void ScriptEditor(string key) {
 			bool wantsbreak = false;
@@ -233,6 +235,8 @@ namespace VirtualCharacterSheet {
 		internal string src;
 
 		internal RawPyScript(string py) { src = py; }
+
+		public void AddTempFile(File file) { Meta.Add("tempfile", file); }
 
 		public override void Run() { Scripting.engine.Execute(src); }
 
