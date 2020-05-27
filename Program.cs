@@ -1,5 +1,8 @@
+using IronPython.Compiler.Ast;
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -24,6 +27,11 @@ namespace VirtualCharacterSheet {
 		private static bool allocated = false;
 		private static PlayerCharacter currchar = null;
 		private static Thread SandboxThread = new Thread(() => { Scripting.Sandbox(); });
+		internal static bool SandboxAwaits = false;
+
+		static Core() {
+			SandboxThread.SetApartmentState(ApartmentState.STA);
+		}
 
 		public static void AllocateConsole() {
 			if (!allocated) {
@@ -47,11 +55,8 @@ namespace VirtualCharacterSheet {
 		private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
 		public static void StartSandbox() {
-			if (SandboxThread.IsAlive)
-				return;
-			else
-				SandboxThread.SetApartmentState(ApartmentState.STA);
-			SandboxThread.Start();
+			if (!SandboxThread.IsAlive)
+				SandboxThread.Start();
 		}
 
 	}

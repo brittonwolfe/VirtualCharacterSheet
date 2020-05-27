@@ -11,7 +11,7 @@ namespace VirtualCharacterSheet.Forms {
 		private void sandboxToolStripMenuItem_Click(object sender, EventArgs e) { Core.StartSandbox(); }
 
 		private void Strength_Click(object sender, EventArgs e) {
-			//do a str check
+			Console.WriteLine(currChar.Name + ": STR check " + (Die.Roll(20) + currChar.STR));
 		}
 		private void Dexterity_Click(object sender, EventArgs e) {
 			//do a dex check

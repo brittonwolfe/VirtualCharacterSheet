@@ -9,6 +9,8 @@ using IronPython.Hosting;
 
 using VirtualCharacterSheet.IO;
 using VirtualCharacterSheet.Forms;
+using System.Linq;
+using System.Collections;
 
 namespace VirtualCharacterSheet {
 
@@ -24,7 +26,9 @@ namespace VirtualCharacterSheet {
 			init();
 			do {
 				Console.Write("> ");
+				Core.SandboxAwaits = true;
 				string inp = Console.In.ReadLine();
+				Core.SandboxAwaits = false;
 				if(inp == null)
 					continue;
 				if(inp == "exit") {
@@ -200,7 +204,7 @@ namespace VirtualCharacterSheet {
 				}
 				break;
 			default:
-				Console.WriteLine(obj.GetType().ToString() + " does not have an associated Form!");
+				Console.WriteLine(obj.GetType().ToString() + " cannot be viewed.");
 				break;
 			}
 			if(showthread != null) {
@@ -248,13 +252,32 @@ namespace VirtualCharacterSheet {
 
 	}
 
-	public abstract class Script {
+	public abstract class Script : DynamicObject{
+		private Dictionary<string, object> Meta = new Dictionary<string, object>();
 
 		public abstract void Run();
 		public void Run(dynamic arg) {
 			Scripting.locals.arg = arg;
 			Run();
 			Scripting.Remove(Scripting.locals, "arg");
+		}
+
+		public override bool TryGetMember(GetMemberBinder binder, out object result) {
+			if(!Meta.ContainsKey(binder.Name)) {
+				result = null;
+				return false;
+			}
+			result = Meta[binder.Name];
+			return true;
+		}
+
+		public override bool TryInvoke(InvokeBinder binder, object[] args, out object result) {
+			result = null;
+			if(args.Length > 0)
+				Run(args);
+			else
+				Run();
+			return true;
 		}
 
 	}
