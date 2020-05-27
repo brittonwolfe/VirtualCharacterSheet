@@ -32,3 +32,12 @@ core.def_skill("Religion", 4)
 core.def_skill("Sleight of Hand", 2)
 core.def_skill("Stealth", 1)
 core.def_skill("Survival", 4)
+
+def InitiativeScore(self):
+	return (10 + self.DEX)
+
+def Initiative(self):
+	return (roll(20) + self.DEX)
+
+core.AddCharacterInjector(InitiativeScore)
+core.AddCharacterInjector(Initiative)

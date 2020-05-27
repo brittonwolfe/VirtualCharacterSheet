@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Threading;
+using System.Windows.Forms;
 using Microsoft.Scripting.Hosting;
 
 using IronPython.Hosting;
@@ -15,6 +17,7 @@ namespace VirtualCharacterSheet {
 		public static dynamic locals = new ExpandoObject();
 		public static dynamic homebrew = new ExpandoObject();
 		public static dynamic settings = new ExpandoObject();
+		public static Dictionary<string, Form> viewers = new Dictionary<string, Form>();
 		private static bool Initialized = false;
 
 		public static void Sandbox() {
@@ -72,6 +75,7 @@ namespace VirtualCharacterSheet {
 			SetGlobal("local", locals);
 			SetGlobal("brew", homebrew);
 			SetGlobal("_setting", settings);
+			SetGlobal("_viewer", viewers);
 # endregion
 
 # region global functions
@@ -181,16 +185,28 @@ namespace VirtualCharacterSheet {
 			Console.WriteLine("script created at _py(\"" + key + "\")");
 		}
 
-		private static void ViewObject(object o) {
-			if(o is PlayerCharacter) {
-				PlayerCharacter tmp = (PlayerCharacter)o;
-				if(tmp.HasMeta("Window")) {
-					tmp.Meta.Window.Show();
-					return;
+		private static void ViewObject(object obj) {
+			Thread showthread = null;
+			switch(obj) {
+			case PlayerCharacter player:
+				if(viewers.ContainsKey(player.Identifier))
+					viewers[player.Identifier].Focus();
+				else {
+					showthread = new Thread(() => {
+						CharacterSheet window = new CharacterSheet();
+						window.Show();
+						window.SetCharacter(player);
+					});
 				}
-				CharacterSheet window = new CharacterSheet();
-				tmp.Meta.Window = window;
-				window.Show();
+				break;
+			default:
+				Console.WriteLine(obj.GetType().ToString() + " does not have an associated Form!");
+				break;
+			}
+			if(showthread != null) {
+				showthread.SetApartmentState(ApartmentState.STA);
+				showthread.IsBackground = true;
+				showthread.Start();
 			}
 		}
 

@@ -1,9 +1,8 @@
-﻿<!DOCTYPE html>
-<html>
+﻿<html>
 	<body>
 		@{ VirtualCharacterSheet.PlayerCharacter Character = VirtualCharacterSheet.Scripting.locals.This; }
 		<div>
-			@(Character.Name)
+			@Character.Meta.Initiative
 		</div>
 	</body>
 </html>

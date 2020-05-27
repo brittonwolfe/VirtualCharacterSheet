@@ -118,12 +118,14 @@ namespace VirtualCharacterSheet.Forms {
 			this.showToolStripMenuItem.Name = "showToolStripMenuItem";
 			this.showToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.showToolStripMenuItem.Text = "Show";
+			this.showToolStripMenuItem.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
 			// 
 			// sandboxToolStripMenuItem
 			// 
 			this.sandboxToolStripMenuItem.Name = "sandboxToolStripMenuItem";
 			this.sandboxToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.sandboxToolStripMenuItem.Text = "Sandbox";
+			this.sandboxToolStripMenuItem.Click += new System.EventHandler(this.sandboxToolStripMenuItem_Click);
 			// 
 			// GameMasterBox
 			// 

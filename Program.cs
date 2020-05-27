@@ -47,8 +47,10 @@ namespace VirtualCharacterSheet {
 		private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
 		public static void StartSandbox() {
-			if(SandboxThread.IsAlive)
+			if (SandboxThread.IsAlive)
 				return;
+			else
+				SandboxThread.SetApartmentState(ApartmentState.STA);
 			SandboxThread.Start();
 		}
 
