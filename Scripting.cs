@@ -23,7 +23,6 @@ namespace VirtualCharacterSheet {
 		private static bool Initialized = false;
 
 		public static void Sandbox() {
-			init();
 			do {
 				Console.Write("> ");
 				Core.SandboxAwaits = true;
@@ -57,7 +56,6 @@ namespace VirtualCharacterSheet {
 		}
 
 		public static void Brew(FileScript src) {
-			init();
 
 			Func<string, Brew> defBrew = (string n) => { return new Brew(n); };
 
@@ -70,10 +68,14 @@ namespace VirtualCharacterSheet {
 			Remove(homebrew, "Path");
 		}
 
-		private static void init() {
+		internal static void init() {
 			if(Initialized)
 				return;
-			engine.Execute("import clr");
+
+			engine.GetBuiltinModule().ImportModule("clr");
+			engine.GetBuiltinModule().ImportModule("sys");
+			engine.GetBuiltinModule().Engine.Execute(@"sys.path.append(r'C:\Python27\Lib')");
+			engine.GetBuiltinModule().ImportModule("inspect");
 
 # region global variables
 			SetGlobal("local", locals);
@@ -253,7 +255,7 @@ namespace VirtualCharacterSheet {
 	}
 
 	public abstract class Script : DynamicObject{
-		private Dictionary<string, object> Meta = new Dictionary<string, object>();
+		protected Dictionary<string, object> Meta = new Dictionary<string, object>();
 
 		public abstract void Run();
 		public void Run(dynamic arg) {
@@ -263,10 +265,8 @@ namespace VirtualCharacterSheet {
 		}
 
 		public override bool TryGetMember(GetMemberBinder binder, out object result) {
-			if(!Meta.ContainsKey(binder.Name)) {
-				result = null;
-				return false;
-			}
+			if(!Meta.ContainsKey(binder.Name))
+				return base.TryGetMember(binder, out result);
 			result = Meta[binder.Name];
 			return true;
 		}
