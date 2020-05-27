@@ -33,7 +33,6 @@ namespace VirtualCharacterSheet.Forms {
 			DisposeIdentity();
 			Scripting.viewers[c.Identifier] = this;
 			currChar = c;
-			return;
 			CharHeader.Text = currChar.Name;
 			PlayerName.Text = currChar.Player;
 			StrengthScore.Text = currChar.Strength.ToString();

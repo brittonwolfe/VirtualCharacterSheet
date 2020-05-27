@@ -194,8 +194,8 @@ namespace VirtualCharacterSheet {
 				else {
 					showthread = new Thread(() => {
 						CharacterSheet window = new CharacterSheet();
-						window.Show();
 						window.SetCharacter(player);
+						Application.Run(window);
 					});
 				}
 				break;
