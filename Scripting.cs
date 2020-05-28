@@ -62,7 +62,8 @@ namespace VirtualCharacterSheet {
 			homebrew.def_brew = defBrew;
 			homebrew.Path = src.File.Directory;
 
-			src.Run();
+			try { src.Run(); }
+			catch(Exception e) { Console.WriteLine(e); }
 
 			Remove(homebrew, "def_brew");
 			Remove(homebrew, "Path");
@@ -252,7 +253,7 @@ namespace VirtualCharacterSheet {
 		public override void Run() {
 			Scripting.locals.Path = File;
 			try { Scripting.engine.ExecuteFile(File.Path); }
-			catch { }
+			catch(Exception e) { Console.WriteLine(e); }
 			finally { Scripting.Remove(Scripting.locals, "Path"); }
 		}
 

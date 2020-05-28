@@ -37,8 +37,13 @@ namespace VirtualCharacterSheet.Forms {
 			this.GameMasterBox = new System.Windows.Forms.GroupBox();
 			this.ModuleBox = new System.Windows.Forms.GroupBox();
 			this.BrewBox = new System.Windows.Forms.GroupBox();
+			this.LoadModule = new System.Windows.Forms.Button();
+			this.button1 = new System.Windows.Forms.Button();
+			this.button2 = new System.Windows.Forms.Button();
+			this.openModule = new System.Windows.Forms.OpenFileDialog();
 			this.CharacterBox.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
+			this.ModuleBox.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// CharacterBox
@@ -116,14 +121,14 @@ namespace VirtualCharacterSheet.Forms {
 			// showToolStripMenuItem
 			// 
 			this.showToolStripMenuItem.Name = "showToolStripMenuItem";
-			this.showToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.showToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
 			this.showToolStripMenuItem.Text = "Show";
 			this.showToolStripMenuItem.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
 			// 
 			// sandboxToolStripMenuItem
 			// 
 			this.sandboxToolStripMenuItem.Name = "sandboxToolStripMenuItem";
-			this.sandboxToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.sandboxToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
 			this.sandboxToolStripMenuItem.Text = "Sandbox";
 			this.sandboxToolStripMenuItem.Click += new System.EventHandler(this.sandboxToolStripMenuItem_Click);
 			// 
@@ -138,6 +143,9 @@ namespace VirtualCharacterSheet.Forms {
 			// 
 			// ModuleBox
 			// 
+			this.ModuleBox.Controls.Add(this.button2);
+			this.ModuleBox.Controls.Add(this.button1);
+			this.ModuleBox.Controls.Add(this.LoadModule);
 			this.ModuleBox.Location = new System.Drawing.Point(196, 27);
 			this.ModuleBox.Name = "ModuleBox";
 			this.ModuleBox.Size = new System.Drawing.Size(171, 122);
@@ -153,6 +161,38 @@ namespace VirtualCharacterSheet.Forms {
 			this.BrewBox.TabIndex = 5;
 			this.BrewBox.TabStop = false;
 			this.BrewBox.Text = "Brews";
+			// 
+			// LoadModule
+			// 
+			this.LoadModule.Location = new System.Drawing.Point(7, 20);
+			this.LoadModule.Name = "LoadModule";
+			this.LoadModule.Size = new System.Drawing.Size(158, 23);
+			this.LoadModule.TabIndex = 0;
+			this.LoadModule.Text = "Load a Module";
+			this.LoadModule.UseVisualStyleBackColor = true;
+			this.LoadModule.Click += new System.EventHandler(this.LoadModule_Click);
+			// 
+			// button1
+			// 
+			this.button1.Location = new System.Drawing.Point(7, 50);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(158, 23);
+			this.button1.TabIndex = 1;
+			this.button1.Text = "Manage";
+			this.button1.UseVisualStyleBackColor = true;
+			// 
+			// button2
+			// 
+			this.button2.Location = new System.Drawing.Point(7, 80);
+			this.button2.Name = "button2";
+			this.button2.Size = new System.Drawing.Size(158, 23);
+			this.button2.TabIndex = 2;
+			this.button2.Text = "Design";
+			this.button2.UseVisualStyleBackColor = true;
+			// 
+			// openModule
+			// 
+			this.openModule.FileName = "openFileDialog1";
 			// 
 			// Splash
 			// 
@@ -171,6 +211,7 @@ namespace VirtualCharacterSheet.Forms {
 			this.CharacterBox.ResumeLayout(false);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
+			this.ModuleBox.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -191,5 +232,9 @@ namespace VirtualCharacterSheet.Forms {
 		private System.Windows.Forms.GroupBox GameMasterBox;
 		private System.Windows.Forms.GroupBox ModuleBox;
 		private System.Windows.Forms.GroupBox BrewBox;
+		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.Button LoadModule;
+		private System.Windows.Forms.OpenFileDialog openModule;
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.ComponentModel;
 
 namespace VirtualCharacterSheet.Forms {
 
@@ -58,11 +59,17 @@ namespace VirtualCharacterSheet.Forms {
 	public partial class Splash {
 
 		private void NewCharacter_Click(object sender, EventArgs e) {
-
+			
 		}
 
 		private void showToolStripMenuItem_Click(object sender, EventArgs e) { Core.ShowConsole(); }
 		private void sandboxToolStripMenuItem_Click(object sender, EventArgs e) { Core.StartSandbox(); }
+
+		private void LoadModule_Click(object sender, EventArgs e) {
+			if(openModule.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+				Scripting.Brew(new FileScript(new IO.File(openModule.FileName)));
+		}
+
 
 	}
 

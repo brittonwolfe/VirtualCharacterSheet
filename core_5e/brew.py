@@ -1,7 +1,15 @@
 ﻿core = brew.def_brew("core_5e")
 core.Meta.Title = "D&D Fifth Edition"
 core.Meta.Description = "The core rules for Dungeons and Dragons Fifth Edition"
-core.Dir = brew.Path
+core.Meta.Dir = brew.Path
+
+def InjectChecks(character):
+	character.AddBehavior("StrengthCheck", lambda self: (roll(20) + self.STR))
+	character.AddBehavior("DexterityCheck", lambda self: (roll(20) + self.DEX))
+	character.AddBehavior("ConstitutionCheck", lambda self: (roll(20) + self.CON))
+	character.AddBehavior("IntelligenceCheck", lambda self: (roll(20) + self.INT))
+	character.AddBehavior("WisdomCheck", lambda self: (roll(20) + self.WIS))
+	character.AddBehavior("CharismaCheck", lambda self: (roll(20) + self.CHA))
 
 def generate_save(name, check):
 	def output(self):
@@ -16,17 +24,9 @@ def InjectSaves(character):
 	character.AddBehavior("save_strength", generate_save("strength", character.StrengthCheck))
 	character.AddBehavior("save_dexterity", generate_save("dexterity", character.DexterityCheck))
 	character.AddBehavior("save_constitution", generate_save("constitution", character.ConstitutionCheck))
-	character.AddBehavior("save_intelligence", generate_save("intelligence"), character.IntelligenceCheck)
-	character.AddBehavior("save_wisdom", generate_save("wisdom"), character.WisdomCheck)
-	character.AddBehavior("save_charisma", generate_save("charisma"), character.CharismaCheck)
-
-def InjectChecks(character):
-	character.AddBehavior("StrengthCheck", lambda self: (roll(20) + self.STR))
-	character.AddBehavior("DexterityCheck", lambda self: (roll(20) + self.DEX))
-	character.AddBehavior("ConstitutionCheck", lambda self: (roll(20) + self.CON))
-	character.AddBehavior("IntelligenceCheck", lambda self: (roll(20) + self.INT))
-	character.AddBehavior("WisdomCheck", lambda self: (roll(20) + self.WIS))
-	character.AddBehavior("CharismaCheck", lambda self: (roll(20) + self.CHA))
+	character.AddBehavior("save_intelligence", generate_save("intelligence", character.IntelligenceCheck))
+	character.AddBehavior("save_wisdom", generate_save("wisdom", character.WisdomCheck))
+	character.AddBehavior("save_charisma", generate_save("charisma", character.CharismaCheck))
 
 def generate_skill(name, check):
 	def output(self):
@@ -57,6 +57,6 @@ def InjectSkills(character):
 	character.AddBehavior("skill_stealth", generate_skill("stealth", character.DexterityCheck))
 	character.AddBehavior("skill_survival", generate_skill("survival", character.WisdomCheck))
 
-core.AddCharacterInjector(InjectSaves)
 core.AddCharacterInjector(InjectChecks)
+core.AddCharacterInjector(InjectSaves)
 core.AddCharacterInjector(InjectSkills)

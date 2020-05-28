@@ -44,7 +44,11 @@ namespace VirtualCharacterSheet {
 			behavior = new DynamicBehaviorSet(this);
 		}
 
-		protected void Inject() { if(Injection != null) Injection.Invoke(this); }
+		protected void Inject() {
+			if(Injection != null)
+				try { Injection.Invoke(this); }
+				catch(Exception e) { Console.WriteLine(e); }
+		}
 
 		public bool HasInfo(string name) { return ((IDictionary)Info).Contains(name); }
 		public bool HasSave(string name) { return ((IDictionary)Save).Contains(name); }
@@ -69,7 +73,7 @@ namespace VirtualCharacterSheet {
 		public string Identifier { get { return (Player + ":" + Name); } }
 		public bool Inspiration { get; private set; }
 
-		public PlayerCharacter(string name, string player) {
+		public PlayerCharacter(string name, string player) : base() {
 			Name = name;
 			Player = player;
 			Data.SetCharacter(this);
@@ -82,7 +86,7 @@ namespace VirtualCharacterSheet {
 		public string Module;
 		public string Identifier { get { return (Module + ":" + Name); } }
 
-		public NPC(string name, string module) {
+		public NPC(string name, string module) : base() {
 			Name = name;
 			Module = module;
 			Inject();
