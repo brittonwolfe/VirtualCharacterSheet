@@ -3,41 +3,60 @@ core.Meta.Title = "D&D Fifth Edition"
 core.Meta.Description = "The core rules for Dungeons and Dragons Fifth Edition"
 core.Dir = brew.Path
 
-# I don't have the groundwork right now to actually define all the saves,
-# so I'm doing some placeholders.
-core.def_save("Strength", lambda dc: (local.This.Save.STR >= dc))
-core.def_save("Dexterity", lambda dc: (local.This.Save.DEX >= dc))
-core.def_save("Constitution", lambda dc: (local.This.Save.CON >= dc))
-core.def_save("Intelligence", lambda dc: (local.This.Save.INT >= dc))
-core.def_save("Wisdom", lambda dc: (local.This.Save.WIS >= dc))
-core.def_save("Charisma", lambda dc: (local.This.Save.CHA >= dc))
+def generate_save(name, check):
+	def output(self):
+		mods = 0
+		if name in self.Info.proficient_saves:
+			mods += self.Info.proficiency_bonus
+		return (check() + mods)
+	return output
 
-# Again, the groundwork is a little more "there" for the skills, but
-# I'm not really at the point where I can make those dynamic.
-core.def_skill("Acrobatics", 0)
-core.def_skill("Animal Handling", 4)
-core.def_skill("Arcana", 3)
-core.def_skill("Athletics", 0)
-core.def_skill("Deception", 5)
-core.def_skill("History", 3)
-core.def_skill("Insight", 4)
-core.def_skill("Intimidation", 5)
-core.def_skill("Investigation", 4)
-core.def_skill("Medicine", 4)
-core.def_skill("Nature", 3)
-core.def_skill("Perception", 4)
-core.def_skill("Performance", 5)
-core.def_skill("Persuasion", 5)
-core.def_skill("Religion", 4)
-core.def_skill("Sleight of Hand", 2)
-core.def_skill("Stealth", 1)
-core.def_skill("Survival", 4)
+def InjectSaves(character):
+	character.Info.proficient_saves = []
+	character.AddBehavior("save_strength", generate_save("strength", character.StrengthCheck))
+	character.AddBehavior("save_dexterity", generate_save("dexterity", character.DexterityCheck))
+	character.AddBehavior("save_constitution", generate_save("constitution", character.ConstitutionCheck))
+	character.AddBehavior("save_intelligence", generate_save("intelligence"), character.IntelligenceCheck)
+	character.AddBehavior("save_wisdom", generate_save("wisdom"), character.WisdomCheck)
+	character.AddBehavior("save_charisma", generate_save("charisma"), character.CharismaCheck)
 
-def InitiativeScore(self):
-	return (10 + self.DEX)
+def InjectChecks(character):
+	character.AddBehavior("StrengthCheck", lambda self: (roll(20) + self.STR))
+	character.AddBehavior("DexterityCheck", lambda self: (roll(20) + self.DEX))
+	character.AddBehavior("ConstitutionCheck", lambda self: (roll(20) + self.CON))
+	character.AddBehavior("IntelligenceCheck", lambda self: (roll(20) + self.INT))
+	character.AddBehavior("WisdomCheck", lambda self: (roll(20) + self.WIS))
+	character.AddBehavior("CharismaCheck", lambda self: (roll(20) + self.CHA))
 
-def Initiative(self):
-	return (roll(20) + self.DEX)
+def generate_skill(name, check):
+	def output(self):
+		mods = 0
+		if name in self.Info.proficient_skills:
+			mods += self.Info.proficiency_bonus
+		return (check() + mods)
+	return output
 
-core.AddCharacterInjector(InitiativeScore)
-core.AddCharacterInjector(Initiative)
+def InjectSkills(character):
+	character.Info.proficient_skills = []
+	character.AddBehavior("skill_acrobatics", generate_skill("acrobatics", character.DexterityCheck))
+	character.AddBehavior("skill_animal_handling", generate_skill("animal handling", character.WisdomCheck))
+	character.AddBehavior("skill_arcana", generate_skill("arcana", character.IntelligenceCheck))
+	character.AddBehavior("skill_athletics", generate_skill("athletics", character.StrengthCheck))
+	character.AddBehavior("skill_deception", generate_skill("deception", character.CharismaCheck))
+	character.AddBehavior("skill_history", generate_skill("history", character.IntelligenceCheck))
+	character.AddBehavior("skill_insight", generate_skill("insight", character.WisdomCheck))
+	character.AddBehavior("skill_intimidation", generate_skill("intimidation", character.CharismaCheck))
+	character.AddBehavior("skill_investigation", generate_skill("investigation", character.IntelligenceCheck))
+	character.AddBehavior("skill_medicine", generate_skill("medicine", character.WisdomCheck))
+	character.AddBehavior("skill_nature", generate_skill("nature", character.IntelligenceCheck))
+	character.AddBehavior("skill_perception", generate_skill("perception", character.WisdomCheck))
+	character.AddBehavior("skill_performance", generate_skill("performance", character.CharismaCheck))
+	character.AddBehavior("skill_persuasion", generate_skill("persuasion", character.CharismaCheck))
+	character.AddBehavior("skill_religion", generate_skill("religion", character.IntelligenceCheck))
+	character.AddBehavior("skill_sleight_of_hand", generate_skill("sleight of hand", character.DexterityCheck))
+	character.AddBehavior("skill_stealth", generate_skill("stealth", character.DexterityCheck))
+	character.AddBehavior("skill_survival", generate_skill("survival", character.WisdomCheck))
+
+core.AddCharacterInjector(InjectSaves)
+core.AddCharacterInjector(InjectChecks)
+core.AddCharacterInjector(InjectSkills)

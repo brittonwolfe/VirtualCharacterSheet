@@ -38,7 +38,7 @@ namespace VirtualCharacterSheet {
 		public dynamic Meta = new ExpandoObject();
 		private DynamicBehaviorSet behavior;
 
-		private static event InjectionEvent Injection;
+		internal static event InjectionEvent Injection;
 
 		public Character() {
 			behavior = new DynamicBehaviorSet(this);
