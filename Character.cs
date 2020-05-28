@@ -1,9 +1,12 @@
-﻿using Microsoft.Scripting.Ast;
+﻿using Microsoft.CSharp.RuntimeBinder;
+using Microsoft.Scripting.Ast;
 using System;
 using System.Collections;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Windows.Forms.VisualStyles;
 using VirtualCharacterSheet.Event;
 using VirtualCharacterSheet.Exceptions;
 
@@ -21,7 +24,7 @@ namespace VirtualCharacterSheet {
 
 	}
 
-	public abstract class Character {
+	public abstract class Character : DynamicObject {
 		public string Name;
 		public byte Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma;
 		public short STR { get { return Core.Modifier(Strength); } }
@@ -33,16 +36,31 @@ namespace VirtualCharacterSheet {
 		public dynamic Info = new ExpandoObject();
 		public dynamic Save = new ExpandoObject();
 		public dynamic Meta = new ExpandoObject();
-		public dynamic Check = new ExpandoObject();
+		private DynamicBehaviorSet behavior;
 
 		private static event InjectionEvent Injection;
+
+		public Character() {
+			behavior = new DynamicBehaviorSet(this);
+		}
 
 		protected void Inject() { if(Injection != null) Injection.Invoke(this); }
 
 		public bool HasInfo(string name) { return ((IDictionary)Info).Contains(name); }
 		public bool HasSave(string name) { return ((IDictionary)Save).Contains(name); }
 		public bool HasMeta(string name) { return ((IDictionary)Meta).Contains(name); }
-		public bool HasCheck(string name) { return ((IDictionary)Check).Contains(name); }
+		public bool HasBehavior(string name) { return behavior.Contains(name); }
+
+		public void AddBehavior(string name, dynamic obj) { behavior.Add(name, obj); }
+
+		public override bool TryGetMember(GetMemberBinder binder, out object result) {
+			if(base.TryGetMember(binder, out result))
+				return true;
+			else if(HasBehavior(binder.Name))
+				return behavior.TryGetMember(binder, out result);
+			result = null;
+			return false;
+		}
 
 	}
 
