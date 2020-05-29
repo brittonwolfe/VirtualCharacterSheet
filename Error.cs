@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Permissions;
 
 namespace VirtualCharacterSheet.Exceptions {
 
@@ -6,10 +7,19 @@ namespace VirtualCharacterSheet.Exceptions {
 		public readonly string ClassName;
 
 		public ClassAlreadyExistsException(string name)
-		: base("A class with the name \"" + name + "\" already exists!") {
+		: base("A character class with the name \"" + name + "\" already exists!") {
 			ClassName = name;
 		}
 
+	}
+
+	public class BrewKeyOccupiedException : Exception {
+		public readonly Brew Brew;
+
+		public BrewKeyOccupiedException(Brew b)
+		: base("A brew with the name \"" + b.Name + "\" already exists!") {
+			Brew = b;
+		}
 	}
 
 }

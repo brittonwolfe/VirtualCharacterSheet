@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using VirtualCharacterSheet.Event;
+using VirtualCharacterSheet.Exceptions;
 using VirtualCharacterSheet.IO;
 
 namespace VirtualCharacterSheet {
@@ -42,6 +43,7 @@ namespace VirtualCharacterSheet {
 		public static bool HasFeat(string key) { return feat.ContainsKey(key.ToLower()); }
 
 		internal static void AddBrew(Brew b) { brew[b.Name] = b; }
+		public static bool HasBrew(string n) { return brew.ContainsKey(n); }
 		public static Brew GetBrew(string n) { return brew[n]; }
 
 	}
@@ -52,12 +54,11 @@ namespace VirtualCharacterSheet {
 
 		public Brew(string name) {
 			Name = name;
+			if (Data.HasBrew(name))
+				throw new BrewKeyOccupiedException(this);
 			Data.AddBrew(this);
 		}
 
-		public void DefineSave() {
-			
-		}
 		public void AddCharacterInjector(InjectionEvent e) {
 			Character.Injection += e;
 		}
