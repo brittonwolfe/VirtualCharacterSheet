@@ -60,3 +60,7 @@ def InjectSkills(character):
 core.AddCharacterInjector(InjectChecks)
 core.AddCharacterInjector(InjectSaves)
 core.AddCharacterInjector(InjectSkills)
+
+import classes.fighter
+
+import item.rapier

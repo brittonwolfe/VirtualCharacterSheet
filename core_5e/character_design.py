@@ -1,18 +1,18 @@
 ﻿
 print('D&D 5E Console Character Designer')
-name = input('Please input your character name: ')
-player = input('Please input your name: ')
+name = readl('Please input your character name: ')
+player = readl('Please input your name: ')
 character = def_c(name, player)
 
 valid_inputs = ['manual', 'script']
 mode = None
 while mode not in valid_inputs:
-	mode = input('Select stat mode (manual / script): ')
+	mode = readl('Select stat mode (manual / script): ')
 
 def man_input(stat):
-	temp = "null"
+	temp = 'null'
 	while (not temp.isdecimal()) or '.' in temp or (int(temp) < 0 or int(temp) > 30):
-		STR = input(stat + ': ')
+		temp = readl(stat + ': ')
 	return byte(int(temp))
 
 if mode == 'manual':

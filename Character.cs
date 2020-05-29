@@ -1,7 +1,9 @@
-﻿using Microsoft.CSharp.RuntimeBinder;
+﻿using Microsoft.AspNetCore.JsonPatch.Internal;
+using Microsoft.CSharp.RuntimeBinder;
 using Microsoft.Scripting.Ast;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
@@ -34,7 +36,6 @@ namespace VirtualCharacterSheet {
 		public short WIS { get { return Core.Modifier(Wisdom); } }
 		public short CHA { get { return Core.Modifier(Charisma); } }
 		public dynamic Info = new ExpandoObject();
-		public dynamic Save = new ExpandoObject();
 		public dynamic Meta = new ExpandoObject();
 		private DynamicBehaviorSet behavior;
 
@@ -51,7 +52,6 @@ namespace VirtualCharacterSheet {
 		}
 
 		public bool HasInfo(string name) { return ((IDictionary)Info).Contains(name); }
-		public bool HasSave(string name) { return ((IDictionary)Save).Contains(name); }
 		public bool HasMeta(string name) { return ((IDictionary)Meta).Contains(name); }
 		public bool HasBehavior(string name) { return behavior.Contains(name); }
 
@@ -109,6 +109,8 @@ namespace VirtualCharacterSheet {
 		public readonly string Name;
 		public ushort HitDie;
 		public bool[] Saves;
+		public dynamic Info = new ExpandoObject();
+		internal List<dynamic> OnLevel = new List<dynamic>();
 
 		public Class(string n) {
 			Name = n;
@@ -117,6 +119,26 @@ namespace VirtualCharacterSheet {
 			Data.SetClass(Name, this);
 			Saves = new bool[6];
 		}
+
+		public void AttachInstance(Character c) {
+			var tmp = new ClassInstance(this);
+		}
+
+	}
+	
+	public class ClassInstance {
+		public ushort Level { get; private set; }
+		private Class underlying;
+		private Character attached;
+
+		internal ClassInstance(Class c) { underlying = c; }
+
+		internal void Attach(Character character, ushort lvl = 1) {
+			attached = character;
+			Level = lvl;
+		}
+
+		public void LevelUp() { underlying.OnLevel[++Level](attached); }
 
 	}
 

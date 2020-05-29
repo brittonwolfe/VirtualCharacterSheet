@@ -1,3 +1,3 @@
 ﻿
-rapier = def_i("Core_5e:Rapier")
+rapier = def_i("core_5e:rapier")
 rapier.Name = "Rapier"

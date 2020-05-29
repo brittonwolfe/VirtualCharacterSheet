@@ -57,9 +57,11 @@ namespace VirtualCharacterSheet {
 
 		public static void Brew(FileScript src) {
 
-			Func<string, Brew> defBrew = (string n) => { return new Brew(n); };
+			ICollection<string> paths = engine.GetSearchPaths();
+			paths.Add(src.File.Directory.Path);
+			engine.SetSearchPaths(paths);
 
-			homebrew.def_brew = defBrew;
+			homebrew.def_brew = new Func<string, Brew>((string n) => { return new Brew(n); });
 			homebrew.Path = src.File.Directory;
 
 			try { src.Run(); }
@@ -89,11 +91,15 @@ namespace VirtualCharacterSheet {
 			SetGlobal("roll", new Func<ushort, uint>(Die.Roll));
 			SetGlobal("rolln", new Func<ushort, ushort, uint>(Die.Rolln));
 			SetGlobal("mod", new Func<byte, short>(Core.Modifier));
+			SetGlobal("readl", new Func<string, string>((string q) => {
+				Console.Write(q);
+				return Console.In.ReadLine();
+			}));
 # endregion
 
 # region casts
-			SetGlobal("byte", new Func<object, byte>((object o) => { return (byte)o; }));
-			SetGlobal("short", new Func<object, short>((object o) => { return (short)o; }));
+			SetGlobal("byte", new Func<int, byte>((int i) => { return (byte)i; }));
+			SetGlobal("short", new Func<int, short>((int i) => { return (short)i; }));
 # endregion
 
 # region helper object functions
