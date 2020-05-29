@@ -205,7 +205,7 @@ namespace VirtualCharacterSheet {
 			switch(obj) {
 			case PlayerCharacter player:
 				if(viewers.ContainsKey(player.Identifier))
-					viewers[player.Identifier].Focus();
+					Console.WriteLine("A view for this character is already open.");
 				else {
 					showthread = new Thread(() => {
 						CharacterSheet window = new CharacterSheet();

@@ -36,10 +36,10 @@ namespace VirtualCharacterSheet.Forms {
 			this.sandboxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.GameMasterBox = new System.Windows.Forms.GroupBox();
 			this.ModuleBox = new System.Windows.Forms.GroupBox();
-			this.BrewBox = new System.Windows.Forms.GroupBox();
-			this.LoadModule = new System.Windows.Forms.Button();
-			this.button1 = new System.Windows.Forms.Button();
 			this.button2 = new System.Windows.Forms.Button();
+			this.button1 = new System.Windows.Forms.Button();
+			this.LoadModule = new System.Windows.Forms.Button();
+			this.BrewBox = new System.Windows.Forms.GroupBox();
 			this.openModule = new System.Windows.Forms.OpenFileDialog();
 			this.CharacterBox.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
@@ -153,14 +153,23 @@ namespace VirtualCharacterSheet.Forms {
 			this.ModuleBox.TabStop = false;
 			this.ModuleBox.Text = "Modules";
 			// 
-			// BrewBox
+			// button2
 			// 
-			this.BrewBox.Location = new System.Drawing.Point(12, 116);
-			this.BrewBox.Name = "BrewBox";
-			this.BrewBox.Size = new System.Drawing.Size(178, 322);
-			this.BrewBox.TabIndex = 5;
-			this.BrewBox.TabStop = false;
-			this.BrewBox.Text = "Brews";
+			this.button2.Location = new System.Drawing.Point(7, 80);
+			this.button2.Name = "button2";
+			this.button2.Size = new System.Drawing.Size(158, 23);
+			this.button2.TabIndex = 2;
+			this.button2.Text = "Design";
+			this.button2.UseVisualStyleBackColor = true;
+			// 
+			// button1
+			// 
+			this.button1.Location = new System.Drawing.Point(7, 50);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(158, 23);
+			this.button1.TabIndex = 1;
+			this.button1.Text = "Manage";
+			this.button1.UseVisualStyleBackColor = true;
 			// 
 			// LoadModule
 			// 
@@ -172,27 +181,19 @@ namespace VirtualCharacterSheet.Forms {
 			this.LoadModule.UseVisualStyleBackColor = true;
 			this.LoadModule.Click += new System.EventHandler(this.LoadModule_Click);
 			// 
-			// button1
+			// BrewBox
 			// 
-			this.button1.Location = new System.Drawing.Point(7, 50);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(158, 23);
-			this.button1.TabIndex = 1;
-			this.button1.Text = "Manage";
-			this.button1.UseVisualStyleBackColor = true;
-			// 
-			// button2
-			// 
-			this.button2.Location = new System.Drawing.Point(7, 80);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(158, 23);
-			this.button2.TabIndex = 2;
-			this.button2.Text = "Design";
-			this.button2.UseVisualStyleBackColor = true;
+			this.BrewBox.Location = new System.Drawing.Point(12, 116);
+			this.BrewBox.Name = "BrewBox";
+			this.BrewBox.Size = new System.Drawing.Size(178, 322);
+			this.BrewBox.TabIndex = 5;
+			this.BrewBox.TabStop = false;
+			this.BrewBox.Text = "Brews";
 			// 
 			// openModule
 			// 
-			this.openModule.FileName = "openFileDialog1";
+			this.openModule.DefaultExt = "py";
+			this.openModule.Filter = "Brew Python Script (brew.py)|brew.py";
 			// 
 			// Splash
 			// 
