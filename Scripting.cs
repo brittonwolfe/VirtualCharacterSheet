@@ -9,8 +9,6 @@ using IronPython.Hosting;
 
 using VirtualCharacterSheet.IO;
 using VirtualCharacterSheet.Forms;
-using System.Linq;
-using System.Collections;
 
 namespace VirtualCharacterSheet {
 

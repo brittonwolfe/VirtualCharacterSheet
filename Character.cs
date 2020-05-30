@@ -1,14 +1,8 @@
-﻿using Microsoft.AspNetCore.JsonPatch.Internal;
-using Microsoft.CSharp.RuntimeBinder;
-using Microsoft.Scripting.Ast;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Windows.Forms.VisualStyles;
+
 using VirtualCharacterSheet.Event;
 using VirtualCharacterSheet.Exceptions;
 
