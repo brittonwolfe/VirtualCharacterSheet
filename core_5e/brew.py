@@ -61,6 +61,9 @@ core.AddCharacterInjector(InjectChecks)
 core.AddCharacterInjector(InjectSaves)
 core.AddCharacterInjector(InjectSkills)
 
+# set up views
+
 import classes.fighter
+import classes.fighter_battle_master
 
 import item.rapier

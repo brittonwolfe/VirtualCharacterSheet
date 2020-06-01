@@ -100,17 +100,18 @@ namespace VirtualCharacterSheet {
 	}
 
 	public class Class {
-		public readonly string Name;
+		public readonly string Identifier;
+		public string Name;
 		public ushort HitDie;
 		public bool[] Saves;
 		public dynamic Info = new ExpandoObject();
 		internal List<dynamic> OnLevel = new List<dynamic>();
 
 		public Class(string n) {
-			Name = n;
+			Identifier = n;
 			if (Data.HasClass(n))
-				throw new ClassAlreadyExistsException(Name);
-			Data.SetClass(Name, this);
+				throw new ClassAlreadyExistsException(Identifier);
+			Data.SetClass(Identifier, this);
 			Saves = new bool[6];
 		}
 

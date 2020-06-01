@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -14,6 +15,7 @@ namespace VirtualCharacterSheet {
 		[STAThread]
 		static void Main() {
 			Console.Title = "VCS Console";
+			Console.OutputEncoding = Encoding.Unicode;
 			Core.HideConsole();
 			Scripting.init();
 
