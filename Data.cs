@@ -62,9 +62,11 @@ namespace VirtualCharacterSheet {
 		public void AddCharacterInjector(InjectionEvent e) {
 			Character.Injection += e;
 		}
-		public void DefineView() {
+		public void AddView() {
 			//
 		}
+
+		public File GetFile(string subpath) { return new File(Meta.Path + subpath); }
 
 		public static void Load(File src) { Scripting.Brew(new FileScript(src)); }
 

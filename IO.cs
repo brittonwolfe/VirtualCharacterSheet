@@ -50,7 +50,15 @@ namespace VirtualCharacterSheet {
 				Path = path;
 			}
 
-			//public File FromDir(string sub) { }
+			public Dir GetSubdir(string sub) { return new Dir(Vpath() + sub); }
+			public File Get(string sub) { return new File(Vpath() + sub); }
+
+			private string Vpath() {
+				if(!Path.EndsWith('\\'))
+					return (Path + "\\");
+				else
+					return Path;
+			}
 
 		}
 
