@@ -62,10 +62,10 @@ core.AddCharacterInjector(InjectSaves)
 core.AddCharacterInjector(InjectSkills)
 
 # set up views
-core.SetBasicView(core.GetFile(r"views\basic_char.cshtml"))
-
+# core.SetBasicView(core.GetFile(r"views\basic_char.cshtml"))
 
 import classes.fighter
 import classes.fighter_battle_master
 
+import item.potion_healing
 import item.rapier

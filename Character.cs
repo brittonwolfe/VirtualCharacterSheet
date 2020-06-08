@@ -29,9 +29,6 @@ namespace VirtualCharacterSheet {
 		public short INT { get { return Core.Modifier(Intelligence); } }
 		public short WIS { get { return Core.Modifier(Wisdom); } }
 		public short CHA { get { return Core.Modifier(Charisma); } }
-		public dynamic Info = new ExpandoObject();
-		public dynamic Meta = new ExpandoObject();
-		private DynamicBehaviorSet behavior;
 
 		internal static event InjectionEvent Injection;
 
@@ -100,6 +97,7 @@ namespace VirtualCharacterSheet {
 
 		public void AttachInstance(Character c) {
 			var tmp = new ClassInstance(this);
+			// TODO
 		}
 
 	}
