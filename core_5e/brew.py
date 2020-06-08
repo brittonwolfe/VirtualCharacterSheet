@@ -64,6 +64,7 @@ core.AddCharacterInjector(InjectSkills)
 # set up views
 core.SetBasicView(core.GetFile(r"views\basic_char.cshtml"))
 
+
 import classes.fighter
 import classes.fighter_battle_master
 

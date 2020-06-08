@@ -20,7 +20,7 @@ namespace VirtualCharacterSheet {
 
 	}
 
-	public abstract class Character : DynamicObject {
+	public abstract class Character : ScriptedObject {
 		public string Name;
 		public byte Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma;
 		public short STR { get { return Core.Modifier(Strength); } }
@@ -35,29 +35,12 @@ namespace VirtualCharacterSheet {
 
 		internal static event InjectionEvent Injection;
 
-		public Character() {
-			behavior = new DynamicBehaviorSet(this);
-		}
+		public Character() : base() { }
 
 		protected void Inject() {
 			if(Injection != null)
 				try { Injection.Invoke(this); }
 				catch(Exception e) { Console.WriteLine(e); }
-		}
-
-		public bool HasInfo(string name) { return ((IDictionary)Info).Contains(name); }
-		public bool HasMeta(string name) { return ((IDictionary)Meta).Contains(name); }
-		public bool HasBehavior(string name) { return behavior.Contains(name); }
-
-		public void AddBehavior(string name, dynamic obj) { behavior.Add(name, obj); }
-
-		public override bool TryGetMember(GetMemberBinder binder, out object result) {
-			if(base.TryGetMember(binder, out result))
-				return true;
-			else if(HasBehavior(binder.Name))
-				return behavior.TryGetMember(binder, out result);
-			result = null;
-			return false;
 		}
 
 	}

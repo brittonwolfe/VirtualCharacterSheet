@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Threading;
@@ -9,6 +10,7 @@ using IronPython.Hosting;
 
 using VirtualCharacterSheet.IO;
 using VirtualCharacterSheet.Forms;
+using VirtualCharacterSheet.Event;
 
 namespace VirtualCharacterSheet {
 
@@ -291,21 +293,36 @@ namespace VirtualCharacterSheet {
 
 	}
 
-	public abstract class ScriptedObject {
-		protected Script Behavior;
+	public abstract class ScriptedObject : DynamicObject {
+		protected dynamic Behavior;
+		public dynamic Info, Meta;
 
-		public void SetBehavior(Script script) { Behavior = script; }
-
-		public void DoBehavior() {
-			Scripting.locals.This = this;
-			try{ Behavior.Run(); }
-			catch(Exception e) {
-				Core.ShowConsole();
-				Console.WriteLine("An error occurred in behavior of " + this);
-				Console.WriteLine(e);
-			} finally { Scripting.Remove(Scripting.locals, "This"); }
+		protected ScriptedObject() {
+			Behavior = new DynamicBehaviorSet(this);
+			Info = new ExpandoObject();
+			Meta = new ExpandoObject();
 		}
-		public void DoBehavior(dynamic arg) { Behavior.Run(arg); }
+
+		public bool HasInfo(string name) { return ((IDictionary)Info).Contains(name); }
+		public bool HasMeta(string name) { return ((IDictionary)Meta).Contains(name); }
+		public bool HasBehavior(string name) { return Behavior.Contains(name); }
+
+		public void AddBehavior(string name, dynamic obj) { Behavior.Add(name, obj); }
+
+		public override bool TryGetMember(GetMemberBinder binder, out object result) {
+			if (base.TryGetMember(binder, out result))
+				return true;
+			else if (HasBehavior(binder.Name))
+				return Behavior.TryGetMember(binder, out result);
+			result = null;
+			return false;
+		}
+
+	}
+
+	public abstract class ComplexObject {
+		public dynamic Info, Meta;
+		protected DynamicBehaviorSet Behavior;
 
 	}
 

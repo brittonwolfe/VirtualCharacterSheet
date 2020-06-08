@@ -62,11 +62,14 @@ namespace VirtualCharacterSheet {
 		public void AddCharacterInjector(InjectionEvent e) {
 			Character.Injection += e;
 		}
+		public void SetBasicView(File path) {
+			// set the basic view
+		}
 		public void AddView() {
-			//
+			// add a view
 		}
 
-		public File GetFile(string subpath) { return new File(Meta.Path + subpath); }
+		public File GetFile(string subpath) { return new File(Meta.Dir + subpath); }
 
 		public static void Load(File src) { Scripting.Brew(new FileScript(src)); }
 
@@ -75,9 +78,8 @@ namespace VirtualCharacterSheet {
 	public class Item : ScriptedObject {
 		public string Name;
 		public readonly string Identifier;
-		public string Description;
 
-		public Item(string id) {
+		public Item(string id) : base() {
 			Identifier = id;
 			Data.SetItem(this);
 		}
