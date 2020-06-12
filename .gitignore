@@ -364,3 +364,8 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 *.cache
+
+
+#Added by cargo
+
+/target
