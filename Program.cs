@@ -1,30 +1,19 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
-using System.Windows.Forms;
 
 namespace VirtualCharacterSheet {
 
-	static class Program {
+	class Program {
 
-		/// <summary>
-		///  The main entry point for the application.
-		/// </summary>
-		[STAThread]
-		static void Main() {
-			Console.Title = "VCS Console";
+		static void Main(string[] args) {
+			Console.Title = "Virtual Character Sheet";
 			Console.OutputEncoding = Encoding.Unicode;
-			Core.HideConsole();
+			Console.WriteLine("VCS TUI");
 			Scripting.init();
 
 			AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnExit);
 
-			Application.SetHighDpiMode(HighDpiMode.SystemAware);
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new Forms.Splash());
 		}
 
 		private static void OnExit(object sender, EventArgs e) {
@@ -45,13 +34,6 @@ namespace VirtualCharacterSheet {
 			SandboxThread.SetApartmentState(ApartmentState.STA);
 		}
 
-		public static void AllocateConsole() {
-			if (!allocated) {
-				AllocConsole();
-				Console.Title = "VCS Python Command Line";
-				allocated = true;
-			}
-		}
 		public static void ShowConsole() { ShowWindow(GetConsoleWindow(), 5); }
 		public static void HideConsole() { ShowWindow(GetConsoleWindow(), 0); }
 
@@ -72,5 +54,8 @@ namespace VirtualCharacterSheet {
 		}
 
 	}
+
+}
+
 
 }
