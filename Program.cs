@@ -41,21 +41,11 @@ namespace VirtualCharacterSheet {
 
 		public static short Modifier(byte stat) { return (short)((stat / 2) - 5); }
 
-		[DllImport("kernel32.dll")]
-		private static extern bool AllocConsole();
-		[DllImport("kernel32.dll")]
-		internal static extern IntPtr GetConsoleWindow();
-		[DllImport("user32.dll")]
-		private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
 		public static void StartSandbox() {
 			if (!SandboxThread.IsAlive)
 				SandboxThread.Start();
 		}
 
 	}
-
-}
-
 
 }
