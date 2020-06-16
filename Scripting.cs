@@ -19,7 +19,7 @@ namespace VirtualCharacterSheet {
 		public static dynamic locals = new ExpandoObject();
 		public static dynamic homebrew = new ExpandoObject();
 		public static dynamic settings = new ExpandoObject();
-		public static Dictionary<string, Form> viewers = new Dictionary<string, Form>();
+		//public static Dictionary<string, Form> viewers = new Dictionary<string, Form>();
 		private static bool Initialized = false;
 
 		public static void Sandbox() {
@@ -30,11 +30,8 @@ namespace VirtualCharacterSheet {
 				Core.SandboxAwaits = false;
 				if(inp == null)
 					continue;
-				if(inp == "exit") {
-					Core.HideConsole();
-					Console.Clear();
+				if(inp == "exit")
 					break;
-				}
 				if(inp.ToLower() == "cls") {
 					Console.Clear();
 					continue;
@@ -84,7 +81,7 @@ namespace VirtualCharacterSheet {
 			SetGlobal("local", locals);
 			SetGlobal("brew", homebrew);
 			SetGlobal("_setting", settings);
-			SetGlobal("_viewer", viewers);
+			//SetGlobal("_viewer", viewers);
 # endregion
 
 # region global functions
@@ -204,14 +201,12 @@ namespace VirtualCharacterSheet {
 			Thread showthread = null;
 			switch(obj) {
 			case PlayerCharacter player:
-				if(viewers.ContainsKey(player.Identifier))
+				/*if(viewers.ContainsKey(player.Identifier))
 					Console.WriteLine("A view for this character is already open.");
-				else {
-					showthread = new Thread(() => {
-						CharacterSheet window = new CharacterSheet();
-						window.SetCharacter(player);
-						Application.Run(window);
-					});
+				else {*/
+					CharacterSheet window = new CharacterSheet();
+					//window.SetCharacter(player);
+					//Application.Run(window);
 				}
 				break;
 			default:

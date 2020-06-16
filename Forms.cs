@@ -5,34 +5,11 @@ namespace VirtualCharacterSheet.Forms {
 	public partial class CharacterSheet {
 		public PlayerCharacter currChar { get; private set; }
 
-		private void showToolStripMenuItem_Click(object sender, EventArgs e) { Core.ShowConsole(); }
-
-		private void sandboxToolStripMenuItem_Click(object sender, EventArgs e) { Core.StartSandbox(); }
-
-		private void Strength_Click(object sender, EventArgs e) {
-			Console.WriteLine(currChar.Name + ": STR check " + (Die.Roll(20) + currChar.STR));
-		}
-		private void Dexterity_Click(object sender, EventArgs e) {
-			//do a dex check
-		}
-		private void Constitution_Click(object sender, EventArgs e) {
-			//do a con check
-		}
-		private void Intelligence_Click(object sender, EventArgs e) {
-			//do an int check
-		}
-		private void Wisdom_Click(object sender, EventArgs e) {
-			//do a wis check
-		}
-		private void Charisma_Click(object sender, EventArgs e) {
-			//do a cha check
-		}
-
 		public void SetCharacter(PlayerCharacter c) {
 			DisposeIdentity();
-			Scripting.viewers[c.Identifier] = this;
+			//Scripting.viewers[c.Identifier] = this;
 			currChar = c;
-			CharHeader.Text = currChar.Name;
+			/*CharHeader.Text = currChar.Name;
 			PlayerName.Text = currChar.Player;
 			StrengthScore.Text = currChar.Strength.ToString();
 			StrengthMod.Text = currChar.STR.ToString();
@@ -45,13 +22,14 @@ namespace VirtualCharacterSheet.Forms {
 			WisdomScore.Text = currChar.Wisdom.ToString();
 			WisdomMod.Text = currChar.WIS.ToString();
 			CharismaScore.Text = currChar.Charisma.ToString();
-			CharismaMod.Text = currChar.CHA.ToString();
+			CharismaMod.Text = currChar.CHA.ToString();*/
 		}
 
 		private void DisposeIdentity() {
-			if(currChar != null)
-				Scripting.Remove(Scripting.viewers, currChar.Identifier);
+			/*if(currChar != null)
+				Scripting.Remove(Scripting.viewers, currChar.Identifier);*/
 		}
+
 	}
 
 	public partial class Splash {
@@ -60,12 +38,9 @@ namespace VirtualCharacterSheet.Forms {
 			
 		}
 
-		private void showToolStripMenuItem_Click(object sender, EventArgs e) { Core.ShowConsole(); }
-		private void sandboxToolStripMenuItem_Click(object sender, EventArgs e) { Core.StartSandbox(); }
-
-		private void LoadModule_Click(object sender, EventArgs e) {
-			if(openModule.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-				Scripting.Brew(new FileScript(new IO.File(openModule.FileName)));
+		private void LoadModule(object sender, EventArgs e) {
+			//TODO
+			Scripting.Brew(new FileScript(new IO.File("")));
 		}
 
 

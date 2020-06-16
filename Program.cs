@@ -26,25 +26,14 @@ namespace VirtualCharacterSheet {
 	public static class Core {
 		private static bool allocated = false;
 		private static PlayerCharacter currchar = null;
-		private static Thread SandboxThread = new Thread(() => { Scripting.Sandbox(); });
 		internal static bool SandboxAwaits = false;
 		internal static List<IO.File> temp_scripts = new List<IO.File>();
-
-		static Core() {
-			SandboxThread.SetApartmentState(ApartmentState.STA);
-		}
-
-		public static void ShowConsole() { ShowWindow(GetConsoleWindow(), 5); }
-		public static void HideConsole() { ShowWindow(GetConsoleWindow(), 0); }
 
 		public static PlayerCharacter GetCurrentCharacter() { return currchar; }
 
 		public static short Modifier(byte stat) { return (short)((stat / 2) - 5); }
 
-		public static void StartSandbox() {
-			if (!SandboxThread.IsAlive)
-				SandboxThread.Start();
-		}
+		public static void StartSandbox() { Scripting.Sandbox(); }
 
 	}
 
