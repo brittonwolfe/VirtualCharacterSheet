@@ -198,25 +198,14 @@ namespace VirtualCharacterSheet {
 		}
 
 		private static void ViewObject(object obj) {
-			Thread showthread = null;
 			switch(obj) {
 			case PlayerCharacter player:
-				/*if(viewers.ContainsKey(player.Identifier))
-					Console.WriteLine("A view for this character is already open.");
-				else {*/
-					CharacterSheet window = new CharacterSheet();
-					//window.SetCharacter(player);
-					//Application.Run(window);
-				}
+				CharacterSheet window = new CharacterSheet();
+				window.SetCharacter(player);
 				break;
 			default:
 				Console.WriteLine(obj.GetType().ToString() + " cannot be viewed.");
 				break;
-			}
-			if(showthread != null) {
-				showthread.SetApartmentState(ApartmentState.STA);
-				showthread.IsBackground = true;
-				showthread.Start();
 			}
 		}
 
