@@ -12,6 +12,8 @@ namespace VirtualCharacterSheet {
 			Console.WriteLine("VCS TUI");
 			Scripting.init();
 
+			//Core.StartSandbox();
+
 			AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnExit);
 
 		}

@@ -6,3 +6,4 @@ While the Linux branch is still very much a work in progress, cross-platform com
 
 ### So what's the difference?
 The Linux branch isn't currently planned to have GUI functionality, instead focusing on a TUI interface. It'll be cool, trust me.
+It centers around the interactive Python console that the Windows branch uses, but makes it a fully-featured terminal program with more functionality without breaking compatibility for brews (outside of the requirement of scripted TUI forms).
