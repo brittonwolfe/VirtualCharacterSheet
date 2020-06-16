@@ -2,6 +2,10 @@
 
 namespace VirtualCharacterSheet.Forms {
 
+	public abstract class TerminalForm : ComplexObject {
+		
+	}
+
 	public partial class CharacterSheet {
 		public PlayerCharacter currChar { get; private set; }
 

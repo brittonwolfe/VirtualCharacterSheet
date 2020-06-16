@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
-using System.Threading;
-using System.Windows.Forms;
 using Microsoft.Scripting.Hosting;
 
 using IronPython.Hosting;
