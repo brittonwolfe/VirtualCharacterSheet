@@ -38,13 +38,13 @@ namespace VirtualCharacterSheet.Forms {
 
 	public partial class Splash {
 
-		private void NewCharacter_Click(object sender, EventArgs e) {
+		private void NewCharacter(object sender, EventArgs e) {
 			
 		}
 
-		private void LoadModule(object sender, EventArgs e) {
+		private void LoadModule(string mod) {
 			//TODO
-			Scripting.Brew(new FileScript(new IO.File("")));
+			Scripting.Brew(new FileScript(new IO.File(mod)));
 		}
 
 
