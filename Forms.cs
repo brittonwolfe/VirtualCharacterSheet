@@ -1,9 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace VirtualCharacterSheet.Forms {
 
 	public abstract class TerminalForm : ComplexObject {
 		
+	}
+
+	public abstract class TerminalGraphic {
+		private List<string> Layers = new List<string>();
+
+		public TerminalGraphic(params string[] layers) {
+			foreach(string layer in layers)
+				Layers.Add(layer);
+		}
+
 	}
 
 	public partial class CharacterSheet {
