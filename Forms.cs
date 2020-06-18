@@ -4,7 +4,20 @@ using System.Collections.Generic;
 namespace VirtualCharacterSheet.Forms {
 
 	public abstract class TerminalForm : ComplexObject {
-		
+		protected TerminalGraphic[] Graphics;
+		private dynamic Renderer;
+
+		public TerminalForm(dynamic renderer, params TerminalGraphic[] graphics) {
+			Graphics = graphics;
+			Renderer = renderer;
+		}
+
+		public void Render() {
+			Scripting.locals.graphics = Graphics;
+			Renderer();
+			Scripting.Remove(Scripting.locals, "graphics");
+		}
+
 	}
 
 	public abstract class TerminalGraphic {
