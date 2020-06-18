@@ -1,14 +1,20 @@
 using System;
 using System.Collections.Generic;
 
+using Microsoft.Scripting.Hosting;
+
+using IronPython.Hosting;
+
 namespace VirtualCharacterSheet {
 
 	public class Tui {
 		internal Dictionary<string, dynamic> func = new Dictionary<string, dynamic>();
+		private ScriptEngine engine = Python.CreateEngine();
 
 		public Tui(params (string, dynamic)[] funcs) {
 			foreach((string, dynamic) pair in funcs)
 				func[pair.Item1] = pair.Item2;
+			engine.GetBuiltinModule().ImportModule("clr");
 		}
 
 		public void Handle() {

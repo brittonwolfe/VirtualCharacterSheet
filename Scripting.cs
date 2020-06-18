@@ -71,14 +71,13 @@ namespace VirtualCharacterSheet {
 				return;
 
 			engine.GetBuiltinModule().ImportModule("clr");
-			engine.GetBuiltinModule().ImportModule("sys");
-			//engine.GetBuiltinModule().Engine.Execute(@"sys.path.append(r'C:\Python27\Lib')");
-			//engine.GetBuiltinModule().ImportModule("inspect");
 
 # region global variables
 			SetGlobal("local", locals);
 			SetGlobal("brew", homebrew);
 			SetGlobal("_setting", settings);
+			engine.GetBuiltinModule().ImportModule("sys");
+
 			//SetGlobal("_viewer", viewers);
 # endregion
 
