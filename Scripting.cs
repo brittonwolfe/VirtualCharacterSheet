@@ -161,8 +161,8 @@ namespace VirtualCharacterSheet {
 				temp.WriteText("");
 			var process = new System.Diagnostics.Process();
 			var info = new System.Diagnostics.ProcessStartInfo();
-			info.FileName = "CMD.exe";
-			info.Arguments = ("/C code \"" + temp.Path + "\"");
+			info.FileName = "/bin/bash";
+			info.Arguments = ("code \"" + temp.Path + "\"");
 			process.StartInfo = info;
 			try { process.Start(); }
 			catch { ScriptEditor(key); }

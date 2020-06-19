@@ -12,7 +12,7 @@ namespace VirtualCharacterSheet {
 			Console.WriteLine("VCS TUI");
 			Scripting.init();
 
-			//Core.StartSandbox();
+			Core.StartSandbox();
 
 			AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnExit);
 
@@ -26,7 +26,6 @@ namespace VirtualCharacterSheet {
 	}
 
 	public static class Core {
-		private static bool allocated = false;
 		private static PlayerCharacter currchar = null;
 		internal static bool SandboxAwaits = false;
 		internal static List<IO.File> temp_scripts = new List<IO.File>();

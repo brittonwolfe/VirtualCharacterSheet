@@ -6,6 +6,7 @@ namespace VirtualCharacterSheet.Forms {
 	public abstract class TerminalForm : ComplexObject {
 		protected TerminalGraphic[] Graphics;
 		protected dynamic Renderer;
+		private Tui Handler;
 
 		public TerminalForm(dynamic renderer, params TerminalGraphic[] graphics) {
 			Graphics = graphics;
