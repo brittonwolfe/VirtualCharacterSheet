@@ -5,7 +5,7 @@ namespace VirtualCharacterSheet.Forms {
 
 	public abstract class TerminalForm : ComplexObject {
 		protected TerminalGraphic[] Graphics;
-		private dynamic Renderer;
+		protected dynamic Renderer;
 
 		public TerminalForm(dynamic renderer, params TerminalGraphic[] graphics) {
 			Graphics = graphics;
@@ -22,10 +22,35 @@ namespace VirtualCharacterSheet.Forms {
 
 	public abstract class TerminalGraphic {
 		private List<string> Layers = new List<string>();
+		protected dynamic Renderer;
 
-		public TerminalGraphic(params string[] layers) {
+		public TerminalGraphic(dynamic render = null, params string[] layers) {
+			Renderer = (render != null) ? render : new Func<string>(DefaultRender);
 			foreach(string layer in layers)
 				Layers.Add(layer);
+		}
+
+		public string Draw(object content = null) { return Renderer(); }
+
+		private string DefaultRender() {
+			var chars = new List<List<char>>();
+			foreach(string l in Layers) {
+				ushort line = 0;
+				ushort pos = 0;
+				foreach(char c in l)
+					if(c == '\n') {
+						line++;
+						pos = 0;
+					} else
+						chars[line][pos++] = c;
+			}
+			string output = "";
+			foreach(List<char> l in chars) {
+				foreach(char c in l)
+					output += c;
+				output += '\n';
+			}
+			return output.Trim();
 		}
 
 	}
@@ -62,15 +87,11 @@ namespace VirtualCharacterSheet.Forms {
 
 	public partial class Splash {
 
-		private void NewCharacter(object sender, EventArgs e) {
+		private void NewCharacter() {
 			
 		}
 
-		private void LoadModule(string mod) {
-			//TODO
-			Scripting.Brew(new FileScript(new IO.File(mod)));
-		}
-
+		private void LoadModule(string mod) { Scripting.Brew(new FileScript(new IO.File(mod))); }
 
 	}
 
