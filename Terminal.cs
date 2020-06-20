@@ -19,18 +19,14 @@ namespace VirtualCharacterSheet {
 				SetGlobal(key, map[key]);
 		}
 
-		public void Handle() {
-			string inp = Console.In.ReadLine();
-			string[] parts = inp.Trim().Split(' ');
-			string cmd = parts[0];
-			string[] args = new string[parts.Length - 1];
-			for(int x = 1; x < parts.Length; x++)
-				args[x - 1] = parts[x];
-			if(map.ContainsKey(cmd))
-				map[cmd]((object)args);
-			else
-				// quick aside: I want the program to *try* to exec the line as Python if enabled.
-				Console.WriteLine("\"" + cmd + "\" is not a valid command");
+		public void Handle(string input) {
+			try { engine.Execute(input); }
+			catch {
+				try { Scripting.engine.Execute(input); }
+				catch(Exception e2) {
+					throw e2;
+				}
+			}
 		}
 
 		private void SetGlobal(string key, dynamic obj) { engine.GetBuiltinModule().SetVariable(key, obj); }
