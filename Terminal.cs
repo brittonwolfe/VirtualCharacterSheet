@@ -20,13 +20,12 @@ namespace VirtualCharacterSheet {
 		}
 
 		public void Handle(string input) {
-			try { engine.Execute(input); }
-			catch {
-				try { Scripting.engine.Execute(input); }
-				catch(Exception e2) {
-					throw e2;
-				}
-			}
+			if(input.StartsWith(':'))
+				try { Scripting.engine.Execute(input.Substring(1)); }
+				catch(Exception e) { Console.WriteLine(e); }
+			else
+				try { engine.Execute(input); }
+				catch(Exception e) { Console.WriteLine(e); }
 		}
 
 		private void SetGlobal(string key, dynamic obj) { engine.GetBuiltinModule().SetVariable(key, obj); }

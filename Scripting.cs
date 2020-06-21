@@ -57,6 +57,7 @@ namespace VirtualCharacterSheet {
 			engine.SetSearchPaths(paths);
 
 			homebrew.def_brew = new Func<string, Brew>((string n) => { return new Brew(n); });
+
 			homebrew.Path = src.File.Directory;
 
 			try { src.Run(); }
@@ -75,6 +76,7 @@ namespace VirtualCharacterSheet {
 # region global variables
 			SetGlobal("local", locals);
 			SetGlobal("brew", homebrew);
+			homebrew.load = new Action<string>((string s) => Brew(new FileScript(new File(s))));
 			SetGlobal("_setting", settings);
 			engine.GetBuiltinModule().ImportModule("sys");
 
@@ -246,7 +248,7 @@ namespace VirtualCharacterSheet {
 
 	}
 
-	public abstract class Script : DynamicObject{
+	public abstract class Script : DynamicObject {
 		protected Dictionary<string, object> Meta = new Dictionary<string, object>();
 
 		public abstract void Run();

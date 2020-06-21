@@ -24,6 +24,8 @@ namespace VirtualCharacterSheet.Forms {
 				Console.Write(g.Draw());
 		}
 
+		public abstract void Close();
+
 	}
 
 	public abstract class TerminalGraphic {
@@ -73,9 +75,11 @@ namespace VirtualCharacterSheet.Forms {
 		}
 
 		private void DisposeIdentity() {
-			/*if(currChar != null)
-				Scripting.Remove(Scripting.viewers, currChar.Identifier);*/
+			if(Character != null)
+				Scripting.Remove(Scripting.viewers, Character.Identifier);
 		}
+
+		public override void Close() { DisposeIdentity(); }
 
 	}
 

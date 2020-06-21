@@ -1,5 +1,5 @@
 
-core = brew.get('core_5e')
+core = _brew('core_5e')
 
 char_tui = brew.new_tui()
 
