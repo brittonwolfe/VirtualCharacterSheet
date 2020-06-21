@@ -8,15 +8,20 @@ namespace VirtualCharacterSheet.Forms {
 		protected dynamic Renderer;
 		private Tui Handler;
 
-		public TerminalForm(dynamic renderer, params TerminalGraphic[] graphics) {
+		public TerminalForm(dynamic renderer = null, params TerminalGraphic[] graphics) {
 			Graphics = graphics;
-			Renderer = renderer;
+			Renderer = (renderer != null) ? renderer : new Action(Render);
 		}
 
 		public void Render() {
 			Scripting.locals.graphics = Graphics;
 			Renderer();
 			Scripting.Remove(Scripting.locals, "graphics");
+		}
+
+		public void DefaultRender() {
+			foreach(TerminalGraphic g in Scripting.locals.graphics)
+				Console.Write(g.Draw());
 		}
 
 	}
@@ -56,13 +61,13 @@ namespace VirtualCharacterSheet.Forms {
 
 	}
 
-	public partial class CharacterSheet {
-		public PlayerCharacter currChar { get; private set; }
+	public class CharacterSheet : TerminalForm {
+		public PlayerCharacter Character { get; private set; }
 
 		public void SetCharacter(PlayerCharacter c) {
 			DisposeIdentity();
 			//Scripting.viewers[c.Identifier] = this;
-			currChar = c;
+			Character = c;
 			/*CharHeader.Text = currChar.Name;
 			PlayerName.Text = currChar.Player;
 			StrengthScore.Text = currChar.Strength.ToString();
