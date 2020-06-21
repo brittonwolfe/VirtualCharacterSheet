@@ -63,25 +63,13 @@ namespace VirtualCharacterSheet.Forms {
 
 	public class CharacterSheet : TerminalForm {
 		public PlayerCharacter Character { get; private set; }
+		public dynamic Setup;
 
 		public void SetCharacter(PlayerCharacter c) {
 			DisposeIdentity();
-			//Scripting.viewers[c.Identifier] = this;
 			Character = c;
-			/*CharHeader.Text = currChar.Name;
-			PlayerName.Text = currChar.Player;
-			StrengthScore.Text = currChar.Strength.ToString();
-			StrengthMod.Text = currChar.STR.ToString();
-			DexterityScore.Text = currChar.Dexterity.ToString();
-			DexterityMod.Text = currChar.DEX.ToString();
-			ConstitutionScore.Text = currChar.Constitution.ToString();
-			ConstitutionMod.Text = currChar.CON.ToString();
-			IntelligenceScore.Text = currChar.Intelligence.ToString();
-			IntelligenceMod.Text = currChar.INT.ToString();
-			WisdomScore.Text = currChar.Wisdom.ToString();
-			WisdomMod.Text = currChar.WIS.ToString();
-			CharismaScore.Text = currChar.Charisma.ToString();
-			CharismaMod.Text = currChar.CHA.ToString();*/
+			Scripting.viewers[c.Identifier] = this;
+			Setup();
 		}
 
 		private void DisposeIdentity() {

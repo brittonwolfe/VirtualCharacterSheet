@@ -17,7 +17,7 @@ namespace VirtualCharacterSheet {
 		public static dynamic locals = new ExpandoObject();
 		public static dynamic homebrew = new ExpandoObject();
 		public static dynamic settings = new ExpandoObject();
-		//public static Dictionary<string, Form> viewers = new Dictionary<string, Form>();
+		public static Dictionary<string, TerminalForm> viewers = new Dictionary<string, TerminalForm>();
 		private static bool Initialized = false;
 
 		public static void Sandbox() {
@@ -78,7 +78,7 @@ namespace VirtualCharacterSheet {
 			SetGlobal("_setting", settings);
 			engine.GetBuiltinModule().ImportModule("sys");
 
-			//SetGlobal("_viewer", viewers);
+			SetGlobal("_viewer", viewers);
 # endregion
 
 # region global functions
