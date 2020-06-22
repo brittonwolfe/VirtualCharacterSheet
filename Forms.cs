@@ -4,25 +4,16 @@ using System.Collections.Generic;
 namespace VirtualCharacterSheet.Forms {
 
 	public abstract class TerminalForm : ComplexObject {
-		protected TerminalGraphic[] Graphics;
-		protected dynamic Renderer;
-		private Tui Handler;
+		protected Dictionary<string, TerminalView> Views;
+		protected string CurrentView = "base";
+		protected Tui Handler = new Tui();
 
-		public TerminalForm(dynamic renderer = null, params TerminalGraphic[] graphics) {
-			Graphics = graphics;
-			Renderer = (renderer != null) ? renderer : new Action(Render);
+		public TerminalForm(params (string, TerminalView)[] views) {
+			foreach((string, TerminalView) kvp in views)
+				Views[kvp.Item1] = kvp.Item2;
 		}
 
-		public void Render() {
-			Scripting.locals.graphics = Graphics;
-			Renderer();
-			Scripting.Remove(Scripting.locals, "graphics");
-		}
-
-		public void DefaultRender() {
-			foreach(TerminalGraphic g in Scripting.locals.graphics)
-				Console.Write(g.Draw());
-		}
+		public void Render() { Views[CurrentView].Render(); }
 
 		public abstract void Close();
 
@@ -63,9 +54,33 @@ namespace VirtualCharacterSheet.Forms {
 
 	}
 
+	public class TerminalView {
+		protected TerminalGraphic[] Graphics;
+		protected dynamic Renderer;
+
+		public TerminalView(dynamic renderer = null, params TerminalGraphic[] graphics) {
+			Graphics = graphics;
+			Renderer = (renderer != null) ? renderer : new Action(DefaultRender);
+		}
+
+		public void Render() {
+			Scripting.locals.graphics = Graphics;
+			Renderer();
+			Scripting.Remove(Scripting.locals, "graphics");
+		}
+
+		public void DefaultRender() {
+			foreach(TerminalGraphic g in Scripting.locals.graphics)
+				Console.Write(g.Draw());
+		}
+
+	}
+
 	public class CharacterSheet : TerminalForm {
 		public PlayerCharacter Character { get; private set; }
 		public dynamic Setup;
+
+		public CharacterSheet(params (string, TerminalView)[] views) : base(views) { }
 
 		public void SetCharacter(PlayerCharacter c) {
 			DisposeIdentity();

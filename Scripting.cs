@@ -58,6 +58,8 @@ namespace VirtualCharacterSheet {
 
 			homebrew.def_brew = new Func<string, Brew>((string n) => { return new Brew(n); });
 
+			homebrew.def_charsheet = new Func<(string, TerminalView)[], TerminalForm>(((string, TerminalView)[] set) => { return new CharacterSheet(set); });
+
 			homebrew.Path = src.File.Directory;
 
 			try { src.Run(); }
