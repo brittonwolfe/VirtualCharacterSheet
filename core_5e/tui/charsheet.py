@@ -1,8 +1,10 @@
-clr.AddReference('VirtualCharacterSheet')
-import TerminalView
+clr.AddReference('vcs')
+from VirtualCharacterSheet.Forms import TerminalView, CharacterSheet
+
+import charsheet_header
 
 core = _brew('core_5e')
 
-char_tui = brew.def_charsheet()
+char_tui = CharacterSheet()
 
 #core.AddTui(char_tui)
