@@ -1,9 +1,11 @@
 clr.AddReference('vcs')
 from VirtualCharacterSheet.Forms import TerminalView, CharacterSheet
 
-import charsheet_header
+from charsheet_graphics import header
 
 core = _brew('core_5e')
+
+basic = TerminalView()
 
 char_tui = CharacterSheet()
 
