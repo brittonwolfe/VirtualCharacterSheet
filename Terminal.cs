@@ -9,7 +9,7 @@ namespace VirtualCharacterSheet {
 
 	public class Tui {
 		internal Dictionary<string, dynamic> map = new Dictionary<string, dynamic>();
-		private ScriptEngine engine = Python.CreateEngine();
+		internal ScriptEngine engine = Python.CreateEngine();
 
 		public Tui(params (string, dynamic)[] funcs) {
 			foreach((string, dynamic) pair in funcs)

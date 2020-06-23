@@ -15,6 +15,8 @@ namespace VirtualCharacterSheet.Forms {
 
 		public void Render() { Views[CurrentView].Render(); }
 
+		public void SetupTui(params (string, dynamic)[] funcs) { Handler = new Tui(funcs); }
+
 		public abstract void Close();
 
 	}
@@ -93,6 +95,8 @@ namespace VirtualCharacterSheet.Forms {
 			if(Character != null)
 				Scripting.Remove(Scripting.viewers, Character.Identifier);
 		}
+
+		public Tui GetTuiHandler() { return Handler; }
 
 		public override void Close() { DisposeIdentity(); }
 
