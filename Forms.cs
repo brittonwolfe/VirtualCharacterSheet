@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using PyList = IronPython.Runtime.List;
+using PyTuple = IronPython.Runtime.PythonTuple;
+
 namespace VirtualCharacterSheet.Forms {
 
 	public abstract class TerminalForm : ComplexObject {
 		protected Dictionary<string, TerminalView> Views;
 		protected string CurrentView = "base";
-		protected Tui Handler = new Tui();
+		protected Tui Handler;
 
 		public TerminalForm(params (string, TerminalView)[] views) {
 			foreach((string, TerminalView) kvp in views)
@@ -15,7 +18,10 @@ namespace VirtualCharacterSheet.Forms {
 
 		public void Render() { Views[CurrentView].Render(); }
 
-		public void SetupTui(params (string, dynamic)[] funcs) { Handler = new Tui(funcs); }
+		public void SetupTui(params (string, dynamic)[] funcs) {
+			Handler = new Tui(funcs);
+			Handler.SetThis(this);
+		}
 
 		public abstract void Close();
 
@@ -83,6 +89,10 @@ namespace VirtualCharacterSheet.Forms {
 		public dynamic Setup;
 
 		public CharacterSheet(params (string, TerminalView)[] views) : base(views) { }
+		public CharacterSheet(PyList views) : base() {
+			foreach(PyTuple pair in views)
+				Views.Add((string)pair[0], (TerminalView)pair[1]);
+		}
 
 		public void SetCharacter(PlayerCharacter c) {
 			DisposeIdentity();

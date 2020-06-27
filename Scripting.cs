@@ -40,12 +40,7 @@ namespace VirtualCharacterSheet {
 						Console.WriteLine(tmp);
 				}
 				catch(Exception e) {
-					Console.WriteLine(e);
-					/*Console.Write("Continue (Y/N)? ");
-					var choice = Console.ReadKey(true);
-					if(choice.Key != ConsoleKey.Y)
-						break;*/
-					Console.WriteLine();
+					Console.WriteLine(e + "\n");
 				}
 			} while(true);
 		}

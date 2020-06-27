@@ -30,6 +30,8 @@ namespace VirtualCharacterSheet {
 
 		private void SetGlobal(string key, dynamic obj) { engine.GetBuiltinModule().SetVariable(key, obj); }
 
+		internal void SetThis(dynamic obj) { SetGlobal("this", obj); }
+
 	}
 
 }

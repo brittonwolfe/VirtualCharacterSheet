@@ -3,6 +3,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 
+using Newtonsoft.Json;
+
 using VirtualCharacterSheet;
 
 namespace VirtualCharacterSheet.Net {
@@ -30,8 +32,12 @@ namespace VirtualCharacterSheet.Net {
 			switch(method) {
 			case "GET":
 				var response = client.GetAsync(request).Result;
-
+				code = (int)response.StatusCode;
+				string content = response.Content.ToString();
+				obj = JsonConvert.DeserializeObject(content);
 				break;
+			default:
+				throw new System.Exception();
 			}
 			return (code, obj);
 		}
