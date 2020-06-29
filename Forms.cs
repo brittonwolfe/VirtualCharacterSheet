@@ -25,9 +25,16 @@ namespace VirtualCharacterSheet.Forms {
 
 		public abstract void Close();
 
+		public static (int, int) GetTerminalSize() {
+			string[] tmp = Core.Run("stty size").StandardOutput.ReadToEnd().Split(' ');
+			return (int.Parse(tmp[0]), int.Parse(tmp[2]));
+		}
+		public static int GetTerminalWidth() { return GetTerminalSize().Item1; }
+		public static int GetTerminalHeight() { return GetTerminalSize().Item2; }
+
 	}
 
-	public abstract class TerminalGraphic {
+	public class TerminalGraphic {
 		private List<string> Layers = new List<string>();
 		protected dynamic Renderer;
 

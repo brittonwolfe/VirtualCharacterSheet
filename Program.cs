@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace VirtualCharacterSheet {
@@ -35,6 +36,16 @@ namespace VirtualCharacterSheet {
 		public static short Modifier(byte stat) { return (short)((stat / 2) - 5); }
 
 		public static void StartSandbox() { Scripting.Sandbox(); }
+
+		public static Process Run(string command) {
+			var process = new Process();
+			var info = new System.Diagnostics.ProcessStartInfo();
+			info.FileName = "/bin/bash";
+			info.Arguments = (command);
+			process.StartInfo = info;
+			process.Start();
+			return process;
+		}
 
 	}
 

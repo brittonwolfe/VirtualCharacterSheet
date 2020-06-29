@@ -156,12 +156,7 @@ namespace VirtualCharacterSheet {
 				temp.WriteText(Data.GetPy(key).src);
 			else
 				temp.WriteText("");
-			var process = new System.Diagnostics.Process();
-			var info = new System.Diagnostics.ProcessStartInfo();
-			info.FileName = "/bin/bash";
-			info.Arguments = ("code \"" + temp.Path + "\"");
-			process.StartInfo = info;
-			try { process.Start(); }
+			try { Core.Run("code \"" + temp.Path + "\""); }
 			catch { ScriptEditor(key); }
 			Console.WriteLine("Press enter to resume after editing...");
 			Console.ReadLine();
