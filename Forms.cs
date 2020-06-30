@@ -7,7 +7,7 @@ using PyTuple = IronPython.Runtime.PythonTuple;
 namespace VirtualCharacterSheet.Forms {
 
 	public abstract class TerminalForm : ComplexObject {
-		protected Dictionary<string, TerminalView> Views;
+		protected Dictionary<string, TerminalView> Views = new Dictionary<string, TerminalView>();
 		protected string CurrentView = "base";
 		protected Tui Handler;
 
@@ -21,6 +21,12 @@ namespace VirtualCharacterSheet.Forms {
 		public void SetupTui(params (string, dynamic)[] funcs) {
 			Handler = new Tui(funcs);
 			Handler.SetThis(this);
+		}
+		public void SetupTui(params PyTuple[] funcs) {
+			var tmp = new (string, dynamic)[funcs.Length];
+			for(int x = 0; x < tmp.Length; x++)
+				tmp[x] = ((string)funcs[x][0], funcs[x][1]);
+			SetupTui(tmp);
 		}
 
 		public abstract void Close();
