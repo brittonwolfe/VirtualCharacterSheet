@@ -5,6 +5,8 @@ using System.Dynamic;
 using Microsoft.Scripting.Hosting;
 
 using IronPython.Hosting;
+using PyList = IronPython.Runtime.List;
+using PyTuple = IronPython.Runtime.PythonTuple;
 
 using VirtualCharacterSheet.IO;
 using VirtualCharacterSheet.Forms;
@@ -142,9 +144,18 @@ namespace VirtualCharacterSheet {
 			Initialized = true;
 		}
 
+		public static T[] PyArray<T>(PyList list) {
+			T[] output = new T[list.__len__()];
+			uint n = 0;
+			foreach(T item in list)
+				output[n++] = item;
+			return output;
+		}
+
 		private static void SetGlobal(string n, object o) { engine.GetBuiltinModule().SetVariable(n, o); }
 		private static dynamic GetGlobal(string n) { return engine.GetBuiltinModule().GetVariable(n); }
 		internal static void Remove(dynamic obj, string key) { ((IDictionary<string, object>)obj).Remove(key); }
+
 
 		public static Modifier CreateModifier() { return new Modifier(); }
 		public static Modifier CreateModifier(short m) { return new Modifier(m); }

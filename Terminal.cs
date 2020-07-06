@@ -27,8 +27,8 @@ namespace VirtualCharacterSheet {
 				catch(Exception e) { Console.WriteLine(e); }
 		}
 
-		private void SetGlobal(string key, dynamic obj) { engine.GetBuiltinModule().SetVariable(key, obj); }
-
+		internal void SetGlobal(string key, dynamic obj) { engine.GetBuiltinModule().SetVariable(key, obj); }
+		internal void RemoveGlobal(string key) { engine.GetBuiltinModule().RemoveVariable(key); }
 		internal void SetThis(dynamic obj) { SetGlobal("this", obj); }
 
 	}

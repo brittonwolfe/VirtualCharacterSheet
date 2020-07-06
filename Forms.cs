@@ -16,7 +16,12 @@ namespace VirtualCharacterSheet.Forms {
 				Views[kvp.Item1] = kvp.Item2;
 		}
 
-		public void Render() { Views[CurrentView].Render(); }
+		public void Render(dynamic content = null) {
+			if(content != null)
+				Handler.SetGlobal("render", content);
+			Views[CurrentView].Render();
+			Handler.RemoveGlobal("render");
+		}
 
 		public void SetupTui(params (string, dynamic)[] funcs) {
 			Handler = new Tui(funcs);
@@ -43,37 +48,14 @@ namespace VirtualCharacterSheet.Forms {
 	public class TerminalGraphic {
 		private List<string> Layers = new List<string>();
 		protected dynamic Renderer;
+		public ushort Width, Height;
 
-		public TerminalGraphic(dynamic render = null, params string[] layers) {
-			Renderer = (render != null) ? render : new Func<string>(DefaultRender);
-			foreach(string layer in layers)
-				Layers.Add(layer);
-		}
+		public TerminalGraphic(dynamic render) { Renderer = render; }
 
-		public string Draw(object content = null) { return Renderer(); }
-
-		private string DefaultRender() {
-			var chars = new List<List<char>>();
-			foreach(string l in Layers) {
-				ushort line = 0;
-				ushort pos = 0;
-				foreach(char c in l)
-					if(c == '\n') {
-						line++;
-						pos = 0;
-					} else
-						chars[line][pos++] = c;
-			}
-			string output = "";
-			foreach(List<char> l in chars) {
-				foreach(char c in l)
-					output += c;
-				output += '\n';
-			}
-			return output.Trim();
-		}
+		public string Draw() { return Renderer(); }
 
 	}
+	
 
 	public class TerminalView {
 		protected TerminalGraphic[] Graphics;
@@ -102,10 +84,7 @@ namespace VirtualCharacterSheet.Forms {
 		public dynamic Setup;
 
 		public CharacterSheet(params (string, TerminalView)[] views) : base(views) { }
-		public CharacterSheet(PyList views) : base() {
-			foreach(PyTuple pair in views)
-				Views.Add((string)pair[0], (TerminalView)pair[1]);
-		}
+		public CharacterSheet(PyList views) : this(Scripting.PyArray<(string, TerminalView)>(views)) {}
 
 		public void SetCharacter(PlayerCharacter c) {
 			DisposeIdentity();
