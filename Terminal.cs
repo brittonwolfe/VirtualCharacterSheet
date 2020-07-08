@@ -6,7 +6,13 @@ using IronPython.Hosting;
 
 namespace VirtualCharacterSheet {
 
-	public class Tui {
+	public interface AbstractTui {
+
+		public abstract void Handle(string input);
+
+	}
+
+	public class Tui : AbstractTui {
 		internal Dictionary<string, dynamic> map = new Dictionary<string, dynamic>();
 		internal ScriptEngine engine = Python.CreateEngine();
 
