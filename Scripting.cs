@@ -6,7 +6,6 @@ using Microsoft.Scripting.Hosting;
 
 using IronPython.Hosting;
 using PyList = IronPython.Runtime.List;
-using PyTuple = IronPython.Runtime.PythonTuple;
 
 using VirtualCharacterSheet.IO;
 using VirtualCharacterSheet.Forms;
@@ -23,7 +22,10 @@ namespace VirtualCharacterSheet {
 		private static bool Initialized = false;
 
 		public static void Sandbox() {
-			do {
+			if(!Initialized)
+				init();
+			engine.ExecuteFile(FileLoad.GetInternalFile("core/shell.py").Path);
+			/*do {
 				Console.Write("> ");
 				Core.SandboxAwaits = true;
 				string inp = Console.In.ReadLine();
@@ -44,7 +46,7 @@ namespace VirtualCharacterSheet {
 				catch(Exception e) {
 					Console.WriteLine(e + "\n");
 				}
-			} while(true);
+			} while(true);*/
 		}
 
 		public static void Brew(FileScript src) {
@@ -69,6 +71,8 @@ namespace VirtualCharacterSheet {
 				return;
 
 			engine.GetBuiltinModule().ImportModule("clr");
+			engine.GetBuiltinModule().ImportModule("sys");
+			engine.GetBuiltinModule().Engine.Execute(@"sys.path.append('/lib/python2.7/')");
 
 # region global variables
 			SetGlobal("local", locals);

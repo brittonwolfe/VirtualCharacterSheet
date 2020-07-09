@@ -9,7 +9,7 @@ namespace VirtualCharacterSheet {
 		public static uint Roll(ushort d) { return (ushort)rng.Next(1, d); }
 		public static uint Rolln(ushort n, ushort d) {
 			uint output = 0;
-			for (ushort x = 0; x < n; x++)
+			for(ushort x = 0; x < n; x++)
 				output += Roll(d);
 			return output;
 		}

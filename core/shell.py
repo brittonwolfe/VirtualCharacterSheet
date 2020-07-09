@@ -1,14 +1,19 @@
+clr.AddReference('vcs')
 from shlex import split
-from VirtualCharacterSheet.Terminal import AbstractTui
+from VirtualCharacterSheet import AbstractTui
 
 class PyTui(AbstractTui):
 	commands = {}
-	def __init__(self,dict):
-		for (k,v) in dict:
-			self.commands[k] = v
-	def Handle(self,command):
+	show_output = False
+	def __init__(self, dict, shout = False):
+		self.commands = dict.copy()
+		self.show_output = shout
+	def Handle(self, command):
 		full = split(command)
-		self.commands[full[0]](full[1:-1])
+		output = self.commands[full[0]](full[1:len(full)])
+		if self.show_output:
+			print(output)
+		return output
 
 def cmd_roll(args):
 	if len(args) == 1:
@@ -17,8 +22,10 @@ def cmd_roll(args):
 			return
 		num = None
 		if args[0].lower().startswith('d'):
-			num = int(args[0][1:-1])
+			num = int(args[0][1:len(args[0])])
 		else:
+			if 'd' in args[0]:
+				return cmd_roll(split(args[0].replace('d', ' d')))
 			num = int(args[0])
 		return roll(num)
 	n = None
@@ -26,7 +33,7 @@ def cmd_roll(args):
 	for arg in args:
 		if arg.lower().startswith('d'):
 			if d is None:
-				d = int(arg[1:-1])
+				d = int(arg[1:len(arg)])
 			else:
 				print('too many arguments!')
 				return
@@ -36,14 +43,28 @@ def cmd_roll(args):
 			else:
 				print('too many arguments!')
 				return
-	if d is None:
+	if d is None or n is None:
 		print('not enough arguments!')
 		return
-	if n is None:
-		return roll(d)
 	else:
 		return rolln(n, d)
 
-basic_shell = PyTui({
-	"roll": cmd_roll
-})
+basic_shell_dict = {
+	'roll': cmd_roll
+}
+basic_shell = PyTui(basic_shell_dict, shout = True)
+
+def add_base(dict):
+	output = basic_shell_dict.copy()
+	output.update(dict)
+	return output
+
+def shell(tui = basic_shell):
+	while True:
+		line = readl('> ')
+		if line == 'exit':
+			return
+		tui.Handle(line)
+
+if __name__ == '__main__':
+    shell()
