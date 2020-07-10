@@ -1,14 +1,21 @@
 clr.AddReference('vcs')
 from shlex import split
 from VirtualCharacterSheet import AbstractTui
+from VirtualCharacterSheet.Data import AllBrews
+from VirtualCharacterSheet.IO import File
 
 class PyTui(AbstractTui):
 	commands = {}
 	show_output = False
-	def __init__(self, dict, shout = False):
+	colon_escape = False
+	def __init__(self, dict, shout = False, colon = False):
 		self.commands = dict.copy()
 		self.show_output = shout
+		self.colon_escape = colon
 	def Handle(self, command):
+		if self.colon_escape and command.startswith(':'):
+			exec(command[1:len(command)])
+			return
 		full = split(command)
 		output = self.commands[full[0]](full[1:len(full)])
 		if self.show_output:
@@ -49,10 +56,24 @@ def cmd_roll(args):
 	else:
 		return rolln(n, d)
 
+def cmd_brew(args):
+	if args[0].lower() == 'load':
+		if len(args) != 2:
+			print("invalid number of arguments")
+		file = File(args[1])
+		if not file.Exists():
+			print('the file does not exist!')
+			return
+		brew.load(file.Path)
+		print('Successfully loaded "' + args[1] + '"')
+	if args[0].lower() == 'list':
+		return AllBrews()
+
 basic_shell_dict = {
-	'roll': cmd_roll
+	'roll': cmd_roll,
+	'brew': cmd_brew
 }
-basic_shell = PyTui(basic_shell_dict, shout = True)
+basic_shell = PyTui(basic_shell_dict, shout = True, colon = True)
 
 def add_base(dict):
 	output = basic_shell_dict.copy()

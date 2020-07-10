@@ -45,6 +45,12 @@ namespace VirtualCharacterSheet {
 		internal static void AddBrew(Brew b) { brew[b.Name] = b; }
 		public static bool HasBrew(string n) { return brew.ContainsKey(n); }
 		public static Brew GetBrew(string n) { return brew[n]; }
+		public static string AllBrews() {
+			string output = "";
+			foreach(string key in brew.Keys)
+				output += (key + " ");
+			return output.Trim();
+		}
 
 	}
 

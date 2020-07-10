@@ -39,6 +39,8 @@ namespace VirtualCharacterSheet {
 					output.Write(t);
 			}
 
+			public bool Exists() { return System.IO.File.Exists(this.Path); }
+
 			internal BinaryWriter GetBinaryWriter() { return new BinaryWriter(System.IO.File.OpenWrite(this.Path)); }
 
 		}
