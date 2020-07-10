@@ -1,5 +1,7 @@
 clr.AddReference('vcs')
+from os import system
 from shlex import split
+from traceback import print_exc
 from VirtualCharacterSheet import AbstractTui
 from VirtualCharacterSheet.Data import AllBrews
 from VirtualCharacterSheet.IO import File
@@ -17,10 +19,30 @@ class PyTui(AbstractTui):
 			exec(command[1:len(command)])
 			return
 		full = split(command)
-		output = self.commands[full[0]](full[1:len(full)])
-		if self.show_output:
+		output = None
+		try:
+			output = self.commands[full[0]](full[1:len(full)])
+		except Exception:
+			print(print_exc())
+		if self.show_output and output is not None:
 			print(output)
 		return output
+
+def resolve_def(args):
+	pass
+
+def cmd_brew(args):
+	if args[0].lower() == 'load':
+		if len(args) != 2:
+			print("invalid number of arguments")
+		file = File(args[1])
+		if not file.Exists():
+			print('the file does not exist!')
+			return
+		brew.load(file.Path)
+		print('Successfully loaded "' + args[1] + '"')
+	if args[0].lower() == 'list':
+		return AllBrews()
 
 def cmd_roll(args):
 	if len(args) == 1:
@@ -56,22 +78,13 @@ def cmd_roll(args):
 	else:
 		return rolln(n, d)
 
-def cmd_brew(args):
-	if args[0].lower() == 'load':
-		if len(args) != 2:
-			print("invalid number of arguments")
-		file = File(args[1])
-		if not file.Exists():
-			print('the file does not exist!')
-			return
-		brew.load(file.Path)
-		print('Successfully loaded "' + args[1] + '"')
-	if args[0].lower() == 'list':
-		return AllBrews()
+def cmd_view(args):
+	print("not implemented")
 
 basic_shell_dict = {
+	'brew': cmd_brew,
 	'roll': cmd_roll,
-	'brew': cmd_brew
+	'view': cmd_view
 }
 basic_shell = PyTui(basic_shell_dict, shout = True, colon = True)
 
@@ -85,6 +98,9 @@ def shell(tui = basic_shell):
 		line = readl('> ')
 		if line == 'exit':
 			return
+		if line == 'clear':
+			system('clear')
+			continue
 		tui.Handle(line)
 
 if _setting._is_main:
