@@ -66,5 +66,5 @@ def shell(tui = basic_shell):
 			return
 		tui.Handle(line)
 
-if __name__ == '__main__':
-    shell()
+if _setting._is_main:
+	shell()

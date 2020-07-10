@@ -5,6 +5,7 @@ using System.Dynamic;
 using Microsoft.Scripting.Hosting;
 
 using IronPython.Hosting;
+using IronPython.Runtime.Operations;
 using PyList = IronPython.Runtime.List;
 
 using VirtualCharacterSheet.IO;
@@ -24,29 +25,9 @@ namespace VirtualCharacterSheet {
 		public static void Sandbox() {
 			if(!Initialized)
 				init();
-			engine.ExecuteFile(FileLoad.GetInternalFile("core/shell.py").Path);
-			/*do {
-				Console.Write("> ");
-				Core.SandboxAwaits = true;
-				string inp = Console.In.ReadLine();
-				Core.SandboxAwaits = false;
-				if(inp == null)
-					continue;
-				if(inp == "exit")
-					break;
-				if(inp.ToLower() == "cls") {
-					Console.Clear();
-					continue;
-				}
-				try {
-					dynamic tmp = engine.Execute(inp);
-					if(settings.ShowOutput && tmp != null)
-						Console.WriteLine(tmp);
-				}
-				catch(Exception e) {
-					Console.WriteLine(e + "\n");
-				}
-			} while(true);*/
+			settings._is_main = true;
+			engine.ExecuteFile("/home/val/Repos/vcs/core/shell.py");
+			settings._is_main = false;
 		}
 
 		public static void Brew(FileScript src) {
