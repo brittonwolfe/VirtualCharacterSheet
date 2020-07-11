@@ -5,10 +5,25 @@ STAT_LIST = [ 'str', 'strength', 'dex', 'dexterity', 'con', 'constitution', 'int
 def stat_check(args):
 	stat = None
 	if args[0].lower() in STAT_LIST:
-		stat = args[0].lower()
-	if stat is None:
+		stat = args[0].lower().capitalize()
+	else:
 		print('No valid stat provided')
 		return
+	times = None
+	mod = 0
+	for arg in args[1:]:
+		if arg.startswith('+'):
+			mod += int(arg[1:])
+		if arg.startswith('-'):
+			mod -= int(arg[1:])
+		else:
+			if times is not None:
+				print('too many times arguments given')
+				return
+			times = int(arg)
+	output = 0
+	for i in range(times or 1):
+		output = local.This.Character[stat + 'Check']() + mod
 	pass #local.This.Character
 
 def versatile_roll(args):

@@ -16,12 +16,12 @@ class PyTui(AbstractTui):
 		self.colon_escape = colon
 	def Handle(self, command):
 		if self.colon_escape and command.startswith(':'):
-			exec(command[1:len(command)])
+			exec(command[1:])
 			return
 		full = split(command)
 		output = None
 		try:
-			output = self.commands[full[0]](full[1:len(full)])
+			output = self.commands[full[0]](full[1:])
 		except Exception:
 			print(print_exc())
 		if self.show_output and output is not None:
@@ -51,7 +51,7 @@ def cmd_roll(args):
 			return
 		num = None
 		if args[0].lower().startswith('d'):
-			num = int(args[0][1:len(args[0])])
+			num = int(args[0][1:])
 		else:
 			if 'd' in args[0]:
 				return cmd_roll(split(args[0].replace('d', ' d')))
@@ -62,7 +62,7 @@ def cmd_roll(args):
 	for arg in args:
 		if arg.lower().startswith('d'):
 			if d is None:
-				d = int(arg[1:len(arg)])
+				d = int(arg[1:])
 			else:
 				print('too many arguments!')
 				return
