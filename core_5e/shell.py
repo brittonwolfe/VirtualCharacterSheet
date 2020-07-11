@@ -24,7 +24,7 @@ def stat_check(args):
 	output = 0
 	for i in range(times or 1):
 		output = local.This.Character[stat + 'Check']() + mod
-	pass #local.This.Character
+	return output
 
 def versatile_roll(args):
 	if args[0].lower() in STAT_LIST:
