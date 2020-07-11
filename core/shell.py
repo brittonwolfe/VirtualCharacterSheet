@@ -15,25 +15,29 @@ class PyTui(AbstractTui):
 		self.show_output = shout
 		self.colon_escape = colon
 	def help_command(self, command):
-		"""	help [command]
-			Shows help text for the given command.
+		"""help [command]
+	Shows help text for the given command.
 		"""
 		if command is None or command == '':
 			print(self.help_command.__doc__)
 			return
 		if not command in self.commands:
 			print('command not found')
-		print(self.commands[command].__help__)
+		print(self.commands[command].__doc__)
 	def Handle(self, command):
 		if self.colon_escape and command.startswith(':'):
 			exec(command[1:])
 			return
 		full = split(command)
 		if full[0] == 'help':
+			if len(full) == 1:
+				self.help_command(None)
+				return
 			if len(full) > 2:
 				print('too many arguments supplied')
 				return
 			self.help_command(full[1])
+			return
 		output = None
 		try:
 			output = self.commands[full[0]](full[1:])
@@ -48,10 +52,9 @@ def resolve_ref(args):
 	pass
 
 def cmd_brew(args):
-	"""	brew [list | load <path>]
-
-		list	lists all loaded brews
-		load	loads the brew at the given <path>
+	"""brew [list | load <path>]
+	list	lists all loaded brews
+	load	loads the brew at the given <path>
 	"""
 	if args[0].lower() == 'load':
 		if len(args) != 2:
@@ -66,15 +69,11 @@ def cmd_brew(args):
 		return AllBrews()
 
 def cmd_roll(args):
-	"""	roll [times] d<sides>
-
-		sides	the number of sides the die should have
-		times	the number of times to roll the die
+	"""roll [times] d<sides>
+	sides	the number of sides the die should have
+	times	the number of times to roll the die
 	"""
 	if len(args) == 1:
-		if args[0] == '--help':
-			print("Usage: roll [count] [d]<sides>\nif you specify a count, the number of sides must have the 'd' prefix.")
-			return
 		num = None
 		if args[0].lower().startswith('d'):
 			num = int(args[0][1:])
