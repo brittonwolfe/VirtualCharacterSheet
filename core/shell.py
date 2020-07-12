@@ -129,4 +129,5 @@ def shell(tui = basic_shell):
 		tui.Handle(line)
 
 if _setting._is_main:
+	_setting._is_main = False
 	shell()
