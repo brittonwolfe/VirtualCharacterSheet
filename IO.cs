@@ -55,6 +55,8 @@ namespace VirtualCharacterSheet {
 			public Dir GetSubdir(string sub) { return new Dir(Vpath() + sub); }
 			public File Get(string sub) { return new File(Vpath() + sub); }
 
+			public bool Exists() { return System.IO.Directory.Exists(this.Path); }
+
 			private string Vpath() {
 				if(!Path.EndsWith('\\'))
 					return (Path + "\\");

@@ -1,10 +1,11 @@
 clr.AddReference('vcs')
-from os import system
+from os import getcwd, system
+from os.path import isdir
 from shlex import split
 from traceback import print_exc
 from VirtualCharacterSheet import AbstractTui
 from VirtualCharacterSheet.Data import AllBrews
-from VirtualCharacterSheet.IO import File
+from VirtualCharacterSheet.IO import File, Dir
 
 class PyTui(AbstractTui):
 	commands = {}
@@ -61,6 +62,14 @@ def cmd_brew(args):
 			print("invalid number of arguments")
 		file = File(args[1])
 		if not file.Exists():
+			dir = Dir(getcwd() + '/' + args[1])
+			if dir.Exists():
+				path = dir.Path
+				if not path.endswith('/'):
+					path += '/'
+				path += 'brew.py'
+				cmd_brew(['load', path])
+				return
 			print('the file does not exist!')
 			return
 		brew.load(file.Path)
