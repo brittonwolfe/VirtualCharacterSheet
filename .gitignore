@@ -1,7 +1,6 @@
 bin/**
 obj/**
 *.sln
-*.csproj
 
 ironpython/**
 Newtonsoft.Json.12.0.3/**
