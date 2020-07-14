@@ -53,7 +53,16 @@ namespace VirtualCharacterSheet {
 
 			engine.GetBuiltinModule().ImportModule("clr");
 			engine.GetBuiltinModule().ImportModule("sys");
-			engine.GetBuiltinModule().Engine.Execute(@"sys.path.append('/lib/python2.7/')");
+			string pypath = "";
+			switch(Environment.OSVersion.Platform) {
+			case PlatformID.Unix:
+				pypath = "/lib/python2.7/";
+				break;
+			case PlatformID.Win32NT:
+				pypath = "/Python27";
+				break;
+			}
+			engine.GetBuiltinModule().Engine.Execute(@"sys.path.append('" + pypath + "')");
 
 # region global variables
 			SetGlobal("local", locals);
