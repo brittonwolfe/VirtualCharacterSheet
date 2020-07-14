@@ -58,7 +58,7 @@ namespace VirtualCharacterSheet {
 			case PlatformID.Unix:
 				pypath = "/lib/python2.7/";
 				if(!new IO.Dir(pypath).Exists())
-					pypath = "/Library/Python/2.7";
+					pypath = "/usr/lib/python2.7";
 				break;
 			case PlatformID.Win32NT:
 				pypath = "/Python27";
