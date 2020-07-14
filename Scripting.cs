@@ -26,7 +26,7 @@ namespace VirtualCharacterSheet {
 			if(!Initialized)
 				init();
 			settings._is_main = true;
-			engine.ExecuteFile("/home/val/Repos/vcs/core/shell.py");
+			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/shell.py").Path);
 			settings._is_main = false;
 		}
 

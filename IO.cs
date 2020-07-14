@@ -8,6 +8,8 @@ namespace VirtualCharacterSheet {
 		public static IO.File GetTempFile(string name) { return new IO.File(TempPath + name); }
 		public static IO.File GetInternalFile(string name) { return new IO.File(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/" + name); }
 
+		public static IO.Dir WorkingDirectory() { return new IO.Dir(System.IO.Directory.GetCurrentDirectory()); }
+
 		public static Stream GetStream(IO.File file) { return new FileStream(file.Path, FileMode.OpenOrCreate, FileAccess.ReadWrite); }
 
 	}
@@ -58,8 +60,8 @@ namespace VirtualCharacterSheet {
 			public bool Exists() { return System.IO.Directory.Exists(this.Path); }
 
 			private string Vpath() {
-				if(!Path.EndsWith('\\'))
-					return (Path + "\\");
+				if(!Path.EndsWith('/'))
+					return (Path + "/");
 				else
 					return Path;
 			}
