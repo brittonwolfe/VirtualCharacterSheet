@@ -1,7 +1,10 @@
-﻿using System;
+﻿using IronPython.Compiler.Ast;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace VirtualCharacterSheet {
 
@@ -30,6 +33,7 @@ namespace VirtualCharacterSheet {
 		private static PlayerCharacter currchar = null;
 		internal static bool SandboxAwaits = false;
 		internal static List<IO.File> temp_scripts = new List<IO.File>();
+		public readonly static PlatformID platform = Environment.OSVersion.Platform;
 
 		public static PlayerCharacter GetCurrentCharacter() { return currchar; }
 
@@ -39,9 +43,18 @@ namespace VirtualCharacterSheet {
 
 		public static Process Run(string command) {
 			var process = new Process();
-			var info = new System.Diagnostics.ProcessStartInfo();
-			info.FileName = "/bin/bash";
-			info.Arguments = (command);
+			var info = new ProcessStartInfo();
+			if(platform == PlatformID.Unix) {
+				info.FileName = "/bin/bash";
+				info.Arguments = command;
+			} else {
+				var parts = command.Split();
+				info.FileName = parts[0];
+				string tmp = "";
+				foreach(string arg in parts.Skip(1).ToArray())
+					tmp += (arg + " ");
+				info.Arguments = tmp.Trim();
+			}
 			process.StartInfo = info;
 			process.Start();
 			return process;

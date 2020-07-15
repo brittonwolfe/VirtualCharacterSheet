@@ -36,10 +36,7 @@ namespace VirtualCharacterSheet.Forms {
 
 		public abstract void Close();
 
-		public static (int, int) GetTerminalSize() {
-			string[] tmp = Core.Run("stty size").StandardOutput.ReadToEnd().Split(' ');
-			return (int.Parse(tmp[0]), int.Parse(tmp[2]));
-		}
+		public static (int, int) GetTerminalSize() { return (Console.WindowWidth, Console.WindowHeight); }
 		public static int GetTerminalWidth() { return GetTerminalSize().Item1; }
 		public static int GetTerminalHeight() { return GetTerminalSize().Item2; }
 

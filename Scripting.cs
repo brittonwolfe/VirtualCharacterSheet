@@ -61,10 +61,10 @@ namespace VirtualCharacterSheet {
 					pypath = "/usr/lib/python2.7/";
 				break;
 			case PlatformID.Win32NT:
-				pypath = "/Python27/Lib";
+				pypath = "/Python27/Lib/";
 				break;
 			}
-			engine.GetBuiltinModule().Engine.Execute(@"sys.path.append('" + pypath + "')");
+			engine.GetBuiltinModule().Engine.Execute("sys.path.append('" + pypath + "')");
 
 # region global variables
 			SetGlobal("local", locals);
