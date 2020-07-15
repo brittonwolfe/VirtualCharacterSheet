@@ -2,11 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
-using System.Threading;
-using System.Windows.Forms;
 using Microsoft.Scripting.Hosting;
 
 using IronPython.Hosting;
+using IronPython.Runtime.Operations;
+using PyList = IronPython.Runtime.List;
 
 using VirtualCharacterSheet.IO;
 using VirtualCharacterSheet.Forms;
@@ -19,40 +19,15 @@ namespace VirtualCharacterSheet {
 		public static dynamic locals = new ExpandoObject();
 		public static dynamic homebrew = new ExpandoObject();
 		public static dynamic settings = new ExpandoObject();
-		public static Dictionary<string, Form> viewers = new Dictionary<string, Form>();
+		public static Dictionary<string, TerminalForm> viewers = new Dictionary<string, TerminalForm>();
 		private static bool Initialized = false;
 
 		public static void Sandbox() {
-			do {
-				Console.Write("> ");
-				Core.SandboxAwaits = true;
-				string inp = Console.In.ReadLine();
-				Core.SandboxAwaits = false;
-				if(inp == null)
-					continue;
-				if(inp == "exit") {
-					Core.HideConsole();
-					Console.Clear();
-					break;
-				}
-				if(inp.ToLower() == "cls") {
-					Console.Clear();
-					continue;
-				}
-				try {
-					dynamic tmp = engine.Execute(inp);
-					if(settings.ShowOutput && tmp != null)
-						Console.WriteLine(tmp);
-				}
-				catch(Exception e) {
-					Console.WriteLine(e);
-					/*Console.Write("Continue (Y/N)? ");
-					var choice = Console.ReadKey(true);
-					if(choice.Key != ConsoleKey.Y)
-						break;*/
-					Console.WriteLine();
-				}
-			} while(true);
+			if(!Initialized)
+				init();
+			settings._is_main = true;
+			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/shell.py").Path);
+			settings._is_main = false;
 		}
 
 		public static void Brew(FileScript src) {
@@ -62,6 +37,7 @@ namespace VirtualCharacterSheet {
 			engine.SetSearchPaths(paths);
 
 			homebrew.def_brew = new Func<string, Brew>((string n) => { return new Brew(n); });
+
 			homebrew.Path = src.File.Directory;
 
 			try { src.Run(); }
@@ -77,13 +53,26 @@ namespace VirtualCharacterSheet {
 
 			engine.GetBuiltinModule().ImportModule("clr");
 			engine.GetBuiltinModule().ImportModule("sys");
-			engine.GetBuiltinModule().Engine.Execute(@"sys.path.append(r'C:\Python27\Lib')");
-			engine.GetBuiltinModule().ImportModule("inspect");
+			string pypath = "";
+			switch(Environment.OSVersion.Platform) {
+			case PlatformID.Unix:
+				pypath = "/lib/python2.7/";
+				if(!new IO.Dir(pypath).Exists())
+					pypath = "/usr/lib/python2.7/";
+				break;
+			case PlatformID.Win32NT:
+				pypath = "/Python27/Lib";
+				break;
+			}
+			engine.GetBuiltinModule().Engine.Execute(@"sys.path.append('" + pypath + "')");
 
 # region global variables
 			SetGlobal("local", locals);
 			SetGlobal("brew", homebrew);
+			homebrew.load = new Action<string>((string s) => Brew(new FileScript(new File(s))));
 			SetGlobal("_setting", settings);
+			engine.GetBuiltinModule().ImportModule("sys");
+
 			SetGlobal("_viewer", viewers);
 # endregion
 
@@ -151,9 +140,18 @@ namespace VirtualCharacterSheet {
 			Initialized = true;
 		}
 
+		public static T[] PyArray<T>(PyList list) {
+			T[] output = new T[list.__len__()];
+			uint n = 0;
+			foreach(T item in list)
+				output[n++] = item;
+			return output;
+		}
+
 		private static void SetGlobal(string n, object o) { engine.GetBuiltinModule().SetVariable(n, o); }
 		private static dynamic GetGlobal(string n) { return engine.GetBuiltinModule().GetVariable(n); }
 		internal static void Remove(dynamic obj, string key) { ((IDictionary<string, object>)obj).Remove(key); }
+
 
 		public static Modifier CreateModifier() { return new Modifier(); }
 		public static Modifier CreateModifier(short m) { return new Modifier(m); }
@@ -165,12 +163,7 @@ namespace VirtualCharacterSheet {
 				temp.WriteText(Data.GetPy(key).src);
 			else
 				temp.WriteText("");
-			var process = new System.Diagnostics.Process();
-			var info = new System.Diagnostics.ProcessStartInfo();
-			info.FileName = "CMD.exe";
-			info.Arguments = ("/C code \"" + temp.Path + "\"");
-			process.StartInfo = info;
-			try { process.Start(); }
+			try { Core.Run("code \"" + temp.Path + "\""); }
 			catch { ScriptEditor(key); }
 			Console.WriteLine("Press enter to resume after editing...");
 			Console.ReadLine();
@@ -201,27 +194,14 @@ namespace VirtualCharacterSheet {
 		}
 
 		private static void ViewObject(object obj) {
-			Thread showthread = null;
 			switch(obj) {
 			case PlayerCharacter player:
-				if(viewers.ContainsKey(player.Identifier))
-					Console.WriteLine("A view for this character is already open.");
-				else {
-					showthread = new Thread(() => {
-						CharacterSheet window = new CharacterSheet();
-						window.SetCharacter(player);
-						Application.Run(window);
-					});
-				}
+				CharacterSheet window = new CharacterSheet();
+				window.SetCharacter(player);
 				break;
 			default:
 				Console.WriteLine(obj.GetType().ToString() + " cannot be viewed.");
 				break;
-			}
-			if(showthread != null) {
-				showthread.SetApartmentState(ApartmentState.STA);
-				showthread.IsBackground = true;
-				showthread.Start();
 			}
 		}
 
@@ -265,7 +245,7 @@ namespace VirtualCharacterSheet {
 
 	}
 
-	public abstract class Script : DynamicObject{
+	public abstract class Script : DynamicObject {
 		protected Dictionary<string, object> Meta = new Dictionary<string, object>();
 
 		public abstract void Run();

@@ -1,30 +1,22 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using System.Diagnostics;
 using System.Text;
-using System.Threading;
-using System.Windows.Forms;
 
 namespace VirtualCharacterSheet {
 
-	static class Program {
+	class Program {
 
-		/// <summary>
-		///  The main entry point for the application.
-		/// </summary>
-		[STAThread]
-		static void Main() {
-			Console.Title = "VCS Console";
+		static void Main(string[] args) {
+			Console.Title = "Virtual Character Sheet";
 			Console.OutputEncoding = Encoding.Unicode;
-			Core.HideConsole();
+			Console.WriteLine("VCS TUI");
 			Scripting.init();
+
+			Core.StartSandbox();
 
 			AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnExit);
 
-			Application.SetHighDpiMode(HighDpiMode.SystemAware);
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new Forms.Splash());
 		}
 
 		private static void OnExit(object sender, EventArgs e) {
@@ -35,40 +27,24 @@ namespace VirtualCharacterSheet {
 	}
 
 	public static class Core {
-		private static bool allocated = false;
 		private static PlayerCharacter currchar = null;
-		private static Thread SandboxThread = new Thread(() => { Scripting.Sandbox(); });
 		internal static bool SandboxAwaits = false;
 		internal static List<IO.File> temp_scripts = new List<IO.File>();
-
-		static Core() {
-			SandboxThread.SetApartmentState(ApartmentState.STA);
-		}
-
-		public static void AllocateConsole() {
-			if (!allocated) {
-				AllocConsole();
-				Console.Title = "VCS Python Command Line";
-				allocated = true;
-			}
-		}
-		public static void ShowConsole() { ShowWindow(GetConsoleWindow(), 5); }
-		public static void HideConsole() { ShowWindow(GetConsoleWindow(), 0); }
 
 		public static PlayerCharacter GetCurrentCharacter() { return currchar; }
 
 		public static short Modifier(byte stat) { return (short)((stat / 2) - 5); }
 
-		[DllImport("kernel32.dll")]
-		private static extern bool AllocConsole();
-		[DllImport("kernel32.dll")]
-		internal static extern IntPtr GetConsoleWindow();
-		[DllImport("user32.dll")]
-		private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+		public static void StartSandbox() { Scripting.Sandbox(); }
 
-		public static void StartSandbox() {
-			if (!SandboxThread.IsAlive)
-				SandboxThread.Start();
+		public static Process Run(string command) {
+			var process = new Process();
+			var info = new System.Diagnostics.ProcessStartInfo();
+			info.FileName = "/bin/bash";
+			info.Arguments = (command);
+			process.StartInfo = info;
+			process.Start();
+			return process;
 		}
 
 	}

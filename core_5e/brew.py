@@ -66,9 +66,6 @@ core.AddCharacterInjector(InjectChecks)
 core.AddCharacterInjector(InjectSaves)
 core.AddCharacterInjector(InjectSkills)
 
-# set up views
-# core.SetBasicView(core.GetFile(r"views\basic_char.cshtml"))
-
 import classes
-
 import item
+#import tui

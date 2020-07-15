@@ -1,73 +1,116 @@
 ﻿using System;
+using System.Collections.Generic;
+
+using PyList = IronPython.Runtime.List;
+using PyTuple = IronPython.Runtime.PythonTuple;
 
 namespace VirtualCharacterSheet.Forms {
 
-	public partial class CharacterSheet {
-		public PlayerCharacter currChar { get; private set; }
+	public abstract class TerminalForm : ComplexObject {
+		protected Dictionary<string, TerminalView> Views = new Dictionary<string, TerminalView>();
+		protected string CurrentView = "base";
+		protected Tui Handler;
 
-		private void showToolStripMenuItem_Click(object sender, EventArgs e) { Core.ShowConsole(); }
+		public TerminalForm(params (string, TerminalView)[] views) {
+			foreach((string, TerminalView) kvp in views)
+				Views[kvp.Item1] = kvp.Item2;
+		}
 
-		private void sandboxToolStripMenuItem_Click(object sender, EventArgs e) { Core.StartSandbox(); }
+		public void Render(dynamic content = null) {
+			if(content != null)
+				Handler.SetGlobal("render", content);
+			Views[CurrentView].Render();
+			Handler.RemoveGlobal("render");
+		}
 
-		private void Strength_Click(object sender, EventArgs e) {
-			Console.WriteLine(currChar.Name + ": STR check " + (Die.Roll(20) + currChar.STR));
+		public void SetupTui(params (string, dynamic)[] funcs) {
+			Handler = new Tui(funcs);
+			Handler.SetThis(this);
 		}
-		private void Dexterity_Click(object sender, EventArgs e) {
-			//do a dex check
+		public void SetupTui(params PyTuple[] funcs) {
+			var tmp = new (string, dynamic)[funcs.Length];
+			for(int x = 0; x < tmp.Length; x++)
+				tmp[x] = ((string)funcs[x][0], funcs[x][1]);
+			SetupTui(tmp);
 		}
-		private void Constitution_Click(object sender, EventArgs e) {
-			//do a con check
+
+		public abstract void Close();
+
+		public static (int, int) GetTerminalSize() {
+			string[] tmp = Core.Run("stty size").StandardOutput.ReadToEnd().Split(' ');
+			return (int.Parse(tmp[0]), int.Parse(tmp[2]));
 		}
-		private void Intelligence_Click(object sender, EventArgs e) {
-			//do an int check
+		public static int GetTerminalWidth() { return GetTerminalSize().Item1; }
+		public static int GetTerminalHeight() { return GetTerminalSize().Item2; }
+
+	}
+
+	public class TerminalGraphic {
+		private List<string> Layers = new List<string>();
+		protected dynamic Renderer;
+		public ushort Width, Height;
+
+		public TerminalGraphic(dynamic render) { Renderer = render; }
+
+		public string Draw() { return Renderer(); }
+
+	}
+	
+
+	public class TerminalView {
+		protected TerminalGraphic[] Graphics;
+		protected dynamic Renderer;
+
+		public TerminalView(dynamic renderer = null, params TerminalGraphic[] graphics) {
+			Graphics = graphics;
+			Renderer = (renderer != null) ? renderer : new Action(DefaultRender);
 		}
-		private void Wisdom_Click(object sender, EventArgs e) {
-			//do a wis check
+
+		public void Render() {
+			Scripting.locals.graphics = Graphics;
+			Renderer();
+			Scripting.Remove(Scripting.locals, "graphics");
 		}
-		private void Charisma_Click(object sender, EventArgs e) {
-			//do a cha check
+
+		public void DefaultRender() {
+			foreach(TerminalGraphic g in Scripting.locals.graphics)
+				Console.Write(g.Draw());
 		}
+
+	}
+
+	public class CharacterSheet : TerminalForm {
+		public PlayerCharacter Character { get; private set; }
+		public dynamic Setup;
+
+		public CharacterSheet(params (string, TerminalView)[] views) : base(views) { }
+		public CharacterSheet(PyList views) : this(Scripting.PyArray<(string, TerminalView)>(views)) {}
 
 		public void SetCharacter(PlayerCharacter c) {
 			DisposeIdentity();
+			Character = c;
 			Scripting.viewers[c.Identifier] = this;
-			currChar = c;
-			CharHeader.Text = currChar.Name;
-			PlayerName.Text = currChar.Player;
-			StrengthScore.Text = currChar.Strength.ToString();
-			StrengthMod.Text = currChar.STR.ToString();
-			DexterityScore.Text = currChar.Dexterity.ToString();
-			DexterityMod.Text = currChar.DEX.ToString();
-			ConstitutionScore.Text = currChar.Constitution.ToString();
-			ConstitutionMod.Text = currChar.CON.ToString();
-			IntelligenceScore.Text = currChar.Intelligence.ToString();
-			IntelligenceMod.Text = currChar.INT.ToString();
-			WisdomScore.Text = currChar.Wisdom.ToString();
-			WisdomMod.Text = currChar.WIS.ToString();
-			CharismaScore.Text = currChar.Charisma.ToString();
-			CharismaMod.Text = currChar.CHA.ToString();
+			Setup();
 		}
 
 		private void DisposeIdentity() {
-			if(currChar != null)
-				Scripting.Remove(Scripting.viewers, currChar.Identifier);
+			if(Character != null)
+				Scripting.Remove(Scripting.viewers, Character.Identifier);
 		}
+
+		public Tui GetTuiHandler() { return Handler; }
+
+		public override void Close() { DisposeIdentity(); }
+
 	}
 
 	public partial class Splash {
 
-		private void NewCharacter_Click(object sender, EventArgs e) {
+		private void NewCharacter() {
 			
 		}
 
-		private void showToolStripMenuItem_Click(object sender, EventArgs e) { Core.ShowConsole(); }
-		private void sandboxToolStripMenuItem_Click(object sender, EventArgs e) { Core.StartSandbox(); }
-
-		private void LoadModule_Click(object sender, EventArgs e) {
-			if(openModule.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-				Scripting.Brew(new FileScript(new IO.File(openModule.FileName)));
-		}
-
+		private void LoadModule(string mod) { Scripting.Brew(new FileScript(new IO.File(mod))); }
 
 	}
 

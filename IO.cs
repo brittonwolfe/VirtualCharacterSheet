@@ -1,12 +1,14 @@
-﻿using System;
-using System.IO;
-using System.Runtime.Serialization;
+﻿using System.IO;
+using System.Reflection;
 
 namespace VirtualCharacterSheet {
 
 	public static class FileLoad {
 		public static readonly string TempPath = Path.GetTempPath();
 		public static IO.File GetTempFile(string name) { return new IO.File(TempPath + name); }
+		public static IO.File GetInternalFile(string name) { return new IO.File(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/" + name); }
+
+		public static IO.Dir WorkingDirectory() { return new IO.Dir(System.IO.Directory.GetCurrentDirectory()); }
 
 		public static Stream GetStream(IO.File file) { return new FileStream(file.Path, FileMode.OpenOrCreate, FileAccess.ReadWrite); }
 
@@ -39,6 +41,8 @@ namespace VirtualCharacterSheet {
 					output.Write(t);
 			}
 
+			public bool Exists() { return System.IO.File.Exists(this.Path); }
+
 			internal BinaryWriter GetBinaryWriter() { return new BinaryWriter(System.IO.File.OpenWrite(this.Path)); }
 
 		}
@@ -53,9 +57,11 @@ namespace VirtualCharacterSheet {
 			public Dir GetSubdir(string sub) { return new Dir(Vpath() + sub); }
 			public File Get(string sub) { return new File(Vpath() + sub); }
 
+			public bool Exists() { return System.IO.Directory.Exists(this.Path); }
+
 			private string Vpath() {
-				if(!Path.EndsWith('\\'))
-					return (Path + "\\");
+				if(!Path.EndsWith('/'))
+					return (Path + "/");
 				else
 					return Path;
 			}
