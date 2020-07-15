@@ -4,7 +4,7 @@ from os.path import isdir
 from shlex import split
 from traceback import print_exc
 from VirtualCharacterSheet import AbstractTui
-from VirtualCharacterSheet.Data import AllBrews
+from VirtualCharacterSheet.Data import AllBrews, GetCharacter, GetItem
 from VirtualCharacterSheet.IO import File, Dir
 
 class PyTui(AbstractTui):
@@ -50,7 +50,15 @@ class PyTui(AbstractTui):
 		return output
 
 def resolve_ref(args):
-	pass
+	for i in range(len(args)):
+		arg = args[i]
+		replace_function = None
+		if arg.startswith('-C[') and arg.endswith(']'):
+			replace_function = GetCharacter
+		if arg.startswith('-I[') and arg.endswith(']'):
+			replace_function = GetItem
+		if replace_function is not None:
+			args[i] = replace_function(arg[3:-1])
 
 def cmd_brew(args):
 	"""brew [list | load <path>]
@@ -113,6 +121,7 @@ def cmd_roll(args):
 		return rolln(n, d)
 
 def cmd_view(args):
+	resolve_ref(args)
 	print("not implemented")
 
 basic_shell_dict = {
