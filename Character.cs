@@ -79,12 +79,11 @@ namespace VirtualCharacterSheet {
 
 	}
 
-	public class Class {
+	public class Class : ScriptedObject {
 		public readonly string Identifier;
 		public string Name;
 		public ushort HitDie;
 		public bool[] Saves;
-		public dynamic Info = new ExpandoObject();
 		internal List<dynamic> OnLevel = new List<dynamic>();
 
 		public Class(string n) {
@@ -97,7 +96,7 @@ namespace VirtualCharacterSheet {
 
 		public void AttachInstance(Character c) {
 			var tmp = new ClassInstance(this);
-			// TODO
+			c.Meta.classes.append(tmp);
 		}
 
 	}
@@ -115,6 +114,8 @@ namespace VirtualCharacterSheet {
 		}
 
 		public void LevelUp() { underlying.OnLevel[++Level](attached); }
+
+		public override string ToString() { return ("Instance of " + underlying.ToString() + " attached to " + attached.ToString()); }
 
 	}
 

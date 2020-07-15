@@ -3,6 +3,10 @@ core.Meta.Title = "D&D Fifth Edition"
 core.Meta.Description = "The core rules for Dungeons and Dragons Fifth Edition"
 core.Meta.Dir = brew.Path
 
+def InjectMeta(character):
+	character.Meta.classes = []
+
+
 def InjectChecks(character):
 	character.AddBehavior("StrengthCheck", lambda self: (roll(20) + self.STR))
 	character.AddBehavior("DexterityCheck", lambda self: (roll(20) + self.DEX))
@@ -57,6 +61,7 @@ def InjectSkills(character):
 	character.AddBehavior("skill_stealth", generate_skill("stealth", character.DexterityCheck))
 	character.AddBehavior("skill_survival", generate_skill("survival", character.WisdomCheck))
 
+core.AddCharacterInjector(InjectMeta)
 core.AddCharacterInjector(InjectChecks)
 core.AddCharacterInjector(InjectSaves)
 core.AddCharacterInjector(InjectSkills)
