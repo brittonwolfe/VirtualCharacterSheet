@@ -70,7 +70,7 @@ def cmd_brew(args):
 			print("invalid number of arguments")
 		file = File(args[1])
 		if not file.Exists():
-			dir = Dir(getcwd() + '/' + args[1])
+			dir = Dir(args[1])
 			if dir.Exists():
 				path = dir.Path
 				if not path.endswith('/'):
@@ -78,6 +78,12 @@ def cmd_brew(args):
 				path += 'brew.py'
 				cmd_brew(['load', path])
 				return
+			else:
+				# if for some stupid reason we can't get the relative path, get the absolute one!
+				dir = Dir(getcwd() + '/' + args[1])
+				if dir.Exists():
+					cmd_brew([args[0], args[1]])
+					return
 			print('the file does not exist!')
 			return
 		brew.load(file.Path)
@@ -123,6 +129,7 @@ def cmd_roll(args):
 def cmd_view(args):
 	resolve_ref(args)
 	print("not implemented")
+	print(args)
 
 basic_shell_dict = {
 	'brew': cmd_brew,

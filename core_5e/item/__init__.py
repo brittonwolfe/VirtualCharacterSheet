@@ -1,2 +1,2 @@
-from . import potion_healing
-from . import rapier
+import potion_healing
+import rapier

@@ -54,7 +54,7 @@ namespace VirtualCharacterSheet {
 			engine.GetBuiltinModule().ImportModule("clr");
 			engine.GetBuiltinModule().ImportModule("sys");
 			string pypath = "";
-			switch(Environment.OSVersion.Platform) {
+			switch(Core.platform) {
 			case PlatformID.Unix:
 				pypath = "/lib/python2.7/";
 				if(!new IO.Dir(pypath).Exists())

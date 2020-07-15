@@ -1,14 +1,13 @@
 clr.AddReference('vcs')
-from VirtualCharacterSheet.Forms import TerminalView, CharacterSheet
+from VirtualCharacterSheet import PlayerCharacter
+from VirtualCharacterSheet.Forms import TerminalView
 
 from charsheet_graphics import header
-from charsheet_tui import setup_tui
 
 core = _brew('core_5e')
 
 basic = TerminalView(header)
 
-char_tui = CharacterSheet([('basic', basic)])
-setup_tui(char_tui)
+char_tui = None # CharacterSheet()
 
-#core.AddTui(char_tui)
+# core.AddTui(PlayerCharacter, char_tui)
