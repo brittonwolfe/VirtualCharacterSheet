@@ -54,6 +54,10 @@ namespace VirtualCharacterSheet {
 			Inject();
 		}
 
+		public dynamic __getitem__(string arg) {
+			return typeof(PlayerCharacter).GetProperty(arg).GetValue(this);
+		}
+
 	}
 
 	public class NPC : Character {

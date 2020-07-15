@@ -69,4 +69,5 @@ core.AddCharacterInjector(InjectSkills)
 import classes
 import item
 
+import shell
 import tui

@@ -22,8 +22,8 @@ def stat_check(args):
 				return
 			times = int(arg)
 	output = 0
-	for i in range(times or 1):
-		output = local.This.Character[stat + 'Check']() + mod
+	for _ in range(times or 1):
+		output += local.This.Character[stat + 'Check']() + mod
 	return output
 
 def versatile_roll(args):
@@ -35,4 +35,12 @@ def versatile_roll(args):
 character_tui = PyTui(add_base({
 	'check': stat_check,
 	'roll': versatile_roll
-}))
+}), shout = True)
+
+if local.curr is not None:
+	class temp:
+		pass
+	local.This = temp()
+	local.This.Character = local.curr
+	from core.shell import shell
+	shell(character_tui)
