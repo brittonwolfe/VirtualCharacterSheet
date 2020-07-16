@@ -21,9 +21,11 @@ def stat_check(args):
 				print('too many times arguments given')
 				return
 			times = int(arg)
+	if len(stat) == 3:
+		stat = STAT_LIST[STAT_LIST.index(stat) + 1].capitalize()
 	output = 0
 	for _ in range(times or 1):
-		output += local.This.Character[stat + 'Check']() + mod
+		output += local.This.Character.DoBehavior(stat + 'Check')
 	return output
 
 def versatile_roll(args):
@@ -37,10 +39,14 @@ character_tui = PyTui(add_base({
 	'roll': versatile_roll
 }), shout = True)
 
-if local.curr is not None:
-	class temp:
-		pass
-	local.This = temp()
-	local.This.Character = local.curr
+def do_something():
+	if local.curr is None:
+		return
 	from core.shell import shell
+	class _():
+		pass
+	local.This = _()
+	local.This.Character = local.curr
 	shell(character_tui)
+
+local.foo = do_something

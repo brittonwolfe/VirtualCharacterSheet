@@ -18,6 +18,8 @@ namespace VirtualCharacterSheet.Event {
 
 		public bool Contains(string key) { return Behaviors.ContainsKey(key); }
 
+		internal dynamic Do(string name) { return Behaviors[name].Do(); }
+
 		public override bool TryGetMember(GetMemberBinder binder, out object result) {
 			if(!Contains(binder.Name)) {
 				result = null;
@@ -48,6 +50,8 @@ namespace VirtualCharacterSheet.Event {
 			Source = func;
 			Parent = set;
 		}
+
+		internal dynamic Do() { return Source(); }
 
 		public override bool TryInvoke(InvokeBinder binder, object[] args, out object result) {
 			if(args.Length == 0)

@@ -289,6 +289,8 @@ namespace VirtualCharacterSheet {
 
 		public void AddBehavior(string name, dynamic obj) { Behavior.Add(name, obj); }
 
+		public dynamic DoBehavior(string name) { return Behavior.Do(name); }
+
 		public override bool TryGetMember(GetMemberBinder binder, out object result) {
 			if (base.TryGetMember(binder, out result))
 				return true;
