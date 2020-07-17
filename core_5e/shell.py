@@ -38,15 +38,3 @@ character_tui = PyTui(add_base({
 	'check': stat_check,
 	'roll': versatile_roll
 }), shout = True)
-
-def do_something():
-	if local.curr is None:
-		return
-	from core.shell import shell
-	class _():
-		pass
-	local.This = _()
-	local.This.Character = local.curr
-	shell(character_tui)
-
-local.foo = do_something

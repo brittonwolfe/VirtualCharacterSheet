@@ -1,1 +1,1 @@
-from . import charsheet
+import charsheet

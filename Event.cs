@@ -51,7 +51,7 @@ namespace VirtualCharacterSheet.Event {
 			Parent = set;
 		}
 
-		internal dynamic Do() { return Source(); }
+		internal dynamic Do() { return ((dynamic)this)(); }
 
 		public override bool TryInvoke(InvokeBinder binder, object[] args, out object result) {
 			if(args.Length == 0)
