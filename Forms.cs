@@ -91,13 +91,13 @@ namespace VirtualCharacterSheet.Forms {
 		public void SetCharacter(PlayerCharacter c) {
 			DisposeIdentity();
 			Character = c;
-			Scripting.viewers[c.Identifier] = this;
+			//Scripting.viewers[c.Identifier] = this;
 			Setup();
 		}
 
 		private void DisposeIdentity() {
 			if(Character != null)
-				Scripting.Remove(Scripting.viewers, Character.Identifier);
+				return;//Scripting.Remove(Scripting.viewers, Character.Identifier);
 		}
 
 		public Tui GetTuiHandler() { return Handler; }

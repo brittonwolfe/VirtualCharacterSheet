@@ -58,6 +58,8 @@ def resolve_ref(args):
 			replace_function = GetCharacter
 		if arg.startswith('-I[') and arg.endswith(']'):
 			replace_function = GetItem
+		if arg.startswith('-b[') and arg.endswith(']'):
+			replace_function = GetBrew
 		if replace_function is not None:
 			args[i] = replace_function(arg[3:-1])
 

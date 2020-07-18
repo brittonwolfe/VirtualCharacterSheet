@@ -5,7 +5,6 @@ using System.Dynamic;
 using Microsoft.Scripting.Hosting;
 
 using IronPython.Hosting;
-using IronPython.Runtime.Operations;
 using PyList = IronPython.Runtime.List;
 
 using VirtualCharacterSheet.IO;
@@ -19,7 +18,6 @@ namespace VirtualCharacterSheet {
 		public static dynamic locals = new ExpandoObject();
 		public static dynamic homebrew = new ExpandoObject();
 		public static dynamic settings = new ExpandoObject();
-		public static Dictionary<string, TerminalForm> viewers = new Dictionary<string, TerminalForm>();
 		private static bool Initialized = false;
 
 		public static void Sandbox() {
@@ -72,8 +70,6 @@ namespace VirtualCharacterSheet {
 			homebrew.load = new Action<string>((string s) => Brew(new FileScript(new File(s))));
 			SetGlobal("_setting", settings);
 			engine.GetBuiltinModule().ImportModule("sys");
-
-			SetGlobal("_viewer", viewers);
 # endregion
 
 # region global functions
@@ -125,7 +121,7 @@ namespace VirtualCharacterSheet {
 # endregion
 
 # region viewers
-			SetGlobal("view", new Action<object>(ViewObject));
+			SetGlobal("view", new Action<object, Brew>(Core.View));
 # endregion
 
 # region metaprogrammatical functions
@@ -191,18 +187,6 @@ namespace VirtualCharacterSheet {
 			Data.SetPy(key, new RawPyScript(output));
 			Console.Clear();
 			Console.WriteLine("script created at _py(\"" + key + "\")");
-		}
-
-		private static void ViewObject(object obj) {
-			switch(obj) {
-			case PlayerCharacter player:
-				CharacterSheet window = new CharacterSheet();
-				window.SetCharacter(player);
-				break;
-			default:
-				Console.WriteLine(obj.GetType().ToString() + " cannot be viewed.");
-				break;
-			}
 		}
 
 	}
