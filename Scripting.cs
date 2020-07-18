@@ -8,7 +8,6 @@ using IronPython.Hosting;
 using PyList = IronPython.Runtime.List;
 
 using VirtualCharacterSheet.IO;
-using VirtualCharacterSheet.Forms;
 using VirtualCharacterSheet.Event;
 
 namespace VirtualCharacterSheet {
