@@ -6,7 +6,6 @@ core.Meta.Dir = brew.Path
 def InjectMeta(character):
 	character.Meta.classes = []
 
-
 def InjectChecks(character):
 	character.AddBehavior("StrengthCheck", lambda self: (roll(20) + self.STR))
 	character.AddBehavior("DexterityCheck", lambda self: (roll(20) + self.DEX))
