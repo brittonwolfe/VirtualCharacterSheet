@@ -25,9 +25,9 @@ namespace VirtualCharacterSheet {
 		public static void Sandbox() {
 			if(!Initialized)
 				init();
-			settings._is_main = true;
-			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/shell.py").Path);
-			settings._is_main = false;
+			var scope = engine.CreateScope();
+			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/shell.py").Path, scope);
+			scope.GetVariable("shell")();
 		}
 
 		public static void Brew(FileScript src) {

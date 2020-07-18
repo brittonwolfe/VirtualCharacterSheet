@@ -1,6 +1,6 @@
 clr.AddReference('vcs')
 from VirtualCharacterSheet import PlayerCharacter
-from VirtualCharacterSheet.Forms import TerminalView
+from VirtualCharacterSheet.Forms import TerminalForm, TerminalView
 
 from charsheet_graphics import header
 
@@ -8,6 +8,12 @@ core = _brew('core_5e')
 
 basic = TerminalView(header)
 
-char_tui = None # CharacterSheet()
+class CharacterSheet(TerminalForm):
+	def Render(self, obj):
+		print(obj.Name)
+	def Close(self):
+		pass
 
-# core.AddTui(PlayerCharacter, char_tui)
+char_tui = CharacterSheet()
+
+core.AddView(PlayerCharacter, char_tui)

@@ -6,7 +6,14 @@ using PyTuple = IronPython.Runtime.PythonTuple;
 
 namespace VirtualCharacterSheet.Forms {
 
-	public abstract class TerminalForm : ComplexObject {
+	public abstract class AbstractUi : ComplexObject {
+
+		public abstract void Render(dynamic content = null);
+		public abstract void Close();
+
+	}
+
+	public abstract class TerminalForm : AbstractUi {
 		protected Dictionary<string, TerminalView> Views = new Dictionary<string, TerminalView>();
 		protected string CurrentView = "base";
 		protected Tui Handler;
@@ -16,7 +23,7 @@ namespace VirtualCharacterSheet.Forms {
 				Views[kvp.Item1] = kvp.Item2;
 		}
 
-		public void Render(dynamic content = null) {
+		public override void Render(dynamic content = null) {
 			if(content != null)
 				Handler.SetGlobal("render", content);
 			Views[CurrentView].Render();
@@ -33,8 +40,6 @@ namespace VirtualCharacterSheet.Forms {
 				tmp[x] = ((string)funcs[x][0], funcs[x][1]);
 			SetupTui(tmp);
 		}
-
-		public abstract void Close();
 
 		public static (int, int) GetTerminalSize() { return (Console.WindowWidth, Console.WindowHeight); }
 		public static int GetTerminalWidth() { return GetTerminalSize().Item1; }

@@ -58,6 +58,15 @@ namespace VirtualCharacterSheet {
 			return process;
 		}
 
+		public static void View(object obj) {
+			foreach(Brew b in Data.GetAllBrews())
+				if(b.CanView(obj.GetType())) {
+					b.View(obj);
+					return;
+				}
+			Console.WriteLine("Cannot view object of type " + obj.GetType() + ".");
+		}
+
 	}
 
 }

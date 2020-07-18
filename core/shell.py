@@ -4,7 +4,8 @@ from os.path import isdir
 from shlex import split
 from traceback import print_exc
 from VirtualCharacterSheet import AbstractTui
-from VirtualCharacterSheet.Data import AllBrews, GetCharacter, GetItem
+from VirtualCharacterSheet.Core import View
+from VirtualCharacterSheet.Data import AllBrews, GetBrew, GetCharacter, GetItem, HasBrew, HasCharacter, HasItem
 from VirtualCharacterSheet.IO import File, Dir
 
 class PyTui(AbstractTui):
@@ -128,8 +129,7 @@ def cmd_roll(args):
 
 def cmd_view(args):
 	resolve_ref(args)
-	print("not implemented")
-	print(args)
+	View(args[0])
 
 basic_shell_dict = {
 	'brew': cmd_brew,
@@ -152,7 +152,3 @@ def shell(tui = basic_shell):
 			system('clear')
 			continue
 		tui.Handle(line)
-
-if _setting._is_main:
-	_setting._is_main = False
-	shell()

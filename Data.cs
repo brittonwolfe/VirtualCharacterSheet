@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
 
 using VirtualCharacterSheet.Event;
@@ -45,6 +46,7 @@ namespace VirtualCharacterSheet {
 		internal static void AddBrew(Brew b) { brew[b.Name] = b; }
 		public static bool HasBrew(string n) { return brew.ContainsKey(n); }
 		public static Brew GetBrew(string n) { return brew[n]; }
+		internal static List<Brew> GetAllBrews() { return new List<Brew>(brew.Values); }
 		public static string AllBrews() {
 			string output = "";
 			foreach(string key in brew.Keys)
@@ -56,24 +58,36 @@ namespace VirtualCharacterSheet {
 
 	public class Brew {
 		public dynamic Meta = new ExpandoObject();
+		public Dictionary<Type, Forms.AbstractUi> Viewers;
 		public readonly string Name;
 
 		public Brew(string name) {
 			Name = name;
 			if (Data.HasBrew(name))
 				throw new BrewKeyOccupiedException(this);
+			Viewers = new Dictionary<Type, Forms.AbstractUi>();
 			Data.AddBrew(this);
 		}
 
-		public void AddCharacterInjector(InjectionEvent e) {
-			Character.Injection += e;
+		public void AddCharacterInjector(InjectionEvent e) { Character.Injection += e; }
+
+		public void AddView(Type T, Forms.AbstractUi ui) {
+			if(Viewers.ContainsKey(T)) {
+				Console.WriteLine("Can't set more than one viewer for a type!");
+				return;
+			}
+			Viewers[T] = ui;
 		}
-		public void SetBasicView(File path) {
-			// set the basic view
+
+		public void View(object obj) {
+			var T = obj.GetType();
+			if(!Viewers.ContainsKey(T)) {
+				Console.WriteLine("No viewer for " + T + " was found.");
+				return;
+			}
+			Viewers[T].Render(obj);
 		}
-		public void AddView() {
-			// add a view
-		}
+		public bool CanView(Type T) { return Viewers.ContainsKey(T); }
 
 		public File GetFile(string subpath) { return new File(Meta.Dir + subpath); }
 
