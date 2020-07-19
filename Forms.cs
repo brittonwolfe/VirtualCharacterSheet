@@ -6,9 +6,15 @@ using PyTuple = IronPython.Runtime.PythonTuple;
 
 namespace VirtualCharacterSheet.Forms {
 
+	public abstract class AbstractUiFactory {
+
+		public abstract AbstractUi Create(dynamic content = null);
+
+	}
+
 	public abstract class AbstractUi : ComplexObject {
 
-		public abstract void Render(dynamic content = null);
+		public abstract void Render();
 		public abstract void Close();
 
 	}
@@ -23,11 +29,8 @@ namespace VirtualCharacterSheet.Forms {
 				Views[kvp.Item1] = kvp.Item2;
 		}
 
-		public override void Render(dynamic content = null) {
-			if(content != null)
-				Handler.SetGlobal("render", content);
+		public override void Render() {
 			Views[CurrentView].Render();
-			Handler.RemoveGlobal("render");
 		}
 
 		public void SetupTui(params (string, dynamic)[] funcs) {

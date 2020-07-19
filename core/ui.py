@@ -1,10 +1,17 @@
 clr.AddReference('vcs')
-from VirtualCharacterSheet.Forms import AbstractUi
+from VirtualCharacterSheet.Forms import AbstractUi, AbstractUiFactory
 
-from tkinter import Tk
+#from Tkinter import Tk
+
+class PyUiFactory(AbstractUiFactory):
+	class_ = None
+	def __init__(self, class_):
+		self.class_ = class_
+	def Create(self, obj):
+		return self.class_(obj)
 
 class PyGui(AbstractUi):
-	window = Tk()
+	#window = Tk()
 	components = []
 	def __init__(self):
 		pass
@@ -22,3 +29,4 @@ class PyCharacterSheet(PyGui):
 	character = None
 	def __init__(self, character):
 		self.character = character
+
