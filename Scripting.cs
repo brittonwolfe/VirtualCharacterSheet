@@ -14,17 +14,33 @@ namespace VirtualCharacterSheet {
 
 	public static class Scripting {
 		internal static ScriptEngine engine = Python.CreateEngine();
+		private static ScriptScope
+			MainScope = null,
+			BrewScope = null,
+			ShellScope = null;
 		public static dynamic locals = new ExpandoObject();
 		public static dynamic homebrew = new ExpandoObject();
 		public static dynamic settings = new ExpandoObject();
 		private static bool Initialized = false;
 
+		static Scripting() {
+			MainScope = engine.CreateScope();
+			MainScope.SetVariable("local", locals);
+			MainScope.SetVariable("brew", homebrew);
+
+			BrewScope = engine.CreateScope();
+			BrewScope.SetVariable("brew", homebrew);
+
+			ShellScope = engine.CreateScope();
+			ShellScope.SetVariable("brew", homebrew);
+			ShellScope.SetVariable("_setting", settings);
+		}
+
 		public static void Sandbox() {
 			if(!Initialized)
 				init();
-			var scope = engine.CreateScope();
-			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/shell.py").Path, scope);
-			scope.GetVariable("shell")();
+			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/shell.py").Path, BrewScope);
+			BrewScope.GetVariable("shell")();
 		}
 
 		public static void Brew(FileScript src) {
