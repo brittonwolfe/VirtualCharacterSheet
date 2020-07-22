@@ -19,7 +19,7 @@ namespace VirtualCharacterSheet {
 
 	}
 
-	public abstract class Character : ScriptedObject {
+	public abstract class Character : ScriptedObject, ISerializable {
 		public string Name;
 		public byte Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma;
 		public short STR { get { return Core.Modifier(Strength); } }
@@ -37,6 +37,19 @@ namespace VirtualCharacterSheet {
 			if(Injection != null)
 				try { Injection.Invoke(this); }
 				catch(Exception e) { Console.WriteLine(e); }
+		}
+
+		bool ISerializable.Serialize(System.IO.BinaryWriter writer) {
+			writer.Write(Name);
+			writer.Write(Strength);
+			writer.Write(Dexterity);
+			writer.Write(Constitution);
+			writer.Write(Intelligence);
+			writer.Write(Wisdom);
+			writer.Write(Charisma);
+			var info = ((IDictionary<string, object>)Info);
+			var meta = ((IDictionary<string, object>)Meta);
+			return true;
 		}
 
 	}
