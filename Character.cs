@@ -51,6 +51,9 @@ namespace VirtualCharacterSheet {
 			var meta = ((IDictionary<string, object>)Meta);
 			return true;
 		}
+		bool ISerializable.Deserialize(System.IO.BinaryReader reader) {
+			return true;
+		}
 
 	}
 
