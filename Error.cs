@@ -21,4 +21,7 @@ namespace VirtualCharacterSheet.Exceptions {
 		}
 	}
 
+	public class BrewConfigurationMismatchException : Exception {
+	}
+
 }

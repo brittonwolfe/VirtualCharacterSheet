@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Dynamic;
 
 using VirtualCharacterSheet.Event;
 using VirtualCharacterSheet.Exceptions;
+using VirtualCharacterSheet.IO.Serialization;
 
 namespace VirtualCharacterSheet {
 
