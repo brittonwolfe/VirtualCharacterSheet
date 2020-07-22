@@ -106,16 +106,6 @@ namespace VirtualCharacterSheet {
 					return true;
 				}
 
-				public override bool Equals(object b) {
-					var type = b.GetType();
-					if(type != typeof(Bottle) && type != typeof(Brew))
-						return false;
-					if(type == typeof(Bottle))
-						return this == (Bottle)b;
-					else
-						return this == (Brew)b;
-				}
-
 				public static bool operator ==(Bottle a, Bottle b) {
 					if(a.BrewName != b.BrewName)
 						return false;
@@ -136,6 +126,17 @@ namespace VirtualCharacterSheet {
 				public static bool operator ==(Bottle a, Brew b) { return a == new Bottle(b); }
 				public static bool operator !=(Bottle a, Bottle b) { return !(a == b); }
 				public static bool operator !=(Bottle a, Brew b) { return !(a == b); }
+
+				public override bool Equals(object b) {
+					var type = b.GetType();
+					if(type != typeof(Bottle) && type != typeof(Brew))
+						return false;
+					if(type == typeof(Bottle))
+						return this == (Bottle)b;
+					else
+						return this == (Brew)b;
+				}
+				public override int GetHashCode() { return base.GetHashCode(); }
 
 			}
 

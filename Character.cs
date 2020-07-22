@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
 
 using VirtualCharacterSheet.Event;
 using VirtualCharacterSheet.Exceptions;
@@ -49,6 +50,9 @@ namespace VirtualCharacterSheet {
 			writer.Write(Charisma);
 			var info = ((IDictionary<string, object>)Info);
 			var meta = ((IDictionary<string, object>)Meta);
+			var format = new BinaryFormatter();
+			var info_relevant = new List<string>();
+			
 			return true;
 		}
 		bool ISerializable.Deserialize(System.IO.BinaryReader reader) {
