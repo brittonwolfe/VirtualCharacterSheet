@@ -61,6 +61,7 @@ namespace VirtualCharacterSheet {
 
 	}
 
+	[IO.Serialization.Serializable(typeof(PlayerCharacter), "", "")]
 	public class PlayerCharacter : Character {
 		public string Player;
 		public string Identifier { get { return (Player + ":" + Name); } }
