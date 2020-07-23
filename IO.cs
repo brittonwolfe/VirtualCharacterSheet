@@ -72,7 +72,10 @@ namespace VirtualCharacterSheet {
 
 		namespace Serialization {
 			using Event;
+			using Microsoft.VisualBasic.CompilerServices;
 			using System;
+			using System.Configuration;
+			using System.Drawing.Printing;
 
 			[Serializable(typeof(Bottle), "Serialize", "Deserialize")]
 			internal sealed class Bottle {
@@ -89,20 +92,24 @@ namespace VirtualCharacterSheet {
 						MetaImage[n++] = key;
 				}
 
-				public static bool Serialize(Bottle bottle, BinaryWriter writer) {
-					writer.Write(bottle.BrewName);
-					writer.Write(bottle.MetaImage.Length);
-					foreach(string propname in bottle.MetaImage)
+				public static bool Serialize(Bottle target, BinaryWriter writer, bool shouldclose = true) {
+					writer.Write(target.BrewName);
+					writer.Write(target.MetaImage.Length);
+					foreach(string propname in target.MetaImage)
 						writer.Write(propname);
+					if(shouldclose)
+						writer.Close();
 					return true;
 				}
-				public static Bottle Deserialize(BinaryReader reader) {
+				public static Bottle Deserialize(BinaryReader reader, bool shouldclose = true) {
 					var output = new Bottle();
 					output.BrewName = reader.ReadString();
 					int length = reader.ReadInt32();
 					output.MetaImage = new string[length];
 					for(int x = 0; x < length; x++)
 						output.MetaImage[x] = reader.ReadString();
+					if(shouldclose)
+						reader.Close();
 					return output;
 				}
 
@@ -147,17 +154,22 @@ namespace VirtualCharacterSheet {
 				internal Cellar() { }
 				internal Cellar(Bottle[] bottles) { this.bottles = bottles;}
 
-				public static bool Serialize(Cellar cellar, BinaryWriter writer) {
-					writer.Write(cellar.bottles.Length);
-					foreach(Bottle bottle in cellar.bottles)
-						Bottle.Serialize(bottle, writer);
+				public static bool Serialize(Cellar target, BinaryWriter writer, bool shouldclose = true) {
+					writer.Write(target.bottles.Length);
+					foreach(Bottle bottle in target.bottles)
+						Bottle.Serialize(bottle, writer, false);
+					Console.WriteLine(shouldclose);
+					if(shouldclose)
+						writer.Close();
 					return true;
 				}
-				public static Cellar Deserialize(BinaryReader reader) {
+				public static Cellar Deserialize(BinaryReader reader, bool shouldclose = true) {
 					var output = new Cellar();
 					output.bottles = new Bottle[reader.ReadInt32()];
 					for(int x = 0; x < output.bottles.Length; x++)
-						output.bottles[x] = Bottle.Deserialize(reader);
+						output.bottles[x] = Bottle.Deserialize(reader, shouldclose = false);
+					if(shouldclose)
+						reader.Close();
 					return output;
 				}
 
@@ -173,6 +185,29 @@ namespace VirtualCharacterSheet {
 							return true;
 					return false;
 				}
+
+				public static bool operator ==(Cellar a, Cellar b) { return a.Equals(b); }
+				public static bool operator !=(Cellar a, Cellar b) { return !a.Equals(b); }
+
+				public override bool Equals(object obj) {
+					if(obj.GetType() != typeof(Cellar))
+						return false;
+					var other = (Cellar)obj;
+					if(bottles.Length != other.bottles.Length)
+						return false;
+					foreach(Bottle b in bottles) {
+						bool found = false;
+						foreach(Bottle o in other.bottles)
+							if(b == o)
+								found = true;
+							if(found)
+								break;
+						if(!found)
+							return false;
+					}
+					return true;
+				}
+				public override int GetHashCode() { return base.GetHashCode(); }
 
 				public override string ToString() {
 					string output = "Cellar[";

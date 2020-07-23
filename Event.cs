@@ -7,8 +7,8 @@ namespace VirtualCharacterSheet.Event {
 	public delegate short CheckEvent(byte ability);
 	public delegate short SkillCheckEvent(string skill);
 	public delegate void InjectionEvent(Character sender);
-	public delegate bool SerializationEvent(BinaryWriter writer);
-	public delegate bool DeserializationEvent(BinaryReader reader);
+	public delegate bool SerializationEvent(object target, BinaryWriter writer, bool shouldclose = true);
+	public delegate object DeserializationEvent(BinaryReader reader, bool shouldclose = true);
 
 	public class DynamicBehaviorSet : DynamicObject {
 		private Dictionary<string, DynamicBehavior> Behaviors;
