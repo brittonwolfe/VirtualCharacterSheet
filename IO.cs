@@ -71,11 +71,9 @@ namespace VirtualCharacterSheet {
 		}
 
 		namespace Serialization {
-			using Event;
-			using Microsoft.VisualBasic.CompilerServices;
 			using System;
-			using System.Configuration;
-			using System.Drawing.Printing;
+
+			using Event;
 
 			[Serializable(typeof(Bottle), "Serialize", "Deserialize")]
 			internal sealed class Bottle {
