@@ -71,7 +71,10 @@ namespace VirtualCharacterSheet {
 		}
 
 		namespace Serialization {
+			using Event;
+			using System;
 
+			[Serializable(typeof(Bottle), "Serialize", "Deserialize")]
 			internal sealed class Bottle : ISerializable {
 				public string[] MetaImage;
 				public string BrewName;
@@ -183,8 +186,24 @@ namespace VirtualCharacterSheet {
 
 			}
 
-			[System.AttributeUsage(System.AttributeTargets.Class)]
-			public class SerializableAttribute : System.Attribute {
+			[AttributeUsage(AttributeTargets.Class)]
+			public class SerializableAttribute : Attribute {
+				private readonly string SerializeMethodName;
+				private readonly string DeserializeMethodName;
+				private readonly Type Type;
+
+				public SerializableAttribute(Type type, string serialize, string deserialize) {
+					SerializeMethodName = serialize;
+					DeserializeMethodName = deserialize;
+					Type = type;
+				}
+
+				public SerializationEvent Serialize {
+					get { return (SerializationEvent)Type.GetMethod(SerializeMethodName, BindingFlags.Public | BindingFlags.Static).CreateDelegate(typeof(SerializationEvent)); }
+				}
+				public DeserializationEvent Deserialize {
+					get { return (DeserializationEvent)Type.GetMethod(DeserializeMethodName, BindingFlags.Public | BindingFlags.Static).CreateDelegate(typeof(DeserializationEvent)); }
+				}
 
 			}
 
