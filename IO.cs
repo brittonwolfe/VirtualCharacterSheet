@@ -9,7 +9,7 @@ namespace VirtualCharacterSheet {
 		public static IO.File GetTempFile(string name) { return new IO.File(TempPath + name); }
 		public static IO.File GetInternalFile(string name) { return new IO.File(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/" + name); }
 
-		public static IO.Dir WorkingDirectory() { return new IO.Dir(System.IO.Directory.GetCurrentDirectory()); }
+		public static IO.Dir WorkingDirectory() { return new IO.Dir(Directory.GetCurrentDirectory()); }
 
 		public static Stream GetStream(IO.File file) { return new FileStream(file.Path, FileMode.OpenOrCreate, FileAccess.ReadWrite); }
 

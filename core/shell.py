@@ -129,6 +129,17 @@ def cmd_roll(args):
 	else:
 		return rolln(n, d)
 
+def cmd_save(args):
+	if len(args) > 2:
+		print('too many arguments!')
+		return
+	resolve_ref(args)
+	did_save = save_object(args[0], args[1])
+	if did_save:
+		print('saved successfully.')
+	else:
+		print('did not save successfully.')
+	
 def cmd_view(args):
 	resolve_ref(args)
 	View(args[0])
@@ -136,6 +147,7 @@ def cmd_view(args):
 basic_shell_dict = {
 	'brew': cmd_brew,
 	'roll': cmd_roll,
+	'save': cmd_save,
 	'view': cmd_view
 }
 basic_shell = PyTui(basic_shell_dict, shout = True, colon = True)
