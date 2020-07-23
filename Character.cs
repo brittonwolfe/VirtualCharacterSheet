@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Formatters.Binary;
 
 using VirtualCharacterSheet.Event;
@@ -48,11 +50,34 @@ namespace VirtualCharacterSheet {
 		public string Identifier { get { return (Player + ":" + Name); } }
 		public bool Inspiration { get; private set; }
 
+		private static Dictionary<string, (SerializationEvent, DeserializationEvent)> SerializerSets = new Dictionary<string, (SerializationEvent, DeserializationEvent)>();
+
 		public PlayerCharacter(string name, string player) : base() {
 			Name = name;
 			Player = player;
 			Data.SetCharacter(this);
 			Inject();
+		}
+
+		public static void AddSerializationHook(string key, SerializationEvent serialize, DeserializationEvent deserialize) { SerializerSets[key] = (serialize, deserialize); }
+		public static void RemoveSerializationHook(string key) { SerializerSets.Remove(key); }
+		public static bool Serialize(PlayerCharacter pc, BinaryWriter writer, bool shouldclose = true) {
+			Cellar.Serialize(Data.GetCellar(), writer, false);
+			writer.Write(pc.Player);
+			writer.Write(pc.Name);
+			writer.Write(pc.Strength);
+			writer.Write(pc.Dexterity);
+			writer.Write(pc.Constitution);
+			writer.Write(pc.Intelligence);
+			writer.Write(pc.Wisdom);
+			writer.Write(pc.Charisma);
+			foreach(KeyValuePair<string, (SerializationEvent, DeserializationEvent)> kvp in SerializerSets) {
+				writer.Write(kvp.Key);
+				kvp.Value.Item1(pc, writer, false);
+			}
+			if(shouldclose)
+				writer.Close();
+			return true;
 		}
 
 	}
