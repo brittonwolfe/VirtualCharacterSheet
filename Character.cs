@@ -40,25 +40,6 @@ namespace VirtualCharacterSheet {
 				catch(Exception e) { Console.WriteLine(e); }
 		}
 
-		public static bool Serialize(Character character, System.IO.BinaryWriter writer) {
-			writer.Write(character.Name);
-			writer.Write(character.Strength);
-			writer.Write(character.Dexterity);
-			writer.Write(character.Constitution);
-			writer.Write(character.Intelligence);
-			writer.Write(character.Wisdom);
-			writer.Write(character.Charisma);
-			var info = ((IDictionary<string, object>)character.Info);
-			var meta = ((IDictionary<string, object>)character.Meta);
-			var format = new BinaryFormatter();
-			var info_relevant = new List<string>();
-			
-			return true;
-		}
-		public static Character Deserialize(System.IO.BinaryReader reader) {
-			return null;
-		}
-
 	}
 
 	public class PlayerCharacter : Character {
