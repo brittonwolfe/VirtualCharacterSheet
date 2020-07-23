@@ -75,12 +75,11 @@ namespace VirtualCharacterSheet {
 			using System;
 
 			[Serializable(typeof(Bottle), "Serialize", "Deserialize")]
-			internal sealed class Bottle : ISerializable {
+			internal sealed class Bottle {
 				public string[] MetaImage;
 				public string BrewName;
 
-				internal Bottle(BinaryReader reader) { ((ISerializable)this).Deserialize(reader); }
-				public Bottle(File file) { ((ISerializable)this).Deserialize(file); }
+				internal Bottle() { }
 				public Bottle(Brew b) {
 					BrewName = b.Name;
 					var metakeys = ((IDictionary<string, object>)b.Meta).Keys;
@@ -90,20 +89,21 @@ namespace VirtualCharacterSheet {
 						MetaImage[n++] = key;
 				}
 
-				bool ISerializable.Serialize(BinaryWriter writer) {
-					writer.Write(BrewName);
-					writer.Write(MetaImage.Length);
-					foreach(string propname in MetaImage)
+				public static bool Serialize(Bottle bottle, BinaryWriter writer) {
+					writer.Write(bottle.BrewName);
+					writer.Write(bottle.MetaImage.Length);
+					foreach(string propname in bottle.MetaImage)
 						writer.Write(propname);
 					return true;
 				}
-				bool ISerializable.Deserialize(BinaryReader reader) {
-					BrewName = reader.ReadString();
+				public static Bottle Deserialize(BinaryReader reader) {
+					var output = new Bottle();
+					output.BrewName = reader.ReadString();
 					int length = reader.ReadInt32();
-					MetaImage = new string[length];
+					output.MetaImage = new string[length];
 					for(int x = 0; x < length; x++)
-						MetaImage[x] = reader.ReadString();
-					return true;
+						output.MetaImage[x] = reader.ReadString();
+					return output;
 				}
 
 				public static bool operator ==(Bottle a, Bottle b) {
@@ -140,22 +140,25 @@ namespace VirtualCharacterSheet {
 
 			}
 
-			public sealed class Cellar : ISerializable {
+			[Serializable(typeof(Cellar), "Serialize", "Deserialize")]
+			public sealed class Cellar {
 				internal Bottle[] bottles;
 
-				public Cellar(File file) {  ((ISerializable)this).Deserialize(file); }
+				internal Cellar() { }
+				internal Cellar(Bottle[] bottles) { this.bottles = bottles;}
 
-				bool ISerializable.Serialize(BinaryWriter writer) {
-					writer.Write(bottles.Length);
-					foreach(Bottle bottle in bottles)
-						((ISerializable)bottle).Serialize(writer);
+				public static bool Serialize(Cellar cellar, BinaryWriter writer) {
+					writer.Write(cellar.bottles.Length);
+					foreach(Bottle bottle in cellar.bottles)
+						Bottle.Serialize(bottle, writer);
 					return true;
 				}
-				bool ISerializable.Deserialize(BinaryReader reader) {
-					bottles = new Bottle[reader.ReadInt32()];
-					for(int x = 0; x < bottles.Length; x++)
-						bottles[x] = new Bottle(reader);
-					return true;
+				public static Cellar Deserialize(BinaryReader reader) {
+					var output = new Cellar();
+					output.bottles = new Bottle[reader.ReadInt32()];
+					for(int x = 0; x < output.bottles.Length; x++)
+						output.bottles[x] = Bottle.Deserialize(reader);
+					return output;
 				}
 
 				public bool Contains(Brew brew) {
@@ -171,18 +174,12 @@ namespace VirtualCharacterSheet {
 					return false;
 				}
 
-			}
-
-			public interface ISerializable {
-
-				public sealed bool Serialize(File file) {
-					return Serialize(file.GetBinaryWriter());
+				public override string ToString() {
+					string output = "Cellar[";
+					foreach (Bottle bottle in bottles)
+						output += (bottle.BrewName + " ");
+					return (output.Trim() + "]");
 				}
-				public sealed bool Deserialize(File file) {
-					return Deserialize(file.GetBinaryReader());
-				}
-				public abstract bool Serialize(BinaryWriter writer);
-				public abstract bool Deserialize(BinaryReader reader);
 
 			}
 

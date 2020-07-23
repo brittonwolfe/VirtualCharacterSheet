@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
-
+using System.Linq;
 using VirtualCharacterSheet.Event;
 using VirtualCharacterSheet.Exceptions;
 using VirtualCharacterSheet.IO;
+using VirtualCharacterSheet.IO.Serialization;
 
 namespace VirtualCharacterSheet {
 
@@ -52,6 +53,14 @@ namespace VirtualCharacterSheet {
 			foreach(string key in brew.Keys)
 				output += (key + " ");
 			return output.Trim();
+		}
+
+		public static Cellar GetCellar() {
+			var bottles = new Bottle[brew.Count];
+			int n = 0;
+			foreach(KeyValuePair<string, Brew> brewkvp in brew)
+				bottles[n++] = new Bottle(brewkvp.Value);
+			return new Cellar(bottles);
 		}
 
 	}
