@@ -71,6 +71,7 @@ namespace VirtualCharacterSheet {
 			writer.Write(pc.Intelligence);
 			writer.Write(pc.Wisdom);
 			writer.Write(pc.Charisma);
+			writer.Write(SerializerSets.Count);
 			foreach(KeyValuePair<string, (SerializationEvent, DeserializationEvent)> kvp in SerializerSets) {
 				writer.Write(kvp.Key);
 				kvp.Value.Item1(pc, writer, false);
@@ -78,6 +79,30 @@ namespace VirtualCharacterSheet {
 			if(shouldclose)
 				writer.Close();
 			return true;
+		}
+		public static PlayerCharacter Deserialize(BinaryReader reader, bool shouldclose = true) {
+			var cellar = Cellar.Deserialize(reader, false);
+			if(cellar != Data.GetCellar())
+				throw new CellarMismatchException(cellar, Data.GetCellar());
+			string player = reader.ReadString();
+			string name = reader.ReadString();
+			var output = new PlayerCharacter(name, player);
+			output.Strength = reader.ReadByte();
+			output.Dexterity = reader.ReadByte();
+			output.Constitution = reader.ReadByte();
+			output.Intelligence = reader.ReadByte();
+			output.Wisdom = reader.ReadByte();
+			output.Charisma = reader.ReadByte();
+			int serialcount = reader.ReadInt32();
+			if(serialcount > SerializerSets.Count)
+				throw new MissingSerializationHandlersException(serialcount, SerializerSets.Count);
+			for(int x = 0; x < serialcount; x++) {
+				string key = reader.ReadString();
+				SerializerSets[key].Item2(reader, false);
+			}
+			if(shouldclose)
+				reader.Close();
+			return output;
 		}
 
 	}

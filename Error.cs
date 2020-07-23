@@ -1,4 +1,5 @@
 ﻿using System;
+using VirtualCharacterSheet.IO.Serialization;
 
 namespace VirtualCharacterSheet.Exceptions {
 
@@ -21,7 +22,27 @@ namespace VirtualCharacterSheet.Exceptions {
 		}
 	}
 
-	public class BrewConfigurationMismatchException : Exception {
+	public sealed class CellarMismatchException : Exception {
+		public readonly Cellar Expected;
+		public readonly Cellar Present;
+
+		public CellarMismatchException(Cellar expected, Cellar current)
+		: base("Expected " + expected.ToString() + " to load object, but got " + current.ToString()) {
+			Expected = expected;
+			Present = current;
+		}
+	}
+
+	public sealed class MissingSerializationHandlersException : Exception {
+		public readonly int Expected;
+		public readonly int Present;
+
+		public MissingSerializationHandlersException(int expected, int got)
+		: base("Expected to get " + expected + " serialization handlers, but only " + got + " were present (missing " + (expected - got) + ")") {
+			Expected = expected;
+			Present = got;
+		}
+
 	}
 
 }
