@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Dynamic;
+using System.IO;
 
 namespace VirtualCharacterSheet.Event {
 
 	public delegate short CheckEvent(byte ability);
 	public delegate short SkillCheckEvent(string skill);
 	public delegate void InjectionEvent(Character sender);
+	public delegate bool SerializationEvent(BinaryWriter writer);
+	public delegate bool DeserializationEvent(BinaryReader reader);
 
 	public class DynamicBehaviorSet : DynamicObject {
 		private Dictionary<string, DynamicBehavior> Behaviors;

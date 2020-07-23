@@ -1,8 +1,5 @@
-﻿using Microsoft.VisualBasic.CompilerServices;
-using System.Collections.Generic;
-using System.Dynamic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 
 namespace VirtualCharacterSheet {
@@ -186,7 +183,10 @@ namespace VirtualCharacterSheet {
 
 			}
 
-			
+			[System.AttributeUsage(System.AttributeTargets.Class)]
+			public class SerializableAttribute : System.Attribute {
+
+			}
 
 		}
 
