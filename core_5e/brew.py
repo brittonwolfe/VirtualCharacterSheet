@@ -1,6 +1,6 @@
 ﻿core = brew.def_brew("core_5e")
-core.Meta.Title = "D&D Fifth Edition"
-core.Meta.Description = "The core rules for Dungeons and Dragons Fifth Edition"
+core.Meta.Title = "D&D Fifth Edition OGL"
+core.Meta.Description = "The Open Game License SRD for Dungeons and Dragons Fifth Edition"
 core.Meta.Dir = brew.Path
 
 def InjectMeta(character):

@@ -64,9 +64,10 @@ def resolve_ref(args):
 			args[i] = replace_function(arg[3:-1])
 
 def cmd_brew(args):
-	"""brew [list | load <path>]
+	"""brew [list | load <path> | info <identifier>]
 	list	lists all loaded brews
 	load	loads the brew at the given <path>
+	info	shows information about the specified brew
 	"""
 	if args[0].lower() == 'load':
 		if len(args) != 2:
@@ -93,6 +94,24 @@ def cmd_brew(args):
 		print('Successfully loaded "' + args[1] + '"')
 	if args[0].lower() == 'list':
 		return AllBrews()
+	if args[0].lower() == 'info':
+		brews = args[1:]
+		for brew_name in brews:
+			if HasBrew(brew_name):
+				obj = GetBrew(brew_name)
+				print(brew_name)
+				print(obj.Meta.Title)
+				if hasattr(obj.Meta, 'Version'):
+					print('v' + obj.Meta.Version)
+				if hasattr(obj.Meta, 'Author'):
+					print('By', obj.Meta.Author)
+				else:
+					print('(no author specified)')
+				if hasattr(obj.Meta, 'Description'):
+					print(obj.Meta.Description)
+				print(obj.Meta.Dir.Path)
+			else:
+				print('no brew called', brew_name, 'was found')
 
 def cmd_load(args):
 	typeof = None
