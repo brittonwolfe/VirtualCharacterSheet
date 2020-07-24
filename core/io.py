@@ -1,4 +1,5 @@
 ﻿clr.AddReference('vcs')
+from os.path import expanduser
 from VirtualCharacterSheet.IO import File
 
 def save_object(obj, file):
@@ -7,7 +8,7 @@ def save_object(obj, file):
 		print(objtype, 'is not seraializable!')
 		return False
 	if type(file) is str:
-		return save_object(obj, File(file))
+		return save_object(obj, File(expanduser(file)))
 	return objtype.Serialize(obj, file.GetBinaryWriter())
 
 def load_object(objtype, file):
@@ -15,5 +16,5 @@ def load_object(objtype, file):
 		print(objtype, 'is not serializable!')
 		return False
 	if type(file) is str:
-		return load_object(objtype, File(file))
+		return load_object(objtype, File(expanduser(file)))
 	return objtype.Deserialize(file.GetBinaryReader())
