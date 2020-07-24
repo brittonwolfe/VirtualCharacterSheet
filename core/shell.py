@@ -169,7 +169,6 @@ def cmd_save(args):
 		print('too many arguments!')
 		return
 	resolve_ref(args)
-	print(args)
 	did_save = save_object(args[0], args[1])
 	if did_save:
 		print('saved successfully.')
