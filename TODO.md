@@ -11,7 +11,7 @@
 
 ## Serialization
 
-- [ ] Make the character serializer
+- [x] Make the character serializer
 
 ## NI/O
 
