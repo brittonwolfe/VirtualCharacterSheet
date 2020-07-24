@@ -39,6 +39,7 @@ namespace VirtualCharacterSheet {
 		public static void Sandbox() {
 			if(!Initialized)
 				init();
+			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/io.py").Path, BrewScope);
 			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/shell.py").Path, BrewScope);
 			BrewScope.GetVariable("shell")();
 		}
@@ -65,7 +66,7 @@ namespace VirtualCharacterSheet {
 				return;
 
 			engine.GetBuiltinModule().ImportModule("clr");
-			engine.GetBuiltinModule().ImportModule("sys");
+			ICollection<string> searchpaths = engine.GetSearchPaths();
 			string pypath = "";
 			switch(Core.platform) {
 			case PlatformID.Unix:
@@ -77,7 +78,8 @@ namespace VirtualCharacterSheet {
 				pypath = "/Python27/Lib/";
 				break;
 			}
-			engine.GetBuiltinModule().Engine.Execute("sys.path.append('" + pypath + "')");
+			searchpaths.Add(pypath);
+			engine.SetSearchPaths(searchpaths);
 
 # region global variables
 			SetGlobal("local", locals);

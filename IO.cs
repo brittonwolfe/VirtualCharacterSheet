@@ -44,8 +44,8 @@ namespace VirtualCharacterSheet {
 
 			public bool Exists() { return System.IO.File.Exists(this.Path); }
 
-			internal BinaryWriter GetBinaryWriter() { return new BinaryWriter(System.IO.File.OpenWrite(this.Path)); }
-			internal BinaryReader GetBinaryReader() { return new BinaryReader(System.IO.File.OpenRead(this.Path)); }
+			public BinaryWriter GetBinaryWriter() { return new BinaryWriter(System.IO.File.OpenWrite(this.Path)); }
+			public BinaryReader GetBinaryReader() { return new BinaryReader(System.IO.File.OpenRead(this.Path)); }
 
 		}
 

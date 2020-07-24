@@ -3,7 +3,7 @@ from os import getcwd, system
 from os.path import isdir
 from shlex import split
 from traceback import print_exc
-from VirtualCharacterSheet import AbstractTui
+from VirtualCharacterSheet import AbstractTui, PlayerCharacter
 from VirtualCharacterSheet.Core import View
 from VirtualCharacterSheet.Data import AllBrews, GetBrew, GetCharacter, GetItem, HasBrew, HasCharacter, HasItem
 from VirtualCharacterSheet.IO import File, Dir
@@ -94,6 +94,22 @@ def cmd_brew(args):
 	if args[0].lower() == 'list':
 		return AllBrews()
 
+def cmd_load(args):
+	typeof = None
+	if not args[0].startswith('-'):
+		print('invalid argument', args[0])
+		return
+	if args[0] == '-C':
+		typeof = PlayerCharacter
+	if typeof is None:
+		print('unsupported type argument')
+		return
+	did_load = load_object(typeof, args[1])
+	if did_load:
+		print('loaded successfully!')
+	else:
+		print('did not load')
+
 def cmd_roll(args):
 	"""roll [times] d<sides>
 	sides	the number of sides the die should have
@@ -134,6 +150,7 @@ def cmd_save(args):
 		print('too many arguments!')
 		return
 	resolve_ref(args)
+	print(args)
 	did_save = save_object(args[0], args[1])
 	if did_save:
 		print('saved successfully.')
@@ -146,6 +163,7 @@ def cmd_view(args):
 
 basic_shell_dict = {
 	'brew': cmd_brew,
+	'load': cmd_load,
 	'roll': cmd_roll,
 	'save': cmd_save,
 	'view': cmd_view
