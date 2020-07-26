@@ -17,3 +17,9 @@
 
 - [ ] Write a host for networking and communicating game state, preferably RESTful.
 - [ ] Write a client for connecting to the host to synchronize and communicate the game state.
+
+## Experimental
+
+- [ ] Try using Rust!
+- [ ] Try throwing in some Lua scripting. Options are cool!
+
