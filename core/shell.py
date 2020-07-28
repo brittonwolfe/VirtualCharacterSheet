@@ -1,4 +1,5 @@
 clr.AddReference('vcs')
+from inspect import getargspec
 from os import getcwd, system
 from os.path import isdir
 from shlex import split
@@ -26,7 +27,7 @@ class PyTui(AbstractTui):
 		if not command in self.commands:
 			print('command not found')
 		print(self.commands[command].__doc__)
-	def Handle(self, command):
+	def Handle(self, command, **kwargs):
 		if self.colon_escape and command.startswith(':'):
 			exec(command[1:])
 			return
@@ -38,11 +39,15 @@ class PyTui(AbstractTui):
 			if len(full) > 2:
 				print('too many arguments supplied')
 				return
-			self.help_command(full[1])
+			self.help_command(full[1], **kwargs)
 			return
 		output = None
 		try:
-			output = self.commands[full[0]](full[1:])
+			cmd = self.commands[full[0]]
+			if getargspec(cmd).keywords is not None:
+				output = cmd(full[1:], **kwargs)
+			else:
+				output = cmd(full[1:])
 		except Exception:
 			print(print_exc())
 			return
@@ -193,7 +198,7 @@ def add_base(dict):
 	output.update(dict)
 	return output
 
-def shell(tui = basic_shell):
+def shell(tui = basic_shell, **kwargs):
 	while True:
 		line = readl('> ')
 		if line == 'exit':
@@ -201,4 +206,4 @@ def shell(tui = basic_shell):
 		if line == 'clear':
 			system('clear')
 			continue
-		tui.Handle(line)
+		tui.Handle(line, **kwargs)

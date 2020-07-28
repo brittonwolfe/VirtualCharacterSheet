@@ -21,7 +21,6 @@ class Core5eCharacterSheet(PyCharacterSheet):
 		pass
 	def basic_view(self):
 		print(self.render_header())
-		local.This = self
-		shell(character_tui)
+		shell(character_tui, character = self.character)
 
 core.AddView(PlayerCharacter, PyUiFactory(lambda content: Core5eCharacterSheet(content)))
