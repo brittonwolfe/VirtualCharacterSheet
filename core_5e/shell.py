@@ -9,11 +9,14 @@ def get_default_local_character():
 	elif hasattr(local.This, 'character'):
 		return local.This.character
 
-def stat_check(args, character = None):
+def stat_check(args, **kwargs):
 	'''stat [name]
 	todo doc
 	'''
-	if character is None:
+	character = None
+	if 'character' in kwargs:
+		character = kwargs['character']
+	else:
 		character = get_default_local_character()
 	stat = None
 	if args[0].lower() in STAT_LIST:
@@ -42,7 +45,7 @@ def stat_check(args, character = None):
 		output += character.DoBehavior(stat + 'Check')
 	return output
 
-def versatile_roll(args, character = None):
+def versatile_roll(args, **kwargs):
 	'''roll [stat] ...
 	a versatile wrapper around the base roll command
 	that allows the user to specify a stat to use for
@@ -51,7 +54,7 @@ def versatile_roll(args, character = None):
 	stat - the name of the stat to use
 	'''
 	if args[0].lower() in STAT_LIST:
-		return stat_check(args, character = character)
+		return stat_check(args, **kwargs)
 	else:
 		return cmd_roll(args)
 
