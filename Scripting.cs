@@ -24,24 +24,30 @@ namespace VirtualCharacterSheet {
 		private static bool Initialized = false;
 
 		static Scripting() {
+# region main_scope
 			MainScope = engine.CreateScope();
 			MainScope.SetVariable("local", locals);
 			MainScope.SetVariable("brew", homebrew);
+# endregion
 
+# region brew_scope
 			BrewScope = engine.CreateScope();
 			BrewScope.SetVariable("brew", homebrew);
+# endregion
 
+# region shell_scope
 			ShellScope = engine.CreateScope();
 			ShellScope.SetVariable("brew", homebrew);
 			ShellScope.SetVariable("_setting", settings);
+# endregion
 		}
 
 		public static void Sandbox() {
 			if(!Initialized)
 				init();
-			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/io.py").Path, BrewScope);
-			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/shell.py").Path, BrewScope);
-			BrewScope.GetVariable("shell")();
+			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/io.py").Path, ShellScope);
+			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/shell.py").Path, ShellScope);
+			ShellScope.GetVariable("shell")();
 		}
 
 		public static void Brew(FileScript src) {
@@ -53,8 +59,14 @@ namespace VirtualCharacterSheet {
 			homebrew.def_brew = new Func<string, Brew>((string n) => { return new Brew(n); });
 
 			homebrew.Path = src.File.Directory;
+			homebrew.import_absolute = new Func<string, string, dynamic>(
+				(subpath, item) => {
+					engine.ExecuteFile(src.File.Directory.Get(subpath).Path, BrewScope);
+					return BrewScope.GetVariable(item);
+				}
+			);
 
-			try { src.Run(); }
+			try { engine.ExecuteFile(src.File.Path, BrewScope); }
 			catch(Exception e) { Console.WriteLine(e); }
 
 			Remove(homebrew, "def_brew");

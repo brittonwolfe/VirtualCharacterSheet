@@ -2,6 +2,9 @@ clr.AddReference('vcs')
 from VirtualCharacterSheet import PlayerCharacter
 from VirtualCharacterSheet.Forms import TerminalForm, TerminalView
 from core.ui import PyCharacterSheet, PyUiFactory
+from core.shell import shell
+
+character_tui = brew.import_absolute('shell.py', 'character_tui')
 
 core = _brew('core_5e')
 
@@ -18,5 +21,7 @@ class Core5eCharacterSheet(PyCharacterSheet):
 		pass
 	def basic_view(self):
 		print(self.render_header())
+		local.This = self
+		shell(character_tui)
 
 core.AddView(PlayerCharacter, PyUiFactory(lambda content: Core5eCharacterSheet(content)))
