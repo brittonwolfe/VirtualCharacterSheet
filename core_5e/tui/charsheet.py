@@ -6,8 +6,8 @@ from core.ui import PyCharacterSheet, PyUiFactory
 core = _brew('core_5e')
 
 class Core5eCharacterSheet(PyCharacterSheet):
-	def __init__(self, obj):
-		super().__init__(self, obj)
+	def __init__(self, character):
+		self.character = character
 		print('foo', self.character.Name)
 		self.basic_view()
 	def render_header(self):
@@ -19,4 +19,4 @@ class Core5eCharacterSheet(PyCharacterSheet):
 	def basic_view(self):
 		print(self.render_header())
 
-core.AddView(PlayerCharacter, PyUiFactory(Core5eCharacterSheet))
+core.AddView(PlayerCharacter, PyUiFactory(lambda content: Core5eCharacterSheet(content)))
