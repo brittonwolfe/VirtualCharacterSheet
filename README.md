@@ -3,3 +3,4 @@ The Virtual Character Sheet is a project for better online and local TTRPG bookk
 
 ## Dependencies
 - Python 2.7 libraries
+- IronPython
