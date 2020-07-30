@@ -22,4 +22,7 @@
 
 - [ ] Try using Rust!
 - [ ] Try throwing in some Lua scripting. Options are cool!
+- [ ] Add in support for Ruby
+- [ ] Add support for C# scripting through the JIT IL???
+- [ ] Maybe COBOL for funsies?
 
