@@ -48,6 +48,13 @@ namespace VirtualCharacterSheet.Forms {
 		public static int GetTerminalWidth() { return GetTerminalSize().Item1; }
 		public static int GetTerminalHeight() { return GetTerminalSize().Item2; }
 
+		public static void SetCursorPosition(int? x = null, int? y = null) {
+			if(x != null)
+				Console.CursorLeft = (int)x;
+			if(y != null)
+				Console.CursorTop = (int)y;
+		}
+
 	}
 
 	public class TerminalGraphic {
