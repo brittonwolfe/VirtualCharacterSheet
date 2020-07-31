@@ -11,7 +11,6 @@ core = _brew('core_5e')
 class Core5eCharacterSheet(PyCharacterSheet):
 	def __init__(self, character):
 		self.character = character
-		print('foo', self.character.Name)
 		self.basic_view()
 	def render_header(self):
 		width = TerminalForm.GetTerminalWidth()
