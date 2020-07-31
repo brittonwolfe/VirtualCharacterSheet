@@ -12,6 +12,7 @@
 ## Serialization
 
 - [x] Make the character serializer
+- [ ] Make the 5e module's character serializer
 
 ## NI/O
 
@@ -24,5 +25,4 @@
 - [ ] Try throwing in some Lua scripting. Options are cool!
 - [ ] Add in support for Ruby
 - [ ] Add support for [C# scripting through the JIT IL](https://docs.microsoft.com/en-us/dotnet/standard/managed-execution-process)???
-- [ ] Maybe COBOL for funsies?
 
