@@ -14,9 +14,13 @@ class Core5eCharacterSheet(PyCharacterSheet):
 		self.basic_view()
 	def render_header(self):
 		width = TerminalForm.GetTerminalWidth()
-		full_line = '#' * width
-		return (full_line + '\n' + self.character.Name)
-	def stat_section(self):
+		full_line = '=' * width
+		name = self.character.Name
+		output = full_line[0:4] + name + full_line[3 + len(name):] + '\n'
+		player = self.character.Player
+		output += '| ' + player + (' ' * (width - (player.Length + 3))) + '|'
+		return output
+	def render_stat_section(self):
 		pass
 	def basic_view(self):
 		print(self.render_header())

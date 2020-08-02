@@ -9,6 +9,12 @@
 - [ ] Create TUIs
 - [ ] Make GUIs work
 
+### TUI features
+
+- [ ] Implement a way to map TUIs in a text file and overwrite them in Python code
+- [ ] Make TUIs live-update
+- [ ] Make TUIs have responsive design to reflect the space they have in the terminal
+
 ## Serialization
 
 - [x] Make the character serializer
