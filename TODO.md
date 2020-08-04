@@ -11,9 +11,9 @@
 
 ### TUI features
 
-- [ ] Implement a way to map TUIs in a text file and overwrite them in Python code
+- [ ] Implement a way to make TUI templates similar to Django's
 - [ ] Make TUIs live-update
-- [ ] Make TUIs have responsive design to reflect the space they have in the terminal
+- [ ] Make TUIs have responsive design to reflect the space they have in the terminal?
 
 ## Serialization
 
