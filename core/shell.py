@@ -14,7 +14,7 @@ class PyTui(AbstractTui):
 	commands = {}
 	show_output = False
 	colon_escape = False
-	def __init__(self, dictionary: dict, shout: bool = False, colon: bool = False):
+	def __init__(self, dictionary, shout = False, colon = False):
 		self.commands = dictionary.copy()
 		self.show_output = shout
 		self.colon_escape = colon
@@ -194,12 +194,12 @@ basic_shell_dict = {
 }
 basic_shell = PyTui(basic_shell_dict, shout = True, colon = True)
 
-def add_base(dictionary: dict):
+def add_base(dictionary):
 	output = basic_shell_dict.copy()
 	output.update(dictionary)
 	return output
 
-def shell(tui: PyTui = basic_shell, **kwargs):
+def shell(tui = basic_shell, **kwargs):
 	while True:
 		line = readl('> ')
 		if line == 'exit':
