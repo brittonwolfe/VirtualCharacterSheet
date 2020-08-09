@@ -1,3 +1,29 @@
+"""Create and run shell interfaces for the user to interact with brews.
+Also contains helper commands and functions to make shell creation easier.
+
+See ui for creating more complex user interfaces.
+
+Classes:
+
+	PyTui
+
+Functions:
+
+	add_base(dict) -> dict
+	cmd_brew(list)
+	cmd_load(list)
+	cmd_roll(list)
+	cmd_save(list)
+	cmd_view(list)
+	resolve_ref(list)
+	shell(PyTui, dict)
+
+Misc variables:
+
+	basic_shell
+	basic_shell_dict
+
+"""
 clr.AddReference('vcs')
 from inspect import getargspec
 from os import getcwd, system
@@ -10,11 +36,12 @@ from VirtualCharacterSheet.Data import AllBrews, GetBrew, GetCharacter, GetItem,
 from VirtualCharacterSheet.IO import File, Dir
 
 class PyTui(AbstractTui):
+	"""Used to create a shell interface for interacting with the VCS environment."""
 	commands = {}
 	show_output = False
 	colon_escape = False
-	def __init__(self, dict, shout = False, colon = False):
-		self.commands = dict.copy()
+	def __init__(self, dictionary: dict, shout: bool = False, colon: bool = False):
+		self.commands = dictionary.copy()
 		self.show_output = shout
 		self.colon_escape = colon
 	def help_command(self, command):
@@ -193,9 +220,9 @@ basic_shell_dict = {
 }
 basic_shell = PyTui(basic_shell_dict, shout = True, colon = True)
 
-def add_base(dict):
+def add_base(dictionary: dict):
 	output = basic_shell_dict.copy()
-	output.update(dict)
+	output.update(dictionary)
 	return output
 
 def shell(tui = basic_shell, **kwargs):
