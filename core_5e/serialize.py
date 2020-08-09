@@ -15,6 +15,8 @@ def char_deserialize(reader, shouldclose = True):
 	output = ScriptedObjectSet()
 	output.Meta['MaxHealth'] = reader.ReadInt32()
 	output.Meta['Health'] = reader.ReadInt32()
+	if shouldclose:
+		reader.Close()
 	return output
 
 PlayerCharacter.AddSerializationHook('core_5e', char_serialize, char_deserialize)
