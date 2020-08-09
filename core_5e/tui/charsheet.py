@@ -16,7 +16,7 @@ class Core5eCharacterSheet(PyCharacterSheet):
 		width = TerminalForm.GetTerminalWidth()
 		full_line = '=' * width
 		name = self.character.Name
-		output = full_line[0:4] + name + full_line[3 + len(name):] + '\n'
+		output = full_line[0:4] + name + full_line[4 + len(name):] + '\n'
 		player = self.character.Player
 		output += '| ' + player + (' ' * (width - (player.Length + 3))) + '|'
 		return output

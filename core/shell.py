@@ -60,14 +60,22 @@ def resolve_ref(args):
 	for i in range(len(args)):
 		arg = args[i]
 		replace_function = None
+		check_function = lambda s: True
 		if arg.startswith('-C[') and arg.endswith(']'):
 			replace_function = GetCharacter
+			check_function = HasCharacter
 		if arg.startswith('-I[') and arg.endswith(']'):
 			replace_function = GetItem
+			check_function = HasItem
 		if arg.startswith('-b[') and arg.endswith(']'):
 			replace_function = GetBrew
+			check_function = HasBrew
+		identity = arg[3:-1]
 		if replace_function is not None:
-			args[i] = replace_function(arg[3:-1])
+			if not check_function(identity):
+				print('nothing found for identity of "' + identity + '"')
+				return
+			args[i] = replace_function(identity)
 
 def cmd_brew(args):
 	"""brew [list | load <path> | info <identifier>]
@@ -117,7 +125,7 @@ def cmd_brew(args):
 					print(obj.Meta.Description)
 				print(obj.Meta.Dir.Path)
 			else:
-				print('no brew called', brew_name, 'was found')
+				print('no brew called ' + brew_name + ' was found')
 
 def cmd_load(args):
 	typeof = None

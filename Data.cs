@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
-using System.Linq;
 using VirtualCharacterSheet.Event;
 using VirtualCharacterSheet.Exceptions;
 using VirtualCharacterSheet.IO;
