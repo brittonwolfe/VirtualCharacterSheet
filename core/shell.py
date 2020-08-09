@@ -1,29 +1,3 @@
-"""Create and run shell interfaces for the user to interact with brews.
-Also contains helper commands and functions to make shell creation easier.
-
-See ui for creating more complex user interfaces.
-
-Classes:
-
-	PyTui
-
-Functions:
-
-	add_base(dict) -> dict
-	cmd_brew(list)
-	cmd_load(list)
-	cmd_roll(list)
-	cmd_save(list)
-	cmd_view(list)
-	resolve_ref(list)
-	shell(PyTui, dict)
-
-Misc variables:
-
-	basic_shell
-	basic_shell_dict
-
-"""
 clr.AddReference('vcs')
 from inspect import getargspec
 from os import getcwd, system
@@ -225,7 +199,7 @@ def add_base(dictionary: dict):
 	output.update(dictionary)
 	return output
 
-def shell(tui = basic_shell, **kwargs):
+def shell(tui: PyTui = basic_shell, **kwargs):
 	while True:
 		line = readl('> ')
 		if line == 'exit':
