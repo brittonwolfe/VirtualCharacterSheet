@@ -216,6 +216,16 @@ namespace VirtualCharacterSheet {
 
 			}
 
+			public class ScriptedObjectSet {
+				public readonly Dictionary<string, object> Meta, Info;
+
+				public ScriptedObjectSet() {
+					Meta = new Dictionary<string, object>();
+					Info = new Dictionary<string, object>();
+				}
+
+			}
+
 			[AttributeUsage(AttributeTargets.Class)]
 			public class SerializableAttribute : Attribute {
 				private readonly string SerializeMethodName;

@@ -96,7 +96,11 @@ namespace VirtualCharacterSheet {
 				throw new MissingSerializationHandlersException(serialcount, SerializerSets.Count);
 			for(int x = 0; x < serialcount; x++) {
 				string key = reader.ReadString();
-				SerializerSets[key].Item2(reader, false);
+				var tmp = (ScriptedObjectSet)SerializerSets[key].Item2(reader, false);
+				foreach(string k in tmp.Meta.Keys)
+					((IDictionary<string, object>)output.Meta)[k] = tmp.Meta[k];
+				foreach(string k in tmp.Info.Keys)
+					((IDictionary<string, object>)output.Info)[k] = tmp.Info[k];
 			}
 			if(shouldclose)
 				reader.Close();

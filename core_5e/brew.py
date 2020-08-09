@@ -5,6 +5,8 @@ core.Meta.Dir = brew.Path
 
 def InjectMeta(character):
 	character.Meta.classes = []
+	character.Meta.MaxHealth = 0
+	character.Meta.Health = 0
 
 def InjectChecks(character):
 	character.AddBehavior("StrengthCheck", lambda self: (roll(20) + self.STR))
@@ -64,6 +66,8 @@ core.AddCharacterInjector(InjectMeta)
 core.AddCharacterInjector(InjectChecks)
 core.AddCharacterInjector(InjectSaves)
 core.AddCharacterInjector(InjectSkills)
+
+import serialize
 
 import classes
 import item
