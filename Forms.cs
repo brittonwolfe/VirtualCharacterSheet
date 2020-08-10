@@ -54,6 +54,7 @@ namespace VirtualCharacterSheet.Forms {
 			if(y != null)
 				Console.CursorTop = (int)y;
 		}
+		public static (int, int) GetCursorPosition() { return (Console.CursorLeft, Console.CursorTop); }
 
 	}
 

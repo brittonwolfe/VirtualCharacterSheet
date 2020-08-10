@@ -207,12 +207,17 @@ def add_base(dictionary):
 	output.update(dictionary)
 	return output
 
+def non_loop_shell(tui, **kwargs):
+	line = readl('> ')
+	if line == 'exit':
+		return True
+	if line == 'clear':
+		system('clear')
+		return False
+	tui.Handle(line, **kwargs)
+	return False
+
 def shell(tui = basic_shell, **kwargs):
-	while True:
-		line = readl('> ')
-		if line == 'exit':
-			return
-		if line == 'clear':
-			system('clear')
-			continue
-		tui.Handle(line, **kwargs)
+	breaks = False
+	while not breaks:
+		breaks = non_loop_shell(tui, **kwargs)
