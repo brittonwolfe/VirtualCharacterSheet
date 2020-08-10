@@ -14,10 +14,11 @@ class PyTui(AbstractTui):
 	commands = {}
 	show_output = False
 	colon_escape = False
-	def __init__(self, dictionary, shout = False, colon = False):
+	def __init__(self, dictionary, shout = False, colon = False, name = 'Unnamed Shell'):
 		self.commands = dictionary.copy()
 		self.show_output = shout
 		self.colon_escape = colon
+		self.name = name
 	def help_command(self, command):
 		"""help [command]
 	Shows help text for the given command.
@@ -193,14 +194,21 @@ def cmd_view(args):
 	resolve_ref(args)
 	View(args[0])
 
+def cmd_which(args):
+	if args[1].lower() == 'shell':
+		print(local.__shellname__)
+		return
+	pass
+
 basic_shell_dict = {
 	'brew': cmd_brew,
 	'load': cmd_load,
 	'roll': cmd_roll,
 	'save': cmd_save,
-	'view': cmd_view
+	'view': cmd_view,
+	'which': cmd_which
 }
-basic_shell = PyTui(basic_shell_dict, shout = True, colon = True)
+basic_shell = PyTui(basic_shell_dict, shout = True, colon = True, name = 'Base Shell')
 
 def add_base(dictionary):
 	output = basic_shell_dict.copy()
@@ -208,13 +216,17 @@ def add_base(dictionary):
 	return output
 
 def non_loop_shell(tui, **kwargs):
+	local.__shellname__ = tui.name
 	line = readl('> ')
 	if line == 'exit':
+		del local.__shellname__
 		return True
 	if line == 'clear':
 		system('clear')
+		del local.__shellname__
 		return False
 	tui.Handle(line, **kwargs)
+	del local.__shellname__
 	return False
 
 def shell(tui = basic_shell, **kwargs):
