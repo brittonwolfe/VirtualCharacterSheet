@@ -66,7 +66,7 @@ class Core5eCharacterSheet(PyCharacterSheet):
 		TerminalForm.SetCursorPosition()
 		breaks = False
 		while not breaks:
-			TerminalForm.SetCursorPosition(x = 9)
+			TerminalForm.SetCursorPosition(x = 0)
 			breaks = non_loop_shell(character_tui, character = self.character)
 
 core.AddView(PlayerCharacter, PyUiFactory(lambda content: Core5eCharacterSheet(content)))
