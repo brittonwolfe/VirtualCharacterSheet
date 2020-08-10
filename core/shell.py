@@ -195,7 +195,7 @@ def cmd_view(args):
 	View(args[0])
 
 def cmd_which(args):
-	if args[1].lower() == 'shell':
+	if args[0].lower() == 'shell':
 		print(local.__shellname__)
 		return
 	pass
