@@ -197,10 +197,13 @@ def cmd_view(args, **kwargs):
 def cmd_which(args, **kwargs):
 	if len(args) == 0:
 		if len(kwargs) == 0:
-			print(local.This)
+			if hasattr(local, 'This'):
+				print(local.This)
+			else:
+				print(None)
 		else:
-			for (key, value) in kwargs:
-				print(key + ': ' + value)
+			for key in kwargs:
+				print(key + ': ' + kwargs[key])
 		return
 	if args[0].lower() == 'shell':
 		print(local.__shellname__)
