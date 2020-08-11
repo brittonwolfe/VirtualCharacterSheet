@@ -141,6 +141,8 @@ def cmd_load(args, **kwargs):
 	did_load = load_object(typeof, args[1])
 	if did_load:
 		print('loaded successfully!')
+		if typeof is PlayerCharacter:
+			print('-C[' + did_load.Identifier + ']')
 	else:
 		print('did not load')
 

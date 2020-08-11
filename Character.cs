@@ -84,6 +84,11 @@ namespace VirtualCharacterSheet {
 				throw new CellarMismatchException(cellar, Data.GetCellar());
 			string player = reader.ReadString();
 			string name = reader.ReadString();
+			if(Data.HasCharacter($"{player}:{name}")) {
+				if(shouldclose)
+					reader.Close();
+				throw new OccupiedIdentityException($"{player}:{name}", typeof(PlayerCharacter));
+			}
 			var output = new PlayerCharacter(name, player);
 			output.Strength = reader.ReadByte();
 			output.Dexterity = reader.ReadByte();
