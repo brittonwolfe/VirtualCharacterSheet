@@ -61,7 +61,7 @@ class Core5eCharacterSheet(PyCharacterSheet):
 		system('clear')
 		TerminalForm.SetCursorPosition(x = 0, y = 0)
 		print(self.render_header())
-		TerminalForm.SetCursorPosition(x = 0, y = 4)
+		TerminalForm.SetCursorPosition(x = 0, y = 3)
 		print(self.render_stat_section())
 		TerminalForm.SetCursorPosition()
 		breaks = False

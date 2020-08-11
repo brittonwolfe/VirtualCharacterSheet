@@ -57,7 +57,7 @@ class PyTui(AbstractTui):
 			print(output)
 		return output
 
-def resolve_ref(args):
+def resolve_ref(args, **kwargs):
 	for i in range(len(args)):
 		arg = args[i]
 		replace_function = None
@@ -78,7 +78,7 @@ def resolve_ref(args):
 				return
 			args[i] = replace_function(identity)
 
-def cmd_brew(args):
+def cmd_brew(args, **kwargs):
 	"""brew [list | load <path> | info <identifier>]
 	list	lists all loaded brews
 	load	loads the brew at the given <path>
@@ -128,7 +128,7 @@ def cmd_brew(args):
 			else:
 				print('no brew called ' + brew_name + ' was found')
 
-def cmd_load(args):
+def cmd_load(args, **kwargs):
 	typeof = None
 	if not args[0].startswith('-'):
 		print('invalid argument', args[0])
@@ -144,7 +144,7 @@ def cmd_load(args):
 	else:
 		print('did not load')
 
-def cmd_roll(args):
+def cmd_roll(args, **kwargs):
 	"""roll [times] d<sides>
 	sides	the number of sides the die should have
 	times	the number of times to roll the die
@@ -179,7 +179,7 @@ def cmd_roll(args):
 	else:
 		return rolln(n, d)
 
-def cmd_save(args):
+def cmd_save(args, **kwargs):
 	if len(args) > 2:
 		print('too many arguments!')
 		return
@@ -190,15 +190,21 @@ def cmd_save(args):
 	else:
 		print('did not save successfully.')
 	
-def cmd_view(args):
+def cmd_view(args, **kwargs):
 	resolve_ref(args)
 	View(args[0])
 
-def cmd_which(args):
+def cmd_which(args, **kwargs):
+	if len(args) == 0:
+		if len(kwargs) == 0:
+			print(local.This)
+		else:
+			for (key, value) in kwargs:
+				print(key + ': ' + value)
+		return
 	if args[0].lower() == 'shell':
 		print(local.__shellname__)
 		return
-	pass
 
 basic_shell_dict = {
 	'brew': cmd_brew,
