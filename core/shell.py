@@ -203,7 +203,7 @@ def cmd_which(args, **kwargs):
 				print(None)
 		else:
 			for key in kwargs:
-				print(key + ': ' + kwargs[key])
+				print(key + ': ' + str(kwargs[key]))
 		return
 	if args[0].lower() == 'shell':
 		print(local.__shellname__)
@@ -228,14 +228,14 @@ def non_loop_shell(tui, **kwargs):
 	local.__shellname__ = tui.name
 	line = readl('> ')
 	if line == 'exit':
-		del local.__shellname__
+		local.__shellname__ = None
 		return True
 	if line == 'clear':
 		system('clear')
-		del local.__shellname__
+		local.__shellname__ = None
 		return False
 	tui.Handle(line, **kwargs)
-	del local.__shellname__
+	local.__shellname__ = None
 	return False
 
 def shell(tui = basic_shell, **kwargs):
