@@ -135,11 +135,8 @@ def cmd_list(args, **kwargs):
 		for arg in args:
 			cmd_list([arg], **kwargs)
 		return
-	if args[0] == '-b':
-		print(cmd_brew('list'))
-		return
 	if args[0] == '-C':
-		print('-- Characters --')
+		print('== Characters ==')
 		print(AllCharacters())
 		return
 	print('No list for type ' + args[0])

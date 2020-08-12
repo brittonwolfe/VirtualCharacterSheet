@@ -44,6 +44,8 @@ namespace VirtualCharacterSheet {
 		public static bool HasFeat(string key) { return feat.ContainsKey(key.ToLower()); }
 
 		public static string AllCharacters() {
+			if(character.Count == 0)
+				return null;
 			string output = "";
 			foreach(string key in character.Keys)
 				output += $"-C[{key}]\n";
