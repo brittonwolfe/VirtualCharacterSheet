@@ -236,10 +236,11 @@ basic_shell = PyTui(basic_shell_dict, shout = True, colon = True, name = 'Base S
 
 def add_base(dictionary, prune = []):
 	output = basic_shell_dict.copy()
-	output.update(dictionary)
 	if len(prune) != 0:
 		for rem in prune:
-			del output[rem]
+			if rem in output:
+				del output[rem]
+	output.update(dictionary)
 	return output
 
 def non_loop_shell(tui, **kwargs):
