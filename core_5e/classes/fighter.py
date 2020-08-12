@@ -1,4 +1,6 @@
-﻿fighter = def_class("core_5e:fighter")
+﻿clr.AddReference('vcs')
+
+fighter = def_class("core_5e:fighter")
 fighter.Name = "Fighter"
 fighter.HitDie = 10
 fighter.Info.Book = "Player's Handbook"

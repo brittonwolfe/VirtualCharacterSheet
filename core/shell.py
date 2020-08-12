@@ -206,8 +206,6 @@ def cmd_which(args, **kwargs):
 		else:
 			for key in kwargs:
 				rep = str(kwargs[key])
-				if hasattr(kwargs[key], 'Identifier'):
-					rep = '[' + kwargs[key].Identifier + ']'
 				print(key + ': ' + rep)
 		return
 	if args[0].lower() == 'shell':

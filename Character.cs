@@ -112,6 +112,8 @@ namespace VirtualCharacterSheet {
 			return output;
 		}
 
+		public string __str__() { return $"-C[{Player}:{Name}]"; }
+
 	}
 
 	public class NPC : Character {
