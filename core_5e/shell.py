@@ -58,7 +58,11 @@ def versatile_roll(args, **kwargs):
 	else:
 		return cmd_roll(args)
 
-character_tui = PyTui(add_base({
-	'check': stat_check,
-	'roll': versatile_roll
-}), shout = True, name = 'Core 5E Character Shell')
+character_tui = PyTui(
+	add_base({
+		'check': stat_check,
+		'roll': versatile_roll
+	}, prune = ['view']),
+	shout = True,
+	name = 'Core 5E Character Shell'
+)

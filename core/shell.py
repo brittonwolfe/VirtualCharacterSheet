@@ -128,6 +128,11 @@ def cmd_brew(args, **kwargs):
 			else:
 				print('no brew called ' + brew_name + ' was found')
 
+def cmd_list(args, **kwargs):
+	if len(args) == 0:
+		return
+	pass
+
 def cmd_load(args, **kwargs):
 	typeof = None
 	if not args[0].startswith('-'):
@@ -220,6 +225,7 @@ def cmd_which(args, **kwargs):
 
 basic_shell_dict = {
 	'brew': cmd_brew,
+	'list': cmd_list,
 	'load': cmd_load,
 	'roll': cmd_roll,
 	'save': cmd_save,
@@ -228,9 +234,12 @@ basic_shell_dict = {
 }
 basic_shell = PyTui(basic_shell_dict, shout = True, colon = True, name = 'Base Shell')
 
-def add_base(dictionary):
+def add_base(dictionary, prune = []):
 	output = basic_shell_dict.copy()
 	output.update(dictionary)
+	if len(prune) != 0:
+		for rem in prune:
+			del output[rem]
 	return output
 
 def non_loop_shell(tui, **kwargs):
