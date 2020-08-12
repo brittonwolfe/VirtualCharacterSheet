@@ -43,6 +43,13 @@ namespace VirtualCharacterSheet {
 		public static bool HasClass(string key) { return classes.ContainsKey(key.ToLower()); }
 		public static bool HasFeat(string key) { return feat.ContainsKey(key.ToLower()); }
 
+		public static string AllCharacters() {
+			string output = "";
+			foreach(string key in character.Keys)
+				output += $"-C[{key}]\n";
+			return output.Trim();
+		}
+
 		internal static void AddBrew(Brew b) { brew[b.Name] = b; }
 		public static bool HasBrew(string n) { return brew.ContainsKey(n); }
 		public static Brew GetBrew(string n) { return brew[n]; }

@@ -6,7 +6,7 @@ from shlex import split
 from traceback import print_exc
 from VirtualCharacterSheet import AbstractTui, PlayerCharacter
 from VirtualCharacterSheet.Core import View
-from VirtualCharacterSheet.Data import AllBrews, GetBrew, GetCharacter, GetItem, HasBrew, HasCharacter, HasItem
+from VirtualCharacterSheet.Data import AllBrews, AllCharacters, GetBrew, GetCharacter, GetItem, HasBrew, HasCharacter, HasItem
 from VirtualCharacterSheet.IO import File, Dir
 
 class PyTui(AbstractTui):
@@ -131,7 +131,18 @@ def cmd_brew(args, **kwargs):
 def cmd_list(args, **kwargs):
 	if len(args) == 0:
 		return
-	pass
+	if len(args) > 1:
+		for arg in args:
+			cmd_list([arg], **kwargs)
+		return
+	if args[0] == '-b':
+		print(cmd_brew('list'))
+		return
+	if args[0] == '-C':
+		print('-- Characters --')
+		print(AllCharacters())
+		return
+	print('No list for type ' + args[0])
 
 def cmd_load(args, **kwargs):
 	typeof = None
@@ -146,8 +157,7 @@ def cmd_load(args, **kwargs):
 	did_load = load_object(typeof, args[1])
 	if did_load:
 		print('loaded successfully!')
-		if typeof is PlayerCharacter:
-			print('-C[' + did_load.Identifier + ']')
+		return did_load
 	else:
 		print('did not load')
 
