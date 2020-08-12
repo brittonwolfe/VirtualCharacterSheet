@@ -198,6 +198,7 @@ def cmd_view(args, **kwargs):
 
 def cmd_which(args, **kwargs):
 	if len(args) == 0:
+		print(local.__shellname__)
 		if len(kwargs) == 0:
 			if hasattr(local, 'This'):
 				print(local.This)
@@ -211,6 +212,11 @@ def cmd_which(args, **kwargs):
 	if args[0].lower() == 'shell':
 		print(local.__shellname__)
 		return
+	key = args[0].lower()
+	if key in kwargs:
+		print(key + ': ' + str(kwargs[key]))
+	else:
+		print(None)
 
 basic_shell_dict = {
 	'brew': cmd_brew,

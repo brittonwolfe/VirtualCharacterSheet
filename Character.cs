@@ -126,6 +126,8 @@ namespace VirtualCharacterSheet {
 			Inject();
 		}
 
+		public string __str__() { return $"-N[{Identifier}]"; }
+
 	}
 
 	public class Feat : ScriptedObject {
@@ -158,6 +160,8 @@ namespace VirtualCharacterSheet {
 			var tmp = new ClassInstance(this);
 			c.Meta.classes.append(tmp);
 		}
+
+		public string __str__() { return $"-c[{Identifier}]"; }
 
 	}
 	
