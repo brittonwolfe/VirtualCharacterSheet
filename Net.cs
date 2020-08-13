@@ -29,16 +29,20 @@ namespace VirtualCharacterSheet.Net {
 
 	public class Startup {
 
-		public void ConfigureServices(IServiceCollection services) { }
+		public void ConfigureServices(IServiceCollection services) {
+			services.AddRazorPages();
+			services.AddServerSideBlazor();
+		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
 			if(env.IsDevelopment())
 				app.UseDeveloperExceptionPage();
 			app.UseRouting();
+			app.UseStaticFiles();
+			app.UseRouting();
 			app.UseEndpoints(endpoints => {
-				endpoints.MapGet("/", async context => {
-					await context.Response.WriteAsync("todo");
-				});
+				endpoints.MapBlazorHub();
+				endpoints.MapFallbackToPage("/Index");
 			});
 		}
 	}
