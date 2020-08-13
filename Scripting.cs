@@ -45,6 +45,7 @@ namespace VirtualCharacterSheet {
 		public static void Sandbox() {
 			if(!Initialized)
 				init();
+			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/config.py").Path, ShellScope);
 			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/io.py").Path, ShellScope);
 			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/shell.py").Path, ShellScope);
 			ShellScope.GetVariable("shell")();

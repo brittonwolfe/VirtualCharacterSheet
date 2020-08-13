@@ -1,5 +1,5 @@
 clr.AddReference('vcs')
-from configparser import ConfigParser
+from ConfigParser import ConfigParser
 from os.path import expanduser
 
 class Config():
