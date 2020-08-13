@@ -39,7 +39,6 @@ namespace VirtualCharacterSheet.Net {
 				app.UseDeveloperExceptionPage();
 			app.UseRouting();
 			app.UseStaticFiles();
-			app.UseRouting();
 			app.UseEndpoints(endpoints => {
 				endpoints.MapBlazorHub();
 				endpoints.MapFallbackToPage("/Index");
