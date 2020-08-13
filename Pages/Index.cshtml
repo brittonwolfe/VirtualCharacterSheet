@@ -1,4 +1,7 @@
 @page "/"
+@namespace VirtualCharacterSheet.Net.Pages
+
+@using VirtualCharacterSheet
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,6 +9,23 @@
 		<meta charset= "utf-8"/>
 	</head>
 	<body>
-		<p>foo!</p>
+		<div class = "chars">
+			<h1>Characters</h1>
+			@foreach(var pc in Data.GetAllCharacters()) {
+				<section>
+					<header>@pc.Name</header>
+					<p>Player: @pc.Player</p>
+				</section>
+			}
+		</div>
+		<div class = "brews">
+			<h2>Brews</h2>
+			@foreach(var brew in Data.GetAllBrews()) {
+				<section>
+					<header>@brew.Name</header>
+					<p></p>
+				</section>
+			}
+		</div>
 	</body>
 </html>

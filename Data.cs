@@ -43,6 +43,13 @@ namespace VirtualCharacterSheet {
 		public static bool HasClass(string key) { return classes.ContainsKey(key.ToLower()); }
 		public static bool HasFeat(string key) { return feat.ContainsKey(key.ToLower()); }
 
+		public static List<PlayerCharacter> GetAllCharacters() {
+			var output = new List<PlayerCharacter>();
+			foreach(var value in character.Values)
+				output.Add(value);
+			return output;
+		}
+
 		public static string AllCharacters() {
 			if(character.Count == 0)
 				return null;
@@ -55,7 +62,7 @@ namespace VirtualCharacterSheet {
 		internal static void AddBrew(Brew b) { brew[b.Name] = b; }
 		public static bool HasBrew(string n) { return brew.ContainsKey(n); }
 		public static Brew GetBrew(string n) { return brew[n]; }
-		internal static List<Brew> GetAllBrews() { return new List<Brew>(brew.Values); }
+		public static List<Brew> GetAllBrews() { return new List<Brew>(brew.Values); }
 		public static string AllBrews() {
 			string output = "";
 			foreach(string key in brew.Keys)

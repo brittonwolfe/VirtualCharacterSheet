@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace VirtualCharacterSheet {
 
@@ -14,7 +15,7 @@ namespace VirtualCharacterSheet {
 			Console.WriteLine("VCS TUI");
 			Scripting.init();
 
-			Net.AppHost.Start(args);
+			new Task(() => Net.AppHost.Start(args)).Start();
 			Core.StartSandbox();
 
 			AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnExit);

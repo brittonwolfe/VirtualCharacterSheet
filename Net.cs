@@ -41,7 +41,8 @@ namespace VirtualCharacterSheet.Net {
 			app.UseStaticFiles();
 			app.UseEndpoints(endpoints => {
 				endpoints.MapBlazorHub();
-				endpoints.MapFallbackToPage("/_Host");
+				endpoints.MapRazorPages();
+				endpoints.MapFallbackToPage("/Index");
 			});
 		}
 	}
