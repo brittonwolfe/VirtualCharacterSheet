@@ -1,6 +1,13 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Sockets;
 using System.Net.Http;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 using Newtonsoft.Json;
 
@@ -8,8 +15,32 @@ using VirtualCharacterSheet;
 
 namespace VirtualCharacterSheet.Net {
 
-	public static class Host {
+	public static class AppHost {
 
+		internal static void Start(string[] args) {
+			CreateHostBuilder(args).Build().Run();
+		}
+
+		internal static IHostBuilder CreateHostBuilder(string[] args) {
+			return Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(WebHostBuilder => { WebHostBuilder.UseStartup<Startup>(); });
+		}
+
+	}
+
+	public class Startup {
+
+		public void ConfigureServices(IServiceCollection services) { }
+
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
+			if(env.IsDevelopment())
+				app.UseDeveloperExceptionPage();
+			app.UseRouting();
+			app.UseEndpoints(endpoints => {
+				endpoints.MapGet("/", async context => {
+					await context.Response.WriteAsync("todo");
+				});
+			});
+		}
 	}
 
 	internal static class Client {
