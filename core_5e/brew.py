@@ -2,6 +2,9 @@
 core.Meta.Title = "D&D Fifth Edition OGL"
 core.Meta.Description = "The Open Game License SRD for Dungeons and Dragons Fifth Edition"
 core.Meta.Dir = brew.Path
+core.Meta.Owner = 'Wizards of the Coast'
+core.Meta.Website = 'https://github.com/brittonwolfe/virtualcharactersheet'
+core.Meta.GameSite = 'https://dnd.wizards.com/'
 
 def InjectMeta(character):
 	character.Meta.classes = []

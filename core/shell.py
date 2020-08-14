@@ -119,11 +119,17 @@ def cmd_brew(args, **kwargs):
 				if hasattr(obj.Meta, 'Version'):
 					print('v' + obj.Meta.Version)
 				if hasattr(obj.Meta, 'Author'):
-					print('By', obj.Meta.Author)
+					print('By' + obj.Meta.Author)
 				else:
 					print('(no author specified)')
 				if hasattr(obj.Meta, 'Description'):
 					print(obj.Meta.Description)
+				if hasattr(obj.Meta, 'Website'):
+					print('Download at: ' + obj.Meta.Website)
+				if hasattr(obj.Meta, 'Owner'):
+					print('Owned by ' + obj.Meta.Owner)
+				if hasattr(obj.Meta, 'GameSite'):
+					print('Game Website: ' + obj.Meta.GameSite)
 				print(obj.Meta.Dir.Path)
 			else:
 				print('no brew called ' + brew_name + ' was found')
