@@ -42,7 +42,7 @@ namespace VirtualCharacterSheet.Net {
 			app.UseEndpoints(endpoints => {
 				endpoints.MapBlazorHub();
 				endpoints.MapRazorPages();
-				endpoints.MapFallbackToPage("/Index");
+				endpoints.MapFallbackToPage("/_404");
 			});
 		}
 	}
