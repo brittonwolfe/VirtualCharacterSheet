@@ -1,8 +1,8 @@
-@page "/character"
+@page "/character/{id}"
 
 @using VirtualCharacterSheet
 @{
-	string id = Request.Query["id"];
+	string id = (string)RouteData.Values["id"];
 	var character = Data.HasCharacter(id) ? Data.GetCharacter(id) : null;
 }
 <!DOCTYPE html>
