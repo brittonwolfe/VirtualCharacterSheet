@@ -129,7 +129,7 @@ namespace VirtualCharacterSheet {
 
 		public static void Load(File src) { Scripting.Brew(new FileScript(src)); }
 
-		internal void AddPage(string subpath) {
+		public void AddPage(string subpath) {
 			var pagefolder = FileLoad.WorkingDirectory().GetSubdir("Pages");
 			var new_path = pagefolder.Get(subpath);
 			System.IO.File.Copy(Meta.Dir.Get("Pages/" + subpath).Path, new_path.Path);

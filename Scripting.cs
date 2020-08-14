@@ -67,11 +67,6 @@ namespace VirtualCharacterSheet {
 					return BrewScope.GetVariable(item);
 				}
 			);
-			homebrew.add_page = new Action<string>(
-				(subpath) => {
-					
-				}
-			)
 
 			try { engine.ExecuteFile(src.File.Path, BrewScope); }
 			catch(Exception e) { Console.WriteLine(e); }
@@ -108,7 +103,11 @@ namespace VirtualCharacterSheet {
 			engine.GetBuiltinModule().ImportModule("sys");
 # endregion
 
-# region global functions
+# region global functions=
+			SetGlobal("host", new Action(() => {
+				var host = new System.Threading.Tasks.Task(() => Net.AppHost.Start(new string[0]));
+				host.Start();
+			}));
 			SetGlobal("roll", new Func<ushort, uint>(Die.Roll));
 			SetGlobal("rolln", new Func<ushort, ushort, uint>(Die.Rolln));
 			SetGlobal("mod", new Func<byte, short>(Core.Modifier));
