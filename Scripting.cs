@@ -46,6 +46,7 @@ namespace VirtualCharacterSheet {
 			if(!Initialized)
 				init();
 			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/config.py").Path, ShellScope);
+			Data.Config = ShellScope.GetVariable("__config__");
 			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/io.py").Path, ShellScope);
 			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/shell.py").Path, ShellScope);
 			ShellScope.GetVariable("shell")();
