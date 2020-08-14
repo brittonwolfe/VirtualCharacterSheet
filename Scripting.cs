@@ -67,6 +67,11 @@ namespace VirtualCharacterSheet {
 					return BrewScope.GetVariable(item);
 				}
 			);
+			homebrew.add_page = new Action<string>(
+				(subpath) => {
+					
+				}
+			)
 
 			try { engine.ExecuteFile(src.File.Path, BrewScope); }
 			catch(Exception e) { Console.WriteLine(e); }
@@ -197,7 +202,7 @@ namespace VirtualCharacterSheet {
 			var script = new RawPyScript(temp.ReadText());
 			script.AddTempFile(temp);
 			Data.SetPy(key, script);
-			Core.temp_scripts.Add(temp);
+			Core.temp_files.Add(temp);
 		}
 		private static void ScriptEditor(string key) {
 			bool wantsbreak = false;

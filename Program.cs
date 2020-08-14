@@ -24,7 +24,7 @@ namespace VirtualCharacterSheet {
 		}
 
 		private static void OnExit(object sender, EventArgs e) {
-			foreach(IO.File file in Core.temp_scripts)
+			foreach(IO.File file in Core.temp_files)
 				System.IO.File.Delete(file.Path);
 		}
 
@@ -33,7 +33,7 @@ namespace VirtualCharacterSheet {
 	public static class Core {
 		private static PlayerCharacter currchar = null;
 		internal static bool SandboxAwaits = false;
-		internal static List<IO.File> temp_scripts = new List<IO.File>();
+		internal static List<IO.File> temp_files = new List<IO.File>();
 		public readonly static PlatformID platform = Environment.OSVersion.Platform;
 
 		public static PlayerCharacter GetCurrentCharacter() { return currchar; }

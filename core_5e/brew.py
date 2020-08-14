@@ -75,3 +75,4 @@ import item
 import shell
 import tui
 import gui
+import Pages
