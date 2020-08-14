@@ -9,6 +9,8 @@ using VirtualCharacterSheet.IO.Serialization;
 namespace VirtualCharacterSheet {
 
 	public static class Data {
+		internal static dynamic Config = null;
+
 		private static Dictionary<string, PlayerCharacter> character = new Dictionary<string, PlayerCharacter>();
 		private static Dictionary<string, Class> classes = new Dictionary<string, Class>();
 		private static Dictionary<string, Feat> feat = new Dictionary<string, Feat>();
@@ -18,6 +20,16 @@ namespace VirtualCharacterSheet {
 		private static Dictionary<string, object> pyf = new Dictionary<string, object>();
 
 		private static Dictionary<string, Brew> brew = new Dictionary<string, Brew>();
+
+		public static dynamic GetConfig(string section, string option = null) {
+			if(!Config.has_section(section))
+				return null;
+			if(option == null)
+				return Config[section];
+			return Config[section][option];
+		}
+		public static bool ConfigHasSection(string section) { return Config.has_section(section); }
+		public static void SaveConfig() { Config.save(); }
 
 		public static Item GetItem(string key) { return item[key.ToLower()]; }
 		public static PlayerCharacter GetCharacter(string key) { return character[key.ToLower()]; }
