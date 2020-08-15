@@ -13,10 +13,10 @@ using Newtonsoft.Json;
 
 namespace VirtualCharacterSheet.Net {
 
-	public static class AppHost {
+	public static class ApiHost {
 
 		public static Task StartHost(string[] args) {
-			var host = new Task(() => Net.AppHost.Start(args));
+			var host = new Task(() => Start(args));
 			host.Start();
 			return host;
 		}
