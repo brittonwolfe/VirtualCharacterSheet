@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -9,6 +10,14 @@ namespace VirtualCharacterSheet.Net.API {
 	[ApiController]
 	[Route("character")]
 	public sealed class CharacterController : ControllerBase {
+
+		[HttpGet("{identity}")]
+		public IActionResult GetAction(string identity) {
+			if(!Data.HasCharacter(identity))
+				return NotFound();
+			var character = Data.GetCharacter(identity);
+			return new JsonResult(character);
+		}
 
 		[HttpGet("{identity}/bin")]
 		public IActionResult GetBin(string identity) {

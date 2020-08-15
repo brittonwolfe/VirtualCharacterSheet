@@ -13,8 +13,7 @@
 			<h1>Characters</h1>
 			@foreach(var pc in Data.GetAllCharacters()) {
 				<section>
-					<header>@pc.Name</header>
-					<p>Player: @pc.Player</p>
+					<a href="character/@pc.Identifier/">@pc.Name</a>
 				</section>
 			}
 		</div>
