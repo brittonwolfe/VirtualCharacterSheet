@@ -2,14 +2,13 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace VirtualCharacterSheet.Net.API {
 
 	[ApiController]
 	[Route("character")]
-	public sealed class CharacterController : ControllerBase{
+	public sealed class CharacterController : ControllerBase {
 
 		[HttpGet("{identity}/bin")]
 		public IActionResult GetBin(string identity) {
@@ -25,6 +24,20 @@ namespace VirtualCharacterSheet.Net.API {
 			result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 			writer.Flush();
 			return File(stream, "application/octet-stream", fileDownloadName: $"{identity.Replace(':','_')}.vcs");
+		}
+
+	}
+
+	[ApiController]
+	[Route("brew")]
+	public sealed class BrewController : ControllerBase {
+
+		[HttpGet("{name}")]
+		public IActionResult GetAction(string name) {
+			if(!Data.HasBrew(name))
+				return NotFound();
+			var brew = Data.GetBrew(name);
+			return new JsonResult(brew.Meta);
 		}
 
 	}
