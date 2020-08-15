@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -51,37 +47,6 @@ namespace VirtualCharacterSheet.Net {
 				endpoints.MapFallbackToPage("/_404");
 			});
 		}
-	}
-
-	internal static class Client {
-
-	}
-
-	public class ClientConnection {
-		public readonly string Url;
-		private readonly HttpClient client;
-
-		public ClientConnection(string url) {
-			Url = url;
-			client = new HttpClient();
-		}
-
-		public (int, dynamic) MakeRequest(string request, string method = "GET") {
-			int code;
-			dynamic obj;
-			switch(method) {
-			case "GET":
-				var response = client.GetAsync(request).Result;
-				code = (int)response.StatusCode;
-				string content = response.Content.ToString();
-				obj = JsonConvert.DeserializeObject(content);
-				break;
-			default:
-				throw new System.Exception();
-			}
-			return (code, obj);
-		}
-
 	}
 
 }
