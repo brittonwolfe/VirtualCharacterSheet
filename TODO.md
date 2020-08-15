@@ -22,7 +22,8 @@
 
 ## NI/O
 
-- [ ] Write a host for networking and communicating game state, preferably RESTful.
+- [x] Write a host for networking and communicating game state, preferably RESTful.
+- [ ] Finish writing other API controllers
 - [ ] Write a client for connecting to the host to synchronize and communicate the game state.
 
 ## Experimental
