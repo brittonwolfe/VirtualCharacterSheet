@@ -21,8 +21,7 @@
 			<h2>Brews</h2>
 			@foreach(var brew in Data.GetAllBrews()) {
 				<section>
-					<header>@brew.Name</header>
-					<p></p>
+					<a href="brew/@brew.Name">@brew.Name</a>
 				</section>
 			}
 		</div>
