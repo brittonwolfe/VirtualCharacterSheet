@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
+
 using VirtualCharacterSheet.Event;
 using VirtualCharacterSheet.Exceptions;
 using VirtualCharacterSheet.IO;
 using VirtualCharacterSheet.IO.Serialization;
+
+using BinaryReader = System.IO.BinaryReader;
+using BinaryWriter = System.IO.BinaryWriter;
 
 namespace VirtualCharacterSheet {
 
@@ -145,6 +149,24 @@ namespace VirtualCharacterSheet {
 		public Item(string id) : base() {
 			Identifier = id;
 			Data.SetItem(this);
+		}
+
+	}
+
+	public class MiscObject {
+		private Dictionary<string, dynamic> Props;
+
+		public MiscObject() { Props = new Dictionary<string, dynamic>(); }
+		public MiscObject(IDictionary<string, object> dict) {
+			foreach(KeyValuePair<string, object> pair in dict)
+				Props[pair.Key] = pair.Value;
+		}
+
+		public static bool Serialize(object target, BinaryWriter writer, bool shouldclose = true) {
+			if(target.GetType() != typeof(MiscObject))
+				return false;
+			((dynamic)target).__serialize__();
+			return true;
 		}
 
 	}

@@ -7,6 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace VirtualCharacterSheet.Net.API {
 
+	public static class Misc {
+		internal static Dictionary<string, dynamic> Handlers = new Dictionary<string, dynamic>();
+
+		public static bool HasHandle(string type) { return Handlers.ContainsKey(type); }
+
+	}
+
 	[ApiController]
 	[Route("character")]
 	public sealed class CharacterController : ControllerBase {
@@ -54,6 +61,11 @@ namespace VirtualCharacterSheet.Net.API {
 	[ApiController]
 	[Route("misc")]
 	public sealed class MiscController : ControllerBase {
+
+		public IActionResult Get(string type, string name = null) {
+//			if(!Misc.HasHandle(type))
+				return NotFound();
+		}
 
 	}
 
