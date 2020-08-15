@@ -58,8 +58,8 @@ namespace VirtualCharacterSheet.Net.API {
 
 	}
 
-	[ApiController]
-	[Route("misc")]
+	//[ApiController]
+	//[Route("misc")]
 	public sealed class MiscController : ControllerBase {
 
 		public IActionResult Get(string type, string name = null) {
