@@ -11,8 +11,6 @@ using Microsoft.Extensions.Hosting;
 
 using Newtonsoft.Json;
 
-using VirtualCharacterSheet;
-
 namespace VirtualCharacterSheet.Net {
 
 	public static class AppHost {
@@ -40,8 +38,10 @@ namespace VirtualCharacterSheet.Net {
 			app.UseRouting();
 			app.UseStaticFiles();
 			app.UseEndpoints(endpoints => {
-				endpoints.MapBlazorHub();
-				endpoints.MapRazorPages();
+				endpoints.MapControllerRoute(
+					name: "default",
+					pattern: "{controller=Home}/{action=Index}/{id?}"
+				);
 				endpoints.MapFallbackToPage("/_404");
 			});
 		}
