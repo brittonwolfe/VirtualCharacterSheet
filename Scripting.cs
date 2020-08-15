@@ -104,10 +104,6 @@ namespace VirtualCharacterSheet {
 # endregion
 
 # region global functions=
-			SetGlobal("host", new Action(() => {
-				var host = new System.Threading.Tasks.Task(() => Net.AppHost.Start(new string[0]));
-				host.Start();
-			}));
 			SetGlobal("roll", new Func<ushort, uint>(Die.Roll));
 			SetGlobal("rolln", new Func<ushort, ushort, uint>(Die.Rolln));
 			SetGlobal("mod", new Func<byte, short>(Core.Modifier));

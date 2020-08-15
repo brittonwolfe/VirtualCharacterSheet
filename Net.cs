@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -14,6 +14,12 @@ using Newtonsoft.Json;
 namespace VirtualCharacterSheet.Net {
 
 	public static class AppHost {
+
+		public static Task StartHost(string[] args) {
+			var host = new Task(() => Net.AppHost.Start(args));
+			host.Start();
+			return host;
+		}
 
 		internal static void Start(string[] args) {
 			CreateHostBuilder(args).Build().Run();
