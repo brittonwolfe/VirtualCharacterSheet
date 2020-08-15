@@ -42,12 +42,18 @@ namespace VirtualCharacterSheet.Net.API {
 	public sealed class BrewController : ControllerBase {
 
 		[HttpGet("{name}")]
-		public IActionResult GetAction(string name) {
+		public IActionResult Get(string name) {
 			if(!Data.HasBrew(name))
 				return NotFound();
 			var brew = Data.GetBrew(name);
 			return new JsonResult(brew.Meta);
 		}
+
+	}
+
+	[ApiController]
+	[Route("misc")]
+	public sealed class MiscController : ControllerBase {
 
 	}
 
