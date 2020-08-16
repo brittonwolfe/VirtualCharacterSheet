@@ -58,6 +58,9 @@ def versatile_roll(args, **kwargs):
 	else:
 		return cmd_roll(args)
 
+def cmd_skill(args, **kwargs):
+	pass
+
 character_tui = PyTui(
 	add_base({
 		'check': stat_check,
