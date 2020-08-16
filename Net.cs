@@ -9,6 +9,12 @@ namespace VirtualCharacterSheet.Net {
 
 	public static class ApiHost {
 
+		public static void StartNetShell() {
+			var task = StartHost(new string[0]);
+			Scripting.engine.ExecuteFile(FileLoad.GetInternalFile("core/net.py").Path);
+			task.Dispose();
+		}
+
 		public static Task StartHost(string[] args) {
 			var host = new Task(() => Start(args));
 			host.Start();

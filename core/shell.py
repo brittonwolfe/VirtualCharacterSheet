@@ -8,6 +8,7 @@ from VirtualCharacterSheet import AbstractTui, PlayerCharacter
 from VirtualCharacterSheet.Core import View
 from VirtualCharacterSheet.Data import AllBrews, AllCharacters, GetBrew, GetCharacter, GetItem, HasBrew, HasCharacter, HasItem
 from VirtualCharacterSheet.IO import File, Dir
+from VirtualCharacterSheet.Net.ApiHost import StartNetShell
 
 class PyTui(AbstractTui):
 	"""Used to create a shell interface for interacting with the VCS environment."""
@@ -240,6 +241,7 @@ basic_shell_dict = {
 	'brew': cmd_brew,
 	'list': cmd_list,
 	'load': cmd_load,
+	'net': StartNetShell,
 	'roll': cmd_roll,
 	'save': cmd_save,
 	'view': cmd_view,
@@ -256,7 +258,7 @@ def add_base(dictionary, prune = []):
 	output.update(dictionary)
 	return output
 
-def non_loop_shell(tui, **kwargs):
+def non_loop_shell(tui = basic_shell, **kwargs):
 	local.__shellname__ = tui.name
 	line = readl('> ')
 	if line == 'exit':
