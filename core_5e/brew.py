@@ -1,4 +1,7 @@
-﻿core = brew.def_brew("core_5e")
+﻿clr.AddReference('vcs')
+from VirtualCharacterSheet import Brew
+
+core = Brew('core_5e')
 core.Meta.Title = "D&D Fifth Edition OGL"
 core.Meta.Description = "The Open Game License SRD for Dungeons and Dragons Fifth Edition"
 core.Meta.Dir = brew.Path
@@ -78,4 +81,3 @@ import item
 import shell
 import tui
 import gui
-import Pages
