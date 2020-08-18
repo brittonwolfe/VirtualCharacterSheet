@@ -3,14 +3,14 @@ from os import system
 
 from VirtualCharacterSheet import PlayerCharacter
 from VirtualCharacterSheet.Forms import TerminalForm, TerminalView
-from core.ui import PyCharacterSheet, PyUiFactory
+from core.ui import PyTui, PyUiFactory
 from core.shell import non_loop_shell
 
-character_tui = brew.import_absolute('shell.py', 'character_tui')
+character_cli = brew.import_absolute('shell.py', 'character_cli')
 
 core = _brew('core_5e')
 
-class Core5eCharacterSheet(PyCharacterSheet):
+class Core5eCharacterSheet(PyTui):
 	def __init__(self, character):
 		self.character = character
 		self.basic_view()
@@ -67,6 +67,6 @@ class Core5eCharacterSheet(PyCharacterSheet):
 		breaks = False
 		while not breaks:
 			TerminalForm.SetCursorPosition(x = 0)
-			breaks = non_loop_shell(character_tui, character = self.character)
+			breaks = non_loop_shell(character_cli, character = self.character)
 
 core.AddView(PlayerCharacter, PyUiFactory(lambda content: Core5eCharacterSheet(content)))

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using VirtualCharacterSheet.Terminal;
+
 using PyList = IronPython.Runtime.List;
 using PyTuple = IronPython.Runtime.PythonTuple;
 
@@ -22,7 +24,7 @@ namespace VirtualCharacterSheet.Forms {
 	public abstract class TerminalForm : AbstractUi {
 		protected Dictionary<string, TerminalView> Views = new Dictionary<string, TerminalView>();
 		protected string CurrentView = "base";
-		protected Tui Handler;
+		protected Cli Handler;
 
 		public TerminalForm(params (string, TerminalView)[] views) {
 			foreach((string, TerminalView) kvp in views)
@@ -33,15 +35,15 @@ namespace VirtualCharacterSheet.Forms {
 			Views[CurrentView].Render();
 		}
 
-		public void SetupTui(params (string, dynamic)[] funcs) {
-			Handler = new Tui(funcs);
+		public void SetupCli(params (string, dynamic)[] funcs) {
+			Handler = new Cli(funcs);
 			Handler.SetThis(this);
 		}
 		public void SetupTui(params PyTuple[] funcs) {
 			var tmp = new (string, dynamic)[funcs.Length];
 			for(int x = 0; x < tmp.Length; x++)
 				tmp[x] = ((string)funcs[x][0], funcs[x][1]);
-			SetupTui(tmp);
+			SetupCli(tmp);
 		}
 
 		public static (int, int) GetTerminalSize() { return (Console.WindowWidth, Console.WindowHeight); }
@@ -111,7 +113,7 @@ namespace VirtualCharacterSheet.Forms {
 				return;//Scripting.Remove(Scripting.viewers, Character.Identifier);
 		}
 
-		public Tui GetTuiHandler() { return Handler; }
+		public Cli GetCliHandler() { return Handler; }
 
 		public override void Close() { DisposeIdentity(); }
 

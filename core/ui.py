@@ -1,5 +1,6 @@
 clr.AddReference('vcs')
 from VirtualCharacterSheet.Forms import AbstractUi, AbstractUiFactory
+from VirtualCharacterSheet.Terminal import AbstractTui
 
 class PyUiFactory(AbstractUiFactory):
 	constructor = None
@@ -7,6 +8,9 @@ class PyUiFactory(AbstractUiFactory):
 		self.constructor = constructor
 	def Create(self, content):
 		return self.constructor(content)
+
+class PyTui(AbstractTui):
+	pass
 
 class PyGui(AbstractUi):
 	#window = Tk()
