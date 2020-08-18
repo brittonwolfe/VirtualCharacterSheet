@@ -103,7 +103,7 @@ namespace VirtualCharacterSheet {
 			engine.GetBuiltinModule().ImportModule("sys");
 # endregion
 
-# region global functions=
+# region global functions
 			SetGlobal("roll", new Func<ushort, uint>(Die.Roll));
 			SetGlobal("rolln", new Func<ushort, ushort, uint>(Die.Rolln));
 			SetGlobal("mod", new Func<byte, short>(Core.Modifier));
