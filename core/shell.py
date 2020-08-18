@@ -242,7 +242,7 @@ basic_shell_dict = {
 	'brew': cmd_brew,
 	'list': cmd_list,
 	'load': cmd_load,
-	'net': StartNetShell,
+	'net': lambda args: StartNetShell(),
 	'roll': cmd_roll,
 	'save': cmd_save,
 	'view': cmd_view,
