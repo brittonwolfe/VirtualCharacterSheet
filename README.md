@@ -3,7 +3,7 @@ The Virtual Character Sheet is a project for better online and local TTRPG bookk
 
 ## ASP.NET branch
 
-This branch is focused on integrating the .NET's ASP.NET core features to run a host server for the host and clients to interact over the internet. Very WIP.
+This branch is focused on integrating the .NET's ASP.NET core features to run a host server for the host and clients to interact over the internet.
 
 ## Dependencies
 - Python 2.7 libraries
