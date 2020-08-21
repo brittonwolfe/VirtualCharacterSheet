@@ -18,7 +18,7 @@ class Core5eCharacterSheet(PyTui):
 		width = TerminalForm.GetTerminalWidth()
 		full_line = '=' * width
 		player = self.content.Player
-		name = player.Name
+		name = self.content.Name
 		output = full_line[0:4] + name + full_line[4 + len(name):] + '\n'
 		output += '| ' + player + (' ' * (width - (player.Length + 3))) + '|'
 		output += full_line
