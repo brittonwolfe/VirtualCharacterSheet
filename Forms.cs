@@ -58,6 +58,8 @@ namespace VirtualCharacterSheet.Forms {
 		}
 		public static (int, int) GetCursorPosition() { return (Console.CursorLeft, Console.CursorTop); }
 
+		public static void Clear() { Console.Clear(); }
+
 	}
 
 	public class TerminalGraphic {

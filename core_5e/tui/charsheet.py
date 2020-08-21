@@ -65,7 +65,7 @@ class Core5eCharacterSheet(PyTui):
 		print(self.render_stat_section())
 		TerminalForm.SetCursorPosition()
 	def Render(self):
-		system('clear')
+		TerminalForm.Clear()
 		breaks = False
 		while not breaks:
 			if self.view == 0:

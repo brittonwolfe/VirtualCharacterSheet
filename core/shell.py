@@ -266,7 +266,7 @@ def non_loop_shell(cli = basic_shell, **kwargs):
 		local.__shellname__ = None
 		return True
 	if line == 'clear':
-		system('clear')
+		AbstractCli.Clear()
 		local.__shellname__ = None
 		return False
 	cli.Handle(line, **kwargs)

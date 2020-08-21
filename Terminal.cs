@@ -12,6 +12,8 @@ namespace VirtualCharacterSheet.Terminal {
 
 		public abstract void Handle(string input);
 
+		public static void Clear() { Console.Clear(); }
+
 	}
 
 	public class Cli : AbstractCli {
