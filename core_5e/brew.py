@@ -74,6 +74,7 @@ core.AddCharacterInjector(InjectSaves)
 core.AddCharacterInjector(InjectSkills)
 
 import serialize
+import design
 
 import classes
 import item
