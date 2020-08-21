@@ -59,17 +59,13 @@ class Core5eCharacterSheet(PyTui):
 		output += ('=' * 7)
 		return output
 	def basic_view(self):
-		system('clear')
 		TerminalForm.SetCursorPosition(x = 0, y = 0)
 		print(self.render_header())
 		TerminalForm.SetCursorPosition(x = 0, y = 3)
 		print(self.render_stat_section())
 		TerminalForm.SetCursorPosition()
-		breaks = False
-		while not breaks:
-			TerminalForm.SetCursorPosition(x = 0)
-			breaks = non_loop_shell(character_cli, character = self.content)
 	def Render(self):
+		system('clear')
 		breaks = False
 		while not breaks:
 			if self.view == 0:
