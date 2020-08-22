@@ -14,6 +14,11 @@ namespace VirtualCharacterSheet.Event {
 		private Dictionary<string, DynamicBehavior> Behaviors;
 		internal readonly object Source;
 
+		internal DynamicBehavior this[string key] {
+			get { return Behaviors[key]; }
+			set { Behaviors[key] = value; }
+		}
+
 		public DynamicBehaviorSet(object src) {
 			Source = src;
 			Behaviors = new Dictionary<string, DynamicBehavior>();
@@ -45,11 +50,11 @@ namespace VirtualCharacterSheet.Event {
 
 	}
 
-	internal class DynamicBehavior : DynamicObject {
-		private DynamicBehaviorSet Parent;
-		private readonly dynamic Source;
+	public class DynamicBehavior : DynamicObject {
+		protected DynamicBehaviorSet Parent;
+		protected readonly dynamic Source;
 
-		internal DynamicBehavior(DynamicBehaviorSet set, dynamic func) {
+		internal protected DynamicBehavior(DynamicBehaviorSet set, dynamic func) {
 			Source = func;
 			Parent = set;
 		}
@@ -63,6 +68,8 @@ namespace VirtualCharacterSheet.Event {
 				result = Source(Parent.Source, args);
 			return true;
 		}
+
+		public dynamic __call__() { return Do(); }
 
 	}
 

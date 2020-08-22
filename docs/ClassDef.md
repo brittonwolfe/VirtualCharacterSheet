@@ -1,5 +1,7 @@
 # Defining a Class through Python
 
+**This is currently unfinished and subject to change**
+
 ## Setting up the Class
 
 To initialize a Class, first define it:
@@ -16,8 +18,8 @@ Remember to substitute `yourclass` with your classname and the value of `yourcla
 Additionally, you can add the book and pages for a class if it's from a book! With the fighter, for example…
 
 ```py
-yourclass.Book = "Player's Handbook"
-yourclass.Pages = "70-75"
+yourclass.Info.Book = "Player's Handbook"
+yourclass.Info.Pages = "70-75"
 ```
 
 These values are just stored as `string`s, so there's no strict formatting.

@@ -4,12 +4,14 @@ from os import getcwd, system
 from os.path import isdir
 from shlex import split
 from traceback import print_exc
-from VirtualCharacterSheet import AbstractTui, PlayerCharacter
+from VirtualCharacterSheet import PlayerCharacter
 from VirtualCharacterSheet.Core import View
 from VirtualCharacterSheet.Data import AllBrews, AllCharacters, GetBrew, GetCharacter, GetItem, HasBrew, HasCharacter, HasItem
 from VirtualCharacterSheet.IO import File, Dir
+from VirtualCharacterSheet.Net.ApiHost import StartNetShell
+from VirtualCharacterSheet.Terminal import AbstractCli
 
-class PyTui(AbstractTui):
+class PyCli(AbstractCli):
 	"""Used to create a shell interface for interacting with the VCS environment."""
 	commands = {}
 	show_output = False
@@ -119,11 +121,17 @@ def cmd_brew(args, **kwargs):
 				if hasattr(obj.Meta, 'Version'):
 					print('v' + obj.Meta.Version)
 				if hasattr(obj.Meta, 'Author'):
-					print('By', obj.Meta.Author)
+					print('By' + obj.Meta.Author)
 				else:
 					print('(no author specified)')
 				if hasattr(obj.Meta, 'Description'):
 					print(obj.Meta.Description)
+				if hasattr(obj.Meta, 'Website'):
+					print('Download at: ' + obj.Meta.Website)
+				if hasattr(obj.Meta, 'Owner'):
+					print('Owned by ' + obj.Meta.Owner)
+				if hasattr(obj.Meta, 'GameSite'):
+					print('Game Website: ' + obj.Meta.GameSite)
 				print(obj.Meta.Dir.Path)
 			else:
 				print('no brew called ' + brew_name + ' was found')
@@ -234,12 +242,13 @@ basic_shell_dict = {
 	'brew': cmd_brew,
 	'list': cmd_list,
 	'load': cmd_load,
+	'net': lambda _: StartNetShell(),
 	'roll': cmd_roll,
 	'save': cmd_save,
 	'view': cmd_view,
 	'which': cmd_which
 }
-basic_shell = PyTui(basic_shell_dict, shout = True, colon = True, name = 'Base Shell')
+basic_shell = PyCli(basic_shell_dict, shout = True, colon = True, name = 'Base Shell')
 
 def add_base(dictionary, prune = []):
 	output = basic_shell_dict.copy()
@@ -250,21 +259,21 @@ def add_base(dictionary, prune = []):
 	output.update(dictionary)
 	return output
 
-def non_loop_shell(tui, **kwargs):
-	local.__shellname__ = tui.name
+def non_loop_shell(cli = basic_shell, **kwargs):
+	local.__shellname__ = cli.name
 	line = readl('> ')
 	if line == 'exit':
 		local.__shellname__ = None
 		return True
 	if line == 'clear':
-		system('clear')
+		AbstractCli.Clear()
 		local.__shellname__ = None
 		return False
-	tui.Handle(line, **kwargs)
+	cli.Handle(line, **kwargs)
 	local.__shellname__ = None
 	return False
 
-def shell(tui = basic_shell, **kwargs):
+def shell(cli = basic_shell, **kwargs):
 	breaks = False
 	while not breaks:
-		breaks = non_loop_shell(tui, **kwargs)
+		breaks = non_loop_shell(cli, **kwargs)

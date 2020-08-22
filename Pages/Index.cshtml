@@ -1,0 +1,29 @@
+@page "/"
+@namespace VirtualCharacterSheet.Net.Pages
+
+@using VirtualCharacterSheet
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset= "utf-8"/>
+	</head>
+	<body>
+		<div class = "chars">
+			<h1>Characters</h1>
+			@foreach(var pc in Data.GetAllCharacters()) {
+				<section>
+					<a href="character/@pc.Identifier/">@pc.Name</a>
+				</section>
+			}
+		</div>
+		<div class = "brews">
+			<h2>Brews</h2>
+			@foreach(var brew in Data.GetAllBrews()) {
+				<section>
+					<a href="brew/@brew.Name">@brew.Name</a>
+				</section>
+			}
+		</div>
+	</body>
+</html>

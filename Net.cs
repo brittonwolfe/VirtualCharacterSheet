@@ -1,46 +1,57 @@
-﻿using System.Net.Sockets;
-using System.Net.Http;
+﻿using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
-
-using Newtonsoft.Json;
-
-using VirtualCharacterSheet;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace VirtualCharacterSheet.Net {
 
-	public static class Host {
+	public static class ApiHost {
+
+		public static void StartNetShell() {
+			Scripting.engine.ExecuteFile(FileLoad.WorkingDirectory().Get("core/shell.py").Path, Scripting.NetScope);
+			Scripting.engine.ExecuteFile(FileLoad.WorkingDirectory().Get("core/net.py").Path, Scripting.NetScope);
+			Scripting.ShellScope.GetVariable("shell")(Scripting.NetScope.GetVariable("netshell"));
+		}
+
+		public static Task StartHost(string[] args = null) {
+			var host = new Task(() => Start(args != null ? args : new string[0]));
+			host.Start();
+			return host;
+		}
+
+		internal static void Start(string[] args) {
+			CreateHostBuilder(args).Build().Run();
+		}
+
+		internal static IHostBuilder CreateHostBuilder(string[] args) {
+			return Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(WebHostBuilder => { WebHostBuilder.UseStartup<Startup>(); });
+		}
 
 	}
 
-	internal static class Client {
+	public class Startup {
 
-	}
-
-	public class ClientConnection {
-		public readonly string Url;
-		private readonly HttpClient client;
-
-		public ClientConnection(string url) {
-			Url = url;
-			client = new HttpClient();
+		public void ConfigureServices(IServiceCollection services) {
+			services.AddRazorPages();
+			services.AddServerSideBlazor();
 		}
 
-		public (int, dynamic) MakeRequest(string request, string method = "GET") {
-			int code;
-			dynamic obj;
-			switch(method) {
-			case "GET":
-				var response = client.GetAsync(request).Result;
-				code = (int)response.StatusCode;
-				string content = response.Content.ToString();
-				obj = JsonConvert.DeserializeObject(content);
-				break;
-			default:
-				throw new System.Exception();
-			}
-			return (code, obj);
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
+			if(env.IsDevelopment())
+				app.UseDeveloperExceptionPage();
+			app.UseRouting();
+			app.UseStaticFiles();
+			app.UseEndpoints(endpoints => {
+				endpoints.MapControllerRoute(
+					name: "default",
+					pattern: "{controller=Home}/{action=Index}/{id?}"
+				);
+				endpoints.MapFallbackToPage("/_404");
+			});
 		}
-
 	}
 
 }

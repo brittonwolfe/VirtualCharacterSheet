@@ -1,10 +1,5 @@
 # Python Scripting
-VCS is scripted with IronPython.
-
-## For guides on defining objects
-
-- [Characters](CharacterDef.md)
-- [Classes](ClassDef.md)
+VCS is scripted with IronPython. While everything can be imported through the CLR, VCS's IronPython is initialized with a lot of globals to help make scripting easier.
 
 ## Global Accessors
 

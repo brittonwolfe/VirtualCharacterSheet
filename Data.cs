@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
+
 using VirtualCharacterSheet.Event;
 using VirtualCharacterSheet.Exceptions;
 using VirtualCharacterSheet.IO;
 using VirtualCharacterSheet.IO.Serialization;
+
+using BinaryReader = System.IO.BinaryReader;
+using BinaryWriter = System.IO.BinaryWriter;
 
 namespace VirtualCharacterSheet {
 
@@ -55,6 +59,13 @@ namespace VirtualCharacterSheet {
 		public static bool HasClass(string key) { return classes.ContainsKey(key.ToLower()); }
 		public static bool HasFeat(string key) { return feat.ContainsKey(key.ToLower()); }
 
+		public static List<PlayerCharacter> GetAllCharacters() {
+			var output = new List<PlayerCharacter>();
+			foreach(var value in character.Values)
+				output.Add(value);
+			return output;
+		}
+
 		public static string AllCharacters() {
 			if(character.Count == 0)
 				return null;
@@ -67,7 +78,7 @@ namespace VirtualCharacterSheet {
 		internal static void AddBrew(Brew b) { brew[b.Name] = b; }
 		public static bool HasBrew(string n) { return brew.ContainsKey(n); }
 		public static Brew GetBrew(string n) { return brew[n]; }
-		internal static List<Brew> GetAllBrews() { return new List<Brew>(brew.Values); }
+		public static List<Brew> GetAllBrews() { return new List<Brew>(brew.Values); }
 		public static string AllBrews() {
 			string output = "";
 			foreach(string key in brew.Keys)
@@ -122,6 +133,13 @@ namespace VirtualCharacterSheet {
 
 		public static void Load(File src) { Scripting.Brew(new FileScript(src)); }
 
+		public void AddPage(string subpath) {
+			var pagefolder = FileLoad.WorkingDirectory().GetSubdir("Pages");
+			var new_path = pagefolder.Get(subpath);
+			System.IO.File.Copy(Meta.Dir.Get("Pages/" + subpath).Path, new_path.Path);
+			Core.temp_files.Add(new_path);
+		}
+
 	}
 
 	public class Item : ScriptedObject {
@@ -131,6 +149,24 @@ namespace VirtualCharacterSheet {
 		public Item(string id) : base() {
 			Identifier = id;
 			Data.SetItem(this);
+		}
+
+	}
+
+	public class MiscObject {
+		private Dictionary<string, dynamic> Props;
+
+		public MiscObject() { Props = new Dictionary<string, dynamic>(); }
+		public MiscObject(IDictionary<string, object> dict) {
+			foreach(KeyValuePair<string, object> pair in dict)
+				Props[pair.Key] = pair.Value;
+		}
+
+		public static bool Serialize(object target, BinaryWriter writer, bool shouldclose = true) {
+			if(target.GetType() != typeof(MiscObject))
+				return false;
+			((dynamic)target).__serialize__();
+			return true;
 		}
 
 	}

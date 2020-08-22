@@ -1,7 +1,13 @@
-﻿core = brew.def_brew("core_5e")
+﻿clr.AddReference('vcs')
+from VirtualCharacterSheet import Brew
+
+core = Brew('core_5e')
 core.Meta.Title = "D&D Fifth Edition OGL"
 core.Meta.Description = "The Open Game License SRD for Dungeons and Dragons Fifth Edition"
 core.Meta.Dir = brew.Path
+core.Meta.Owner = 'Wizards of the Coast'
+core.Meta.Website = 'https://github.com/brittonwolfe/virtualcharactersheet'
+core.Meta.GameSite = 'https://dnd.wizards.com/'
 
 def InjectMeta(character):
 	character.Meta.classes = []
@@ -68,6 +74,7 @@ core.AddCharacterInjector(InjectSaves)
 core.AddCharacterInjector(InjectSkills)
 
 import serialize
+import design
 
 import classes
 import item

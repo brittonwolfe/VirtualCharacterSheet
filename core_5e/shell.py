@@ -1,4 +1,4 @@
-from core.shell import PyTui, add_base, cmd_roll
+from core.shell import PyCli, add_base, cmd_roll
 
 STAT_LIST = [ 'str', 'strength', 'dex', 'dexterity', 'con', 'constitution', 'int', 'intelligence', 'wis', 'wisdom', 'cha', 'charisma']
 SHORTHAND_MAP = { 'str': 'Strength', 'dex': 'Dexterity', 'con': 'Constitution', 'int': 'Intelligence', 'wis': 'Wisdom', 'cha': 'Charisma' }
@@ -58,7 +58,10 @@ def versatile_roll(args, **kwargs):
 	else:
 		return cmd_roll(args)
 
-character_tui = PyTui(
+def cmd_skill(args, **kwargs):
+	pass
+
+character_cli = PyCli(
 	add_base({
 		'check': stat_check,
 		'roll': versatile_roll

@@ -4,19 +4,23 @@ using Microsoft.Scripting.Hosting;
 
 using IronPython.Hosting;
 
-namespace VirtualCharacterSheet {
+using VirtualCharacterSheet.Forms;
 
-	public interface AbstractTui {
+namespace VirtualCharacterSheet.Terminal {
+
+	public interface AbstractCli {
 
 		public abstract void Handle(string input);
 
+		public static void Clear() { Console.Clear(); }
+
 	}
 
-	public class Tui : AbstractTui {
+	public class Cli : AbstractCli {
 		internal Dictionary<string, dynamic> map = new Dictionary<string, dynamic>();
 		internal ScriptEngine engine = Python.CreateEngine();
 
-		public Tui(params (string, dynamic)[] funcs) {
+		public Cli(params (string, dynamic)[] funcs) {
 			foreach((string, dynamic) pair in funcs)
 				map[pair.Item1] = pair.Item2;
 			engine.GetBuiltinModule().ImportModule("clr");
@@ -36,6 +40,10 @@ namespace VirtualCharacterSheet {
 		internal void SetGlobal(string key, dynamic obj) { engine.GetBuiltinModule().SetVariable(key, obj); }
 		internal void RemoveGlobal(string key) { engine.GetBuiltinModule().RemoveVariable(key); }
 		internal void SetThis(dynamic obj) { SetGlobal("this", obj); }
+
+	}
+
+	public abstract class AbstractTui : AbstractUi {
 
 	}
 

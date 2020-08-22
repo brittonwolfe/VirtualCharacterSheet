@@ -22,13 +22,14 @@
 
 ## NI/O
 
-- [ ] Write a host for networking and communicating game state, preferably RESTful.
+- [x] Write a host for networking and communicating game state, preferably RESTful.
+- [ ] Finish writing other API controllers
 - [ ] Write a client for connecting to the host to synchronize and communicate the game state.
 
 ## Experimental
 
 - [ ] Try using Rust!
-- [ ] Try throwing in some Lua scripting. Options are cool!
-- [ ] Add in support for Ruby
+- [ ] Add scripting support for Lua
+- [ ] Add scripting support for Ruby
 - [ ] Add support for [C# scripting through the JIT IL](https://docs.microsoft.com/en-us/dotnet/standard/managed-execution-process)???
 

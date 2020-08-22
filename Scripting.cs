@@ -14,10 +14,11 @@ namespace VirtualCharacterSheet {
 
 	public static class Scripting {
 		internal static ScriptEngine engine = Python.CreateEngine();
-		private static ScriptScope
+		internal static ScriptScope
 			MainScope = null,
 			BrewScope = null,
-			ShellScope = null;
+			ShellScope = null,
+			NetScope = null;
 		public static dynamic locals = new ExpandoObject();
 		public static dynamic homebrew = new ExpandoObject();
 		public static dynamic settings = new ExpandoObject();
@@ -40,6 +41,10 @@ namespace VirtualCharacterSheet {
 			ShellScope.SetVariable("brew", homebrew);
 			ShellScope.SetVariable("_setting", settings);
 # endregion
+
+# region netapi_scope
+			NetScope = engine.CreateScope();
+#endregion
 		}
 
 		public static void Sandbox() {
@@ -197,7 +202,7 @@ namespace VirtualCharacterSheet {
 			var script = new RawPyScript(temp.ReadText());
 			script.AddTempFile(temp);
 			Data.SetPy(key, script);
-			Core.temp_scripts.Add(temp);
+			Core.temp_files.Add(temp);
 		}
 		private static void ScriptEditor(string key) {
 			bool wantsbreak = false;
