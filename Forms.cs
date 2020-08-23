@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Gtk;
+
 using VirtualCharacterSheet.Terminal;
 
 using PyList = IronPython.Runtime.List;
@@ -121,7 +123,15 @@ namespace VirtualCharacterSheet.Forms {
 
 	}
 
-	public partial class Splash {
+	public partial class Splash : AbstractUi {
+		private Window Window;
+
+		public Splash() {
+			Window = new Window("VirtualCharacterSheet");
+		}
+
+		public override void Render() { Window.Show(); }
+		public override void Close() { Window.Close(); }
 
 		private void NewCharacter() {
 			
