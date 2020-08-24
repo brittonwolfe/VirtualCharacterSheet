@@ -15,9 +15,12 @@ namespace VirtualCharacterSheet {
 			Console.WriteLine("VCS TUI");
 			Scripting.init();
 
-			if(Data.GetConfig("main", "delete_temp") ?? true)
+			var delete_temp = Data.GetConfig("main", "delete_temp");
+			var save_open_c = Data.GetConfig("main", "save_open_c");
+
+			if(delete_temp != null ? bool.Parse(delete_temp) : true)
 				AddExitEvent(DisposeTempFiles);
-			if(Data.GetConfig("main", "save_open_c") ?? false)
+			if(save_open_c != null ? bool.Parse(save_open_c) : false)
 				AddExitEvent(SaveOpenCharacters);
 
 			Core.StartSandbox();
@@ -31,10 +34,10 @@ namespace VirtualCharacterSheet {
 				System.IO.File.Delete(file.Path);
 		}
 		private static void SaveOpenCharacters(object sender, EventArgs e) {
-			Console.Clear();
 			var chars = Data.GetAllCharacters();
 			if(chars.Count == 0)
 				return;
+			Console.Clear();
 			Console.Write($"You have {chars.Count} characters open. Would you like to save them before exiting (y/n)? ");
 			string GetResponse() { return Console.ReadLine().Trim().ToLower(); }
 			if(GetResponse() != "y")

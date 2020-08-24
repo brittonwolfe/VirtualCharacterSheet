@@ -14,9 +14,7 @@ class Config():
 			obj = {}
 			for kvp in self.parser.items(section):
 				obj[kvp[0]] = kvp[1]
-			print(obj)
 			self.values[section] = obj
-		print(self.values)
 	def has_section(self, name):
 		return name in self.values
 	def has_option(self, section, name):
