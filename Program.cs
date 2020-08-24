@@ -15,7 +15,7 @@ namespace VirtualCharacterSheet {
 			Console.WriteLine("VCS TUI");
 			Scripting.init();
 
-			AddExitEvent(DisposeTempFiles);
+			AddExitHook(DisposeTempFiles);
 
 			Core.StartSandbox();
 
