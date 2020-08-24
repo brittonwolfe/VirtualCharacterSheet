@@ -15,13 +15,15 @@ namespace VirtualCharacterSheet {
 			Console.WriteLine("VCS TUI");
 			Scripting.init();
 
-			Core.StartSandbox();
+			AddExitEvent(DisposeTempFiles);
 
-			AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnExit);
+			Core.StartSandbox();
 
 		}
 
-		private static void OnExit(object sender, EventArgs e) {
+		internal static void AddExitEvent(EventHandler eventHandler) { AppDomain.CurrentDomain.ProcessExit += eventHandler; }
+
+		private static void DisposeTempFiles(object sender, EventArgs e) {
 			foreach(IO.File file in Core.temp_files)
 				System.IO.File.Delete(file.Path);
 		}
