@@ -24,3 +24,5 @@ should_foo = bool(__config__['test']['foo'])
 if should_foo:
     print('foo')
 ```
+
+In the event that it's necessary to create another config option--for organization, I guess? there's also the option to create a new `core.config.Config` object with the `path` argument set to your filename.
