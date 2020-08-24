@@ -43,7 +43,7 @@ namespace VirtualCharacterSheet {
 			if(GetResponse() != "y")
 				return;
 			foreach(PlayerCharacter pc in Data.GetAllCharacters()) {
-				Console.Write($"Would you like to save {pc} (y/n)? ");
+				Console.Write($"Would you like to save {pc.__str__()} (y/n)? ");
 				if(GetResponse() != "y")
 					continue;
 				Console.Write("Please enter a path: ");
@@ -51,7 +51,6 @@ namespace VirtualCharacterSheet {
 				PlayerCharacter.Serialize(pc, new IO.File(path).GetBinaryWriter());
 			}
 		}
-
 
 	}
 
