@@ -26,10 +26,12 @@ namespace VirtualCharacterSheet {
 		private static Dictionary<string, Brew> brew = new Dictionary<string, Brew>();
 
 		public static dynamic GetConfig(string section, string option = null) {
-			if(!Config.has_section(section))
+			if(!ConfigHasSection(section))
 				return null;
 			if(option == null)
 				return Config[section];
+			if(!Config.has_option(section, option))
+				return null;
 			return Config[section][option];
 		}
 		public static bool ConfigHasSection(string section) { return Config.has_section(section); }

@@ -15,7 +15,10 @@ namespace VirtualCharacterSheet {
 			Console.WriteLine("VCS TUI");
 			Scripting.init();
 
-			AddExitHook(DisposeTempFiles);
+			if(Data.GetConfig("main", "delete_temp") ?? true)
+				AddExitEvent(DisposeTempFiles);
+			if(Data.GetConfig("main", "save_open_c") ?? false)
+				AddExitEvent(SaveOpenCharacters);
 
 			Core.StartSandbox();
 
@@ -27,6 +30,25 @@ namespace VirtualCharacterSheet {
 			foreach(IO.File file in Core.temp_files)
 				System.IO.File.Delete(file.Path);
 		}
+		private static void SaveOpenCharacters(object sender, EventArgs e) {
+			Console.Clear();
+			var chars = Data.GetAllCharacters();
+			if(chars.Count == 0)
+				return;
+			Console.Write($"You have {chars.Count} characters open. Would you like to save them before exiting (y/n)? ");
+			string GetResponse() { return Console.ReadLine().Trim().ToLower(); }
+			if(GetResponse() != "y")
+				return;
+			foreach(PlayerCharacter pc in Data.GetAllCharacters()) {
+				Console.Write($"Would you like to save {pc} (y/n)? ");
+				if(GetResponse() != "y")
+					continue;
+				Console.Write("Please enter a path: ");
+				string path = Console.ReadLine();
+				PlayerCharacter.Serialize(pc, new IO.File(path).GetBinaryWriter());
+			}
+		}
+
 
 	}
 
