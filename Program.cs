@@ -10,6 +10,7 @@ namespace VirtualCharacterSheet {
 	class Program {
 
 		static void Main(string[] args) {
+			Gtk.Application.Init();
 			Console.Title = "Virtual Character Sheet";
 			Console.OutputEncoding = Encoding.Unicode;
 			Console.WriteLine("VCS TUI");
@@ -24,6 +25,10 @@ namespace VirtualCharacterSheet {
 				AddExitEvent(SaveOpenCharacters);
 
 			Core.StartSandbox();
+			var splash = new Forms.Splash();
+			splash.Render();
+			Gtk.Application.Run();
+			Gtk.Application.Quit();
 
 		}
 

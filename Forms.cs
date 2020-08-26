@@ -7,6 +7,7 @@ using VirtualCharacterSheet.Terminal;
 
 using PyList = IronPython.Runtime.List;
 using PyTuple = IronPython.Runtime.PythonTuple;
+using Action = System.Action;
 
 namespace VirtualCharacterSheet.Forms {
 
@@ -128,9 +129,12 @@ namespace VirtualCharacterSheet.Forms {
 
 		public Splash() {
 			Window = new Window("VirtualCharacterSheet");
+			Window.Resize(600,800);
+			Window.Add(new Label("foo!"));
+			Window.Destroyed += new EventHandler((obj, args) => { Application.Quit(); });
 		}
 
-		public override void Render() { Window.Show(); }
+		public override void Render() { Window.ShowAll(); }
 		public override void Close() { Window.Close(); }
 
 		private void NewCharacter() {
@@ -138,6 +142,8 @@ namespace VirtualCharacterSheet.Forms {
 		}
 
 		private void LoadModule(string mod) { Scripting.Brew(new FileScript(new IO.File(mod))); }
+
+		public static implicit operator Window(Splash splash) { return splash.Window; }
 
 	}
 
