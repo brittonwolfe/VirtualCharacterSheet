@@ -15,15 +15,41 @@ namespace VirtualCharacterSheet {
 			Console.WriteLine("VCS TUI");
 			Scripting.init();
 
-			Core.StartSandbox();
+			var delete_temp = Data.GetConfig("main", "delete_temp");
+			var save_open_c = Data.GetConfig("main", "save_open_c");
 
-			AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnExit);
+			if(delete_temp != null ? bool.Parse(delete_temp) : true)
+				AddExitEvent(DisposeTempFiles);
+			if(save_open_c != null ? bool.Parse(save_open_c) : false)
+				AddExitEvent(SaveOpenCharacters);
+
+			Core.StartSandbox();
 
 		}
 
-		private static void OnExit(object sender, EventArgs e) {
+		internal static void AddExitEvent(EventHandler eventHandler) { AppDomain.CurrentDomain.ProcessExit += eventHandler; }
+
+		private static void DisposeTempFiles(object sender, EventArgs e) {
 			foreach(IO.File file in Core.temp_files)
 				System.IO.File.Delete(file.Path);
+		}
+		private static void SaveOpenCharacters(object sender, EventArgs e) {
+			var chars = Data.GetAllCharacters();
+			if(chars.Count == 0)
+				return;
+			Console.Clear();
+			Console.Write($"You have {chars.Count} characters open. Would you like to save them before exiting (y/n)? ");
+			string GetResponse() { return Console.ReadLine().Trim().ToLower(); }
+			if(GetResponse() != "y")
+				return;
+			foreach(PlayerCharacter pc in Data.GetAllCharacters()) {
+				Console.Write($"Would you like to save {pc.__str__()} (y/n)? ");
+				if(GetResponse() != "y")
+					continue;
+				Console.Write("Please enter a path: ");
+				string path = Console.ReadLine();
+				PlayerCharacter.Serialize(pc, new IO.File(path).GetBinaryWriter());
+			}
 		}
 
 	}

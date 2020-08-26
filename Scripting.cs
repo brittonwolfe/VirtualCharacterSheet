@@ -50,8 +50,6 @@ namespace VirtualCharacterSheet {
 		public static void Sandbox() {
 			if(!Initialized)
 				init();
-			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/config.py").Path, ShellScope);
-			Data.Config = ShellScope.GetVariable("__config__");
 			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/io.py").Path, ShellScope);
 			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/shell.py").Path, ShellScope);
 			ShellScope.GetVariable("shell")();
@@ -99,6 +97,12 @@ namespace VirtualCharacterSheet {
 			}
 			searchpaths.Add(pypath);
 			engine.SetSearchPaths(searchpaths);
+
+# region configuration
+			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/config.py").Path, ShellScope);
+			Data.Config = ShellScope.GetVariable("__config__");
+#endregion
+
 
 # region global variables
 			SetGlobal("local", locals);

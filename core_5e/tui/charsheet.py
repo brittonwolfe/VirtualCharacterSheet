@@ -72,5 +72,8 @@ class Core5eCharacterSheet(PyTui):
 				self.basic_view()
 			TerminalForm.SetCursorPosition(x = 0)
 			breaks = non_loop_shell(character_cli, character = self.content)
+			if not breaks:
+				readl('')
+				TerminalForm.Clear()
 
 core.AddView(PlayerCharacter, PyUiFactory(lambda content: Core5eCharacterSheet(content)))

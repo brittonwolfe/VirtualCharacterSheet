@@ -18,7 +18,7 @@
 ## Serialization
 
 - [x] Make the character serializer
-- [ ] Make the 5e module's character serializer
+- [x] Make the 5e module's character serializer
 
 ## NI/O
 
