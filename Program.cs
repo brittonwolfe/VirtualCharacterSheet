@@ -29,7 +29,6 @@ namespace VirtualCharacterSheet {
 			var splash = new Forms.Splash();
 			splash.Render();
 			Gtk.Application.Run();
-			Gtk.Application.Quit();
 
 		}
 
