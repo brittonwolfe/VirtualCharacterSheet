@@ -58,12 +58,26 @@ def versatile_roll(args, **kwargs):
 		return cmd_roll(args)
 
 def cmd_skill(args, **kwargs):
-	pass
+	'''skill [name]
+	'''
+	character = None
+	if 'character' in kwargs:
+		character = kwargs['character']
+	else:
+		character = get_default_local_character()
+	if len(args) != 1:
+		return
+	methodname = ('skill_' + args[0].lower())
+	if not character.HasBehavior(methodname):
+		print(args[0] + ' is not a valid skill')
+		return
+	return character.DoBehavior(methodname)
 
 character_cli = PyCli(
 	add_base({
 		'check': stat_check,
-		'roll': versatile_roll
+		'roll': versatile_roll,
+		'skill': cmd_skill
 	}, prune = ['view']),
 	shout = True,
 	name = 'Core 5E Character Shell'
