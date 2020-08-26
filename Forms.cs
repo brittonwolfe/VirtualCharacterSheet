@@ -24,6 +24,19 @@ namespace VirtualCharacterSheet.Forms {
 
 	}
 
+	public abstract class AbstractGui : AbstractUi {
+		protected Window Window;
+
+		public AbstractGui(string name = "VCS Window") {
+			Window = new Window(name);
+			Program.Windows.Add(Window);
+			Window.Destroyed += Program.OnWindowClose;
+		}
+
+
+
+	}
+
 	public abstract class TerminalForm : AbstractUi {
 		protected Dictionary<string, TerminalView> Views = new Dictionary<string, TerminalView>();
 		protected string CurrentView = "base";
@@ -124,14 +137,11 @@ namespace VirtualCharacterSheet.Forms {
 
 	}
 
-	public partial class Splash : AbstractUi {
-		private Window Window;
+	public sealed class Splash : AbstractGui {
 
-		public Splash() {
-			Window = new Window("VirtualCharacterSheet");
+		public Splash() : base("VirtualCharacterSheet") {
 			Window.Resize(600,800);
 			Window.Add(new Label("foo!"));
-			Window.Destroyed += new EventHandler((obj, args) => { Application.Quit(); });
 		}
 
 		public override void Render() { Window.ShowAll(); }

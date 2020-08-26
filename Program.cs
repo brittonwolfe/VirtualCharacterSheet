@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace VirtualCharacterSheet {
 
 	class Program {
+		internal static List<Gtk.Window> Windows = new List<Gtk.Window>();
 
 		static void Main(string[] args) {
 			Gtk.Application.Init();
@@ -55,6 +56,14 @@ namespace VirtualCharacterSheet {
 				string path = Console.ReadLine();
 				PlayerCharacter.Serialize(pc, new IO.File(path).GetBinaryWriter());
 			}
+		}
+
+		internal static void OnWindowClose(object sender, EventArgs e) {
+			Gtk.Window obj = (Gtk.Window)sender;
+			if(Windows.Contains(obj))
+				Windows.Remove(obj);
+			if(Windows.Count == 0)
+				Gtk.Application.Quit();
 		}
 
 	}
