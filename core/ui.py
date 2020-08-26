@@ -17,7 +17,6 @@ class PyTui(AbstractTui):
 		pass
 
 class PyGui(AbstractUi):
-	#window = Tk()
 	components = []
 	def __init__(self):
 		pass
