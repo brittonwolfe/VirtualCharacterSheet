@@ -10,7 +10,7 @@ def get_default_local_character():
 		return local.This.character
 
 def stat_check(args, **kwargs):
-	'''stat [name]
+	'''check [name]
 	todo doc
 	'''
 	character = None
@@ -29,18 +29,17 @@ def stat_check(args, **kwargs):
 		print('No valid stat provided')
 		return
 	times = None
-	mod = 0
+	output = 0
 	for arg in args[1:]:
 		if arg.startswith('+'):
-			mod += int(arg[1:])
-		if arg.startswith('-'):
-			mod -= int(arg[1:])
+			output += int(arg[1:])
+		elif arg.startswith('-'):
+			output -= int(arg[1:])
 		else:
 			if times is not None:
 				print('too many times arguments given')
 				return
 			times = int(arg)
-	output = 0
 	for _ in range(times or 1):
 		output += character.DoBehavior(stat + 'Check')
 	return output
