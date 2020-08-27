@@ -33,7 +33,10 @@ namespace VirtualCharacterSheet.Forms {
 			Window.Destroyed += Program.OnWindowClose;
 		}
 
+		public override void Render() { Window.ShowAll(); }
+		public override void Close() { Window.Close(); }
 
+		public static implicit operator Window(AbstractGui gui) { return gui.Window; }
 
 	}
 
@@ -144,16 +147,11 @@ namespace VirtualCharacterSheet.Forms {
 			Window.Add(new Label("foo!"));
 		}
 
-		public override void Render() { Window.ShowAll(); }
-		public override void Close() { Window.Close(); }
-
 		private void NewCharacter() {
 			
 		}
 
 		private void LoadModule(string mod) { Scripting.Brew(new FileScript(new IO.File(mod))); }
-
-		public static implicit operator Window(Splash splash) { return splash.Window; }
 
 	}
 
