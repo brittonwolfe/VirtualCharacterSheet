@@ -36,6 +36,12 @@ namespace VirtualCharacterSheet.Forms {
 		public override void Render() { Window.ShowAll(); }
 		public override void Close() { Window.Close(); }
 
+		public (int, int) GetSize() {
+			int x = 0, y = 0;
+			Window.GetSize(out x, out y);
+			return (x, y);
+		}
+
 		public static implicit operator Window(AbstractGui gui) { return gui.Window; }
 
 	}

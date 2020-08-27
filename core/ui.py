@@ -25,4 +25,7 @@ class PyGui(AbstractGui):
 		self.content = {item for item in kwargs}
 	def append(self, component):
 		self.components.append(component)
-
+		self.Window.Add(component)
+	def resize(self, x = None, y = None):
+		tup = AbstractGui.GetSize(self)
+		self.Window.Resize(x or tup.Item1, y or tup.Item2)
