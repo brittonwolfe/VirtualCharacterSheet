@@ -7,7 +7,8 @@
 ## UI Progress
 
 - [ ] Create TUIs
-- [ ] Make GUIs work
+- [x] Make GUIs work
+- [ ] Make GUIs
 
 ### TUI features
 
@@ -28,7 +29,7 @@
 
 ## Experimental
 
-- [ ] Try using Rust!
+- [ ] Add support for Glade# for another brew UI option
 - [ ] Add scripting support for Lua
 - [ ] Add scripting support for Ruby
 - [ ] Add support for [C# scripting through the JIT IL](https://docs.microsoft.com/en-us/dotnet/standard/managed-execution-process)???
