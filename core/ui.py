@@ -18,13 +18,12 @@ class PyTui(AbstractTui):
 		pass
 
 class PyGui(AbstractGui):
-	components = []
 	content = None
 	def __init__(self, name = None, **kwargs):
 		AbstractGui.__init__(self, name = name or 'VCS Generic PyGui')
 		self.content = {item for item in kwargs}
 	def append(self, component):
-		self.components.append(component)
+		self.Components.append(component)
 		self.Window.Add(component)
 	def resize(self, x = None, y = None):
 		tup = AbstractGui.GetSize(self)
