@@ -26,11 +26,27 @@ namespace VirtualCharacterSheet.Forms {
 
 	public abstract class AbstractGui : AbstractUi {
 		protected Window Window;
+		protected Fixed Container;
+		protected List<Widget> Components = new List<Widget>();
 
 		public AbstractGui(string name = "VCS Window") {
 			Window = new Window(name);
 			Program.Windows.Add(Window);
 			Window.Destroyed += Program.OnWindowClose;
+		}
+
+		public void Add(Widget widget) { Components.Add(widget); }
+		public void Remove(Widget widget) { Components.Remove(widget); }
+
+		public void Pack(bool expand = true, bool fill = true, uint padding = 0) {
+			if(Container != null)
+				Window.Remove(Container);
+			Container = new Fixed();
+			foreach(Widget child in Container.Children)
+				Container.Remove(child);
+			foreach(Widget widget in Components)
+				Container.Add(widget);
+			Window.Add(Container);
 		}
 
 		public override void Render() { Window.ShowAll(); }
@@ -150,7 +166,9 @@ namespace VirtualCharacterSheet.Forms {
 
 		public Splash() : base("VirtualCharacterSheet") {
 			Window.Resize(600,800);
-			Window.Add(new Label("foo!"));
+			//this.Add(new Label("label"));
+			this.Add(new VCSMenuBar());
+			this.Pack();
 		}
 
 		private void NewCharacter() {
@@ -158,6 +176,31 @@ namespace VirtualCharacterSheet.Forms {
 		}
 
 		private void LoadModule(string mod) { Scripting.Brew(new FileScript(new IO.File(mod))); }
+
+	}
+
+	internal sealed class VCSMenuBar : MenuBar {
+		private MenuItem
+			File,
+			Brew;
+
+		internal VCSMenuBar() {
+			this.Name = "vcs";
+
+			File = new MenuItem("File");
+			this.Add(File);
+
+			Brew = new MenuItem("Brew");
+			var Brew_Load = new MenuItem("Load");
+			Brew_Load.ButtonPressEvent += (obj, e) => {
+				new FileChooserDialog("Select a brew", null, FileChooserAction.Open).Show();
+			};
+			var Brew_Submenu = new Menu();
+			Brew_Submenu.Add(Brew_Load);
+			Brew.Submenu = Brew_Submenu;
+			this.Add(Brew);
+
+		}
 
 	}
 
