@@ -25,6 +25,8 @@ namespace VirtualCharacterSheet {
 
 		private static Dictionary<string, Brew> brew = new Dictionary<string, Brew>();
 
+		public static event BrewLoadEventHandler BrewLoadEvent;
+
 		public static dynamic GetConfig(string section, string option = null) {
 			if(!ConfigHasSection(section))
 				return null;
@@ -77,7 +79,10 @@ namespace VirtualCharacterSheet {
 			return output.Trim();
 		}
 
-		internal static void AddBrew(Brew b) { brew[b.Name] = b; }
+		internal static void AddBrew(Brew b) {
+			brew[b.Name] = b;
+			BrewLoadEvent(b);
+		}
 		public static bool HasBrew(string n) { return brew.ContainsKey(n); }
 		public static Brew GetBrew(string n) { return brew[n]; }
 		public static List<Brew> GetAllBrews() { return new List<Brew>(brew.Values); }

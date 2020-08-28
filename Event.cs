@@ -9,6 +9,7 @@ namespace VirtualCharacterSheet.Event {
 	public delegate void InjectionEvent(Character sender);
 	public delegate bool SerializationEvent(object target, BinaryWriter writer, bool shouldclose = true);
 	public delegate object DeserializationEvent(BinaryReader reader, bool shouldclose = true);
+	public delegate void BrewLoadEventHandler(Brew brew);
 
 	public class DynamicBehaviorSet : DynamicObject {
 		private Dictionary<string, DynamicBehavior> Behaviors;

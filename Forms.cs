@@ -167,7 +167,7 @@ namespace VirtualCharacterSheet.Forms {
 		public Splash() : base("VirtualCharacterSheet") {
 			Window.Resize(600,800);
 			//this.Add(new Label("label"));
-			this.Add(new VCSMenuBar());
+			this.Add(new DefaultMenuBar());
 			this.Pack();
 		}
 
@@ -179,12 +179,12 @@ namespace VirtualCharacterSheet.Forms {
 
 	}
 
-	internal sealed class VCSMenuBar : MenuBar {
+	internal sealed class DefaultMenuBar : MenuBar {
 		private MenuItem
 			File,
 			Brew;
 
-		internal VCSMenuBar() {
+		internal DefaultMenuBar() {
 			this.Name = "vcs";
 
 			File = new MenuItem("File");
@@ -194,7 +194,10 @@ namespace VirtualCharacterSheet.Forms {
 			var Brew_Load = new MenuItem("Load");
 			Brew_Load.ButtonPressEvent += (obj, e) => {
 				var fc = new FileChooserDialog("Select a brew", null, FileChooserAction.Open, Stock.Cancel, ResponseType.Cancel, Stock.Open, ResponseType.Accept);
-				fc.SelectFilename("brew.py");
+				var ff = new FileFilter();
+				ff.Name = "Brew Script";
+				ff.AddPattern("brew.py");
+				fc.Filter = ff;
 				fc.Show();
 				fc.Response += (o, e) => {
 					if(e.ResponseId == ResponseType.Accept)
@@ -202,8 +205,13 @@ namespace VirtualCharacterSheet.Forms {
 					fc.Dispose();
 				};
 			};
+			var Brew_List = new MenuItem("List");
+			Brew_List.ButtonPressEvent += (obj, e) => {
+				//foo
+			};
 			var Brew_Submenu = new Menu();
 			Brew_Submenu.Add(Brew_Load);
+			Brew_Submenu.Add(Brew_List);
 			Brew.Submenu = Brew_Submenu;
 			this.Add(Brew);
 
