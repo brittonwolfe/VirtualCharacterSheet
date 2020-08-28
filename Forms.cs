@@ -193,7 +193,14 @@ namespace VirtualCharacterSheet.Forms {
 			Brew = new MenuItem("Brew");
 			var Brew_Load = new MenuItem("Load");
 			Brew_Load.ButtonPressEvent += (obj, e) => {
-				new FileChooserDialog("Select a brew", null, FileChooserAction.Open).Show();
+				var fc = new FileChooserDialog("Select a brew", null, FileChooserAction.Open, Stock.Cancel, ResponseType.Cancel, Stock.Open, ResponseType.Accept);
+				fc.SelectFilename("brew.py");
+				fc.Show();
+				fc.Response += (o, e) => {
+					if(e.ResponseId == ResponseType.Accept)
+						Scripting.Brew(new FileScript(new IO.File(fc.File.Path)));
+					fc.Dispose();
+				};
 			};
 			var Brew_Submenu = new Menu();
 			Brew_Submenu.Add(Brew_Load);
