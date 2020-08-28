@@ -114,7 +114,6 @@ namespace VirtualCharacterSheet.Forms {
 
 	}
 	
-
 	public class TerminalView {
 		protected TerminalGraphic[] Graphics;
 		protected dynamic Renderer;
@@ -166,9 +165,10 @@ namespace VirtualCharacterSheet.Forms {
 
 		public Splash() : base("VirtualCharacterSheet") {
 			Window.Resize(600,800);
-			//this.Add(new Label("label"));
-			this.Add(new DefaultMenuBar());
-			this.Pack();
+			var testlabel = new Label("label");
+			Add(testlabel);
+			Add(new DefaultMenuBar());
+			Pack();
 		}
 
 		private void NewCharacter() {
