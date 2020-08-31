@@ -11,6 +11,19 @@ namespace VirtualCharacterSheet.Event {
 	public delegate object DeserializationEvent(BinaryReader reader, bool shouldclose = true);
 	public delegate void BrewLoadEventHandler(Brew brew);
 
+	public sealed class EventData {
+		public readonly string Type;
+		public readonly IDictionary<string, dynamic> Args;
+
+		public EventData(string type, IDictionary<string, dynamic> args) {
+			Type = type;
+			Args = args;
+		}
+
+	}
+
+	public delegate dynamic GameEvent(EventData e);
+
 	public class DynamicBehaviorSet : DynamicObject {
 		private Dictionary<string, DynamicBehavior> Behaviors;
 		internal readonly object Source;
