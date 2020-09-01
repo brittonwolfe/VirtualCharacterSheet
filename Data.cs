@@ -81,7 +81,8 @@ namespace VirtualCharacterSheet {
 
 		internal static void AddBrew(Brew b) {
 			brew[b.Name] = b;
-			BrewLoadEvent(b);
+			if(BrewLoadEvent != null)
+				BrewLoadEvent.Invoke(b);
 		}
 		public static bool HasBrew(string n) { return brew.ContainsKey(n); }
 		public static Brew GetBrew(string n) { return brew[n]; }
@@ -110,7 +111,7 @@ namespace VirtualCharacterSheet {
 
 		public Brew(string name) {
 			Name = name;
-			if (Data.HasBrew(name))
+			if(Data.HasBrew(name))
 				throw new BrewKeyOccupiedException(this);
 			Viewers = new Dictionary<Type, Forms.AbstractUiFactory>();
 			Data.AddBrew(this);

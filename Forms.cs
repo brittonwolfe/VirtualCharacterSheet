@@ -189,8 +189,6 @@ namespace VirtualCharacterSheet.Forms {
 
 		public Splash() : base("VirtualCharacterSheet") {
 			Window.Resize(600,800);
-			var testlabel = new Label("label");
-			Put(testlabel, y: 40);
 			Put(new DefaultMenuBar());
 			Pack();
 		}
