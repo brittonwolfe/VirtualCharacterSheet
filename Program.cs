@@ -25,10 +25,10 @@ namespace VirtualCharacterSheet {
 			if(save_open_c != null ? bool.Parse(save_open_c) : false)
 				AddExitEvent(SaveOpenCharacters);
 
-			//Core.StartSandbox();
-			var splash = new Forms.Splash();
+			var splash = new Forms.Gtk.Splash();
 			splash.Render();
 			Gtk.Application.Run();
+			Core.StartSandbox();
 
 		}
 
