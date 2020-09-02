@@ -77,7 +77,7 @@ namespace VirtualCharacterSheet.Forms {
 
 			public Splash() : base(name: "VirtualCharacterSheet") {
 				Window.Resize(600,400);
-				Put(new DefaultMenuBar());
+				Put(new Component.DefaultMenuBar());
 				Pack();
 			}
 
@@ -86,58 +86,6 @@ namespace VirtualCharacterSheet.Forms {
 			}	
 
 			private void LoadModule(string mod) { Scripting.Brew(new FileScript(new IO.File(mod))); }
-
-		}
-
-		internal sealed class DefaultMenuBar : MenuBar {
-			private MenuItem
-				File,
-				Brew;
-
-			internal DefaultMenuBar() {
-				this.Name = "vcs";
-
-				File = new MenuItem("File");
-				var File_Load = new MenuItem("Load");
-				var File_Submenu = new Menu();
-				var File_Load_Submenu = new Menu();
-				var File_Load_Character = new MenuItem("Character");
-				File_Load_Character.ButtonPressEvent += (obj, e) => {
-					AbstractGui.CreateBasicChooser(
-						"Select a Character",
-						"Character File",
-						(file) => PlayerCharacter.Deserialize(file.GetBinaryReader()),
-						"*.bin", "*.vcschar"
-						).Show();
-				};
-				File_Load_Submenu.Add(File_Load_Character);
-				File_Load.Submenu = File_Load_Submenu;
-				File.Submenu = File_Submenu;
-				File_Submenu.Add(File_Load);
-				this.Add(File);
-
-				Brew = new MenuItem("Brew");
-				var Brew_Load = new MenuItem("Load");
-				Brew_Load.ButtonPressEvent += (obj, e) => {
-					AbstractGui.CreateBasicChooser(
-						"Select a Brew",
-						"Brew Script",
-						(file) => Scripting.Brew(new FileScript(file)),
-						"brew.py"
-					).Show();
-				};
-				var Brew_List = new MenuItem("List");
-				Brew_List.ButtonPressEvent += (obj, e) => {
-					var blw = new BrewListWindow();
-					blw.Render();
-				};
-				var Brew_Submenu = new Menu();
-				Brew_Submenu.Add(Brew_Load);
-				Brew_Submenu.Add(Brew_List);
-				Brew.Submenu = Brew_Submenu;
-				this.Add(Brew);
-
-			}
 
 		}
 
@@ -152,6 +100,62 @@ namespace VirtualCharacterSheet.Forms {
 				}
 				Put(list);
 				Pack(expand: true, fill: true);
+			}
+
+		}
+
+		namespace Component {
+
+			internal sealed class DefaultMenuBar : MenuBar {
+				private MenuItem
+					File,
+					Brew;
+
+				internal DefaultMenuBar() {
+					this.Name = "vcs";
+
+					File = new MenuItem("File");
+					var File_Load = new MenuItem("Load");
+					var File_Submenu = new Menu();
+					var File_Load_Submenu = new Menu();
+					var File_Load_Character = new MenuItem("Character");
+					File_Load_Character.ButtonPressEvent += (obj, e) => {
+						AbstractGui.CreateBasicChooser(
+							"Select a Character",
+							"Character File",
+							(file) => PlayerCharacter.Deserialize(file.GetBinaryReader()),
+							"*.bin", "*.vcschar"
+							).Show();
+					};
+					File_Load_Submenu.Add(File_Load_Character);
+					File_Load.Submenu = File_Load_Submenu;
+					File.Submenu = File_Submenu;
+					File_Submenu.Add(File_Load);
+					this.Add(File);
+
+					Brew = new MenuItem("Brew");
+					var Brew_Load = new MenuItem("Load");
+					Brew_Load.ButtonPressEvent += (obj, e) => {
+						AbstractGui.CreateBasicChooser(
+							"Select a Brew",
+							"Brew Script",
+							(file) => Scripting.Brew(new FileScript(file)),
+							"brew.py"
+						).Show();
+					};
+					var Brew_List = new MenuItem("List");
+					Brew_List.ButtonPressEvent += (obj, e) => {
+						var blw = new BrewListWindow();
+						blw.Render();
+					};
+					var Brew_Submenu = new Menu();
+					Brew_Submenu.Add(Brew_Load);
+					Brew_Submenu.Add(Brew_List);
+					Brew.Submenu = Brew_Submenu;
+					this.Add(Brew);
+
+				}
+
 			}
 
 		}
