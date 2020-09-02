@@ -52,8 +52,18 @@ namespace VirtualCharacterSheet.Forms {
 			return (x, y);
 		}
 
-		public static FileChooserDialog CreateBasicChooser(string title = "Pick a File", string name = "A file", Action<IO.File> callback = null, params string[] filters) {
-			var output = new FileChooserDialog(title, null, FileChooserAction.Open, Stock.Cancel, ResponseType.Cancel, Stock.Open, ResponseType.Accept);
+		public static FileChooserDialog CreateBasicChooser(string title = "Pick a File", string name = "Pick a File", FileChooserAction actionType = FileChooserAction.Open, Action<IO.File> callback = null, params string[] filters) {
+			string accept = "";
+			switch(actionType) {
+				case FileChooserAction.Open:
+				case FileChooserAction.SelectFolder:
+					accept = Stock.Open;
+					break;
+				case FileChooserAction.Save:
+					accept = Stock.SaveAs;
+					break;
+			}
+			var output = new FileChooserDialog(title, null, actionType, Stock.Cancel, ResponseType.Cancel, accept, ResponseType.Accept);
 			var filter = new FileFilter();
 			filter.Name = name;
 			foreach(string pattern in filters)
