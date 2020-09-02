@@ -133,6 +133,7 @@ namespace VirtualCharacterSheet.Forms {
 						AbstractGui.CreateBasicChooser(
 							"Select a Character",
 							"Character File",
+							FileChooserAction.Open,
 							(file) => PlayerCharacter.Deserialize(file.GetBinaryReader()),
 							"*.bin", "*.vcschar"
 							).Show();
@@ -149,6 +150,7 @@ namespace VirtualCharacterSheet.Forms {
 						AbstractGui.CreateBasicChooser(
 							"Select a Brew",
 							"Brew Script",
+							FileChooserAction.Open,
 							(file) => Scripting.Brew(new FileScript(file)),
 							"brew.py"
 						).Show();
