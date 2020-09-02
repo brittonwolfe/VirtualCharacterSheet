@@ -37,55 +37,6 @@ namespace VirtualCharacterSheet.Forms {
 
 	}
 
-	public abstract class AbstractGui : AbstractUi {
-		protected Window Window;
-		protected Fixed Container;
-		protected Layout Layout;
-		protected List<WrappedWidget> Components = new List<WrappedWidget>();
-
-		public AbstractGui(string name = "VCS Window") {
-			Window = new Window(name);
-			Program.Windows.Add(Window);
-			Layout = new Layout(new Adjustment(0, 0, 0, 0, 0, 0), new Adjustment(0, 0, 0, 0, 0, 0));
-			Window.Destroyed += Program.OnWindowClose;
-		}
-
-		public void Add(Widget widget) { Put(widget); }
-		public void Put(Widget widget, int x = 0, int y = 0) { Components.Add(new WrappedWidget(widget, x, y)); }
-		public void Remove(WrappedWidget widget) { Components.Remove(widget); }
-
-		public void Pack(bool expand = true, bool fill = true, uint padding = 0) {
-			if(Container != null)
-				Window.Remove(Container);
-			Container = new Fixed();
-			Container.Add(Layout);
-			foreach(Widget child in Container.Children)
-				Container.Remove(child);
-			foreach(WrappedWidget widget in Components)
-				Container.Put(widget.widget, widget.x, widget.y);
-			Window.Add(Container);
-		}
-
-		public override void Render() { Window.ShowAll(); }
-		public override void Close() { Window.Close(); }
-
-		public void Resize(int? width = null, int? height = null) {
-			var size = GetSize();
-			var w = width ?? size.Item1;
-			var h = height ?? size.Item2;
-			Window.Resize(w, h);
-			Layout.SetSize((uint)w, (uint)h);
-		}
-		public (int, int) GetSize() {
-			int x = 0, y = 0;
-			Window.GetSize(out x, out y);
-			return (x, y);
-		}
-
-		public static implicit operator Window(AbstractGui gui) { return gui.Window; }
-
-	}
-
 	public abstract class TerminalForm : AbstractUi {
 		protected Dictionary<string, TerminalView> Views = new Dictionary<string, TerminalView>();
 		protected string CurrentView = "base";
