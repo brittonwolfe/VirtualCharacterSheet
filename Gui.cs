@@ -99,6 +99,7 @@ namespace VirtualCharacterSheet.Forms {
 
 				File = new MenuItem("File");
 				var File_Load = new MenuItem("Load");
+				var File_Submenu = new Menu();
 				var File_Load_Submenu = new Menu();
 				var File_Load_Character = new MenuItem("Character");
 				File_Load_Character.ButtonPressEvent += (obj, e) => {
@@ -109,7 +110,10 @@ namespace VirtualCharacterSheet.Forms {
 						"*.bin", "*.vcschar"
 						).Show();
 				};
+				File_Load_Submenu.Add(File_Load_Character);
 				File_Load.Submenu = File_Load_Submenu;
+				File.Submenu = File_Submenu;
+				File_Submenu.Add(File_Load);
 				this.Add(File);
 
 				Brew = new MenuItem("Brew");
