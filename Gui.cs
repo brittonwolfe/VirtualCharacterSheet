@@ -71,7 +71,7 @@ namespace VirtualCharacterSheet.Forms {
 
 	}
 
-	namespace Gtk {
+	namespace Gui {
 
 		public sealed class Splash : AbstractGui {
 
@@ -144,7 +144,6 @@ namespace VirtualCharacterSheet.Forms {
 		public sealed class BrewListWindow : AbstractGui {
 
 			public BrewListWindow() : base(name: "Brew List") {
-				
 			}
 
 		}

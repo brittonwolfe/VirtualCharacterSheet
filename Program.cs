@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace VirtualCharacterSheet {
 
@@ -25,7 +24,7 @@ namespace VirtualCharacterSheet {
 			if(save_open_c != null ? bool.Parse(save_open_c) : false)
 				AddExitEvent(SaveOpenCharacters);
 
-			var splash = new Forms.Gtk.Splash();
+			var splash = new Forms.Gui.Splash();
 			splash.Render();
 			Gtk.Application.Run();
 			Core.StartSandbox();
