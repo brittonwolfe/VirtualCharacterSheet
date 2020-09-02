@@ -13,7 +13,6 @@ namespace VirtualCharacterSheet {
 			Gtk.Application.Init();
 			Console.Title = "Virtual Character Sheet";
 			Console.OutputEncoding = Encoding.Unicode;
-			Console.WriteLine("VCS TUI");
 			Scripting.init();
 
 			var delete_temp = Data.GetConfig("main", "delete_temp");
@@ -24,10 +23,14 @@ namespace VirtualCharacterSheet {
 			if(save_open_c != null ? bool.Parse(save_open_c) : false)
 				AddExitEvent(SaveOpenCharacters);
 
-			var splash = new Forms.Gui.Splash();
-			splash.Render();
-			Gtk.Application.Run();
-			Core.StartSandbox();
+			if(args.Contains("--nogui")) {
+				Console.WriteLine("VCS CLI");
+				Core.StartSandbox();
+			} else {
+				var splash = new Forms.Gui.Splash();
+				splash.Render();
+				Gtk.Application.Run();
+			}
 
 		}
 

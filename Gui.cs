@@ -75,7 +75,7 @@ namespace VirtualCharacterSheet.Forms {
 
 		public sealed class Splash : AbstractGui {
 
-			public Splash() : base("VirtualCharacterSheet") {
+			public Splash() : base(name: "VirtualCharacterSheet") {
 				Window.Resize(600,400);
 				Put(new DefaultMenuBar());
 				Pack();
