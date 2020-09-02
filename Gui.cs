@@ -144,6 +144,14 @@ namespace VirtualCharacterSheet.Forms {
 		public sealed class BrewListWindow : AbstractGui {
 
 			public BrewListWindow() : base(name: "Brew List") {
+				var list = new ListBox();
+				foreach(Brew brew in Data.GetAllBrews()) {
+					var britem = new Button();
+					britem.Label = brew.Name;
+					list.Add(britem);
+				}
+				Put(list);
+				Pack(expand: true, fill: true);
 			}
 
 		}
