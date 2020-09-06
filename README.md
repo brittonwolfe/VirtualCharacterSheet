@@ -3,7 +3,7 @@ The Virtual Character Sheet is a project for better online and local TTRPG bookk
 
 ## GTK Branch
 
-In order to enable the user to interact with cross-platform GUIs, this branch is focused on implementing modularized windows using GTK as well as methods to create windows through IronPython.
+In order to enable the user to interact with cross-platform GUIs, this branch is focused on implementing modular windows using GTK as well as methods to create windows through IronPython.
 
 ## Dependencies
 - Python 2.7 libraries
