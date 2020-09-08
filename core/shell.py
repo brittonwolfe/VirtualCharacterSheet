@@ -1,7 +1,6 @@
 clr.AddReference('vcs')
 from inspect import getargspec
-from os import getcwd, system
-from os.path import isdir
+from os import getcwd
 from shlex import split
 from traceback import print_exc
 from VirtualCharacterSheet import PlayerCharacter
@@ -32,6 +31,8 @@ class PyCli(AbstractCli):
 			print('command not found')
 		print(self.commands[command].__doc__)
 	def Handle(self, command, **kwargs):
+		if len(command) < 1:
+			return
 		if self.colon_escape and command.startswith(':'):
 			exec(command[1:])
 			return

@@ -10,7 +10,6 @@ namespace VirtualCharacterSheet {
 		internal static List<Gtk.Window> Windows = new List<Gtk.Window>();
 
 		static void Main(string[] args) {
-			Gtk.Application.Init();
 			Console.Title = "Virtual Character Sheet";
 			Console.OutputEncoding = Encoding.Unicode;
 			Scripting.init();
@@ -27,6 +26,7 @@ namespace VirtualCharacterSheet {
 				Console.WriteLine("VCS CLI");
 				Core.StartSandbox();
 			} else {
+				Gtk.Application.Init();
 				var splash = new Forms.Gui.Splash();
 				splash.Render();
 				Gtk.Application.Run();
