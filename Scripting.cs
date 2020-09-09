@@ -19,9 +19,9 @@ namespace VirtualCharacterSheet {
 			BrewScope = null,
 			ShellScope = null,
 			NetScope = null;
-		public static dynamic locals = new ExpandoObject();
-		public static dynamic homebrew = new ExpandoObject();
-		public static dynamic settings = new ExpandoObject();
+		internal static dynamic locals = new ExpandoObject();
+		internal static dynamic homebrew = new ExpandoObject();
+		internal static dynamic settings = new ExpandoObject();
 		private static bool Initialized = false;
 
 		static Scripting() {
@@ -104,23 +104,8 @@ namespace VirtualCharacterSheet {
 			Data.Config = ShellScope.GetVariable("__config__");
 #endregion
 
-
 # region global variables
-			SetGlobal("local", locals);
-			SetGlobal("brew", homebrew);
 			homebrew.load = new Action<string>((string s) => Brew(new FileScript(new File(s))));
-			SetGlobal("_setting", settings);
-			engine.GetBuiltinModule().ImportModule("sys");
-# endregion
-
-# region global functions
-			SetGlobal("roll", new Func<ushort, uint>(Die.Roll));
-			SetGlobal("rolln", new Func<ushort, ushort, uint>(Die.Rolln));
-			SetGlobal("mod", new Func<byte, short>(Core.Modifier));
-			SetGlobal("readl", new Func<string, string>((string q) => {
-				Console.Write(q);
-				return Console.In.ReadLine();
-			}));
 # endregion
 
 # region casts
@@ -134,8 +119,6 @@ namespace VirtualCharacterSheet {
 # endregion
 
 # region accessors
-			SetGlobal("_brew", new Func<string, Brew>(Data.GetBrew));
-			SetGlobal("_c", new Func<string, Character>(Data.GetCharacter));
 			SetGlobal("_class", new Func<string, Class>(Data.GetClass));
 			SetGlobal("_feat", new Func<string, Feat>(Data.GetFeat));
 			SetGlobal("_i", new Func<string, Item>(Data.GetItem));
@@ -230,11 +213,34 @@ namespace VirtualCharacterSheet {
 			Console.WriteLine("script created at _py(\"" + key + "\")");
 		}
 
-		public static class Util {
-			public static readonly dynamic locals = new ExpandoObject();
-		}
+	}
+
+	public static class Util {
+# region globals
+		public static dynamic local { get => Scripting.locals; }
+		public static dynamic brew { get => Scripting.homebrew; }
+		public static dynamic _setting { get => Scripting.settings; }
+
+		public static string readl(string prompt) {
+			Console.Write(prompt);
+			return Console.In.ReadLine();
+		}			public static uint roll(ushort sides) { return Die.Roll(sides); }
+		public static uint rolln(ushort sides, ushort count) { return Die.Rolln(sides, count); }
+# endregion
+
+# region viewers
+		public static void view(object obj, Brew brew = null) { Core.View(obj, brew); }
+# endregion
+
+# region accessors
+		public static Brew _brew(string id) { return Data.GetBrew(id); }
+		public static Character _c(string id) { return Data.GetCharacter(id); }
+
+# endregion
 
 	}
+
+	
 
 	public class PyFScript : Script {
 		private dynamic Object;

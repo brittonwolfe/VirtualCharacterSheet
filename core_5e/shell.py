@@ -1,5 +1,7 @@
 from core.shell import PyCli, add_base, cmd_roll
 
+from VirtualCharacterSheet.Util import local
+
 STAT_LIST = [ 'str', 'strength', 'dex', 'dexterity', 'con', 'constitution', 'int', 'intelligence', 'wis', 'wisdom', 'cha', 'charisma']
 SHORTHAND_MAP = { 'str': 'Strength', 'dex': 'Dexterity', 'con': 'Constitution', 'int': 'Intelligence', 'wis': 'Wisdom', 'cha': 'Charisma' }
 

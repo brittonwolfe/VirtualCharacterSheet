@@ -2,7 +2,8 @@
 
 ## Refactors
 
-- [ ] Refactor the different types of init methods in Scripting to use scopes. This means we can load a brew in one scope, run a sandbox in another, and run behaviors in yet another. This makes it *way* easier to put together the environment.
+- [ ] Refactor init to just set up important things, and move helper methods to Scripting.Utils class
+	- [ ] create the class for the homebrew helper object
 
 ## UI Progress
 

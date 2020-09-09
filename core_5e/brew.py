@@ -1,5 +1,6 @@
 ﻿clr.AddReference('vcs')
 from VirtualCharacterSheet import Brew
+from VirtualCharacterSheet.Util import brew, roll
 
 core = Brew('core_5e')
 core.Meta.Title = "D&D Fifth Edition OGL"
@@ -76,8 +77,8 @@ core.AddCharacterInjector(InjectSkills)
 import serialize
 import design
 
-import classes
-import item
+#import classes
+#import item
 
 import shell
 import tui

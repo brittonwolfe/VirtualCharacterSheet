@@ -3,11 +3,13 @@ from inspect import getargspec
 from os import getcwd
 from shlex import split
 from traceback import print_exc
+
 from VirtualCharacterSheet import PlayerCharacter
 from VirtualCharacterSheet.Core import View
 from VirtualCharacterSheet.Data import AllBrews, AllCharacters, GetBrew, GetCharacter, GetItem, HasBrew, HasCharacter, HasItem
 from VirtualCharacterSheet.IO import File, Dir
 from VirtualCharacterSheet.Net.ApiHost import StartNetShell
+from VirtualCharacterSheet.Util import brew, local, readl, roll, rolln
 from VirtualCharacterSheet.Terminal import AbstractCli
 
 class PyCli(AbstractCli):
