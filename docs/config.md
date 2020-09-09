@@ -1,5 +1,22 @@
 # Using configurations
 
+## For the User
+
+Your config folder is found at `~/.config/vcs/`. The default configuration file is `config`, but brews are allowed to use their own configuration files to avoid confusion or conflicts, but this is optional. VCS has some configuration options you can change in the default file:
+
+```ini
+[main]
+delete_temp = true
+editor = code
+prefer_cli = false
+save_open_c = true
+```
+
+- `delete_temp` – Whether or not to delete temporary script files; defaults to true.
+- `editor` – a string that sets the editor command. Change this to the executable for your favorite editor.
+- `prefer_cli` – Whether or not to use the text-based CLI rather than GUIs by default; defaults to false.
+- `save_open_c` – Whether or not to prompt you to save open characters when you exit the application; defaults to true.
+
 The main configuration state is stored in the global `__config__`, which has a few useful features, including checking if sections or options are present, and saving the config to the source file.
 
 Adding to the config just consists of adding your config values to its `values` dictionary:

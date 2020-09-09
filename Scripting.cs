@@ -135,7 +135,6 @@ namespace VirtualCharacterSheet {
 # endregion
 
 # region checkers
-			SetGlobal("has_c", new Func<string, bool>(Data.HasCharacter));
 			SetGlobal("has_class", new Func<string, bool>(Data.HasClass));
 			SetGlobal("has_feat", new Func<string, bool>(Data.HasFeat));
 			SetGlobal("has_i", new Func<string, bool>(Data.HasItem));
@@ -227,8 +226,13 @@ namespace VirtualCharacterSheet {
 # region accessors
 		public static Brew _brew(string id) { return Data.GetBrew(id); }
 		public static Character _c(string id) { return Data.GetCharacter(id); }
-
 # endregion
+
+# region checkers
+		public static bool has_brew(string id) { return Data.HasBrew(id); }
+		public static bool has_c(string id) { return Data.HasCharacter(id); }
+# endregion
+
 
 	}
 
