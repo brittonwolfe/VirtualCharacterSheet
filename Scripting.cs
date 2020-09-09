@@ -82,7 +82,7 @@ namespace VirtualCharacterSheet {
 		internal static void init() {
 			if(Initialized)
 				return;
-
+# region python engine
 			engine.GetBuiltinModule().ImportModule("clr");
 			ICollection<string> searchpaths = engine.GetSearchPaths();
 			string pypath = "";
@@ -98,54 +98,20 @@ namespace VirtualCharacterSheet {
 			}
 			searchpaths.Add(pypath);
 			engine.SetSearchPaths(searchpaths);
+# endregion
 
 # region configuration
 			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/config.py").Path, ShellScope);
 			Data.Config = ShellScope.GetVariable("__config__");
 #endregion
 
-# region global variables
+# region globals setup
 			homebrew.load = new Action<string>((string s) => Brew(new FileScript(new File(s))));
 # endregion
 
 # region casts
 			SetGlobal("byte", new Func<int, byte>((int i) => { return (byte)i; }));
 			SetGlobal("short", new Func<int, short>((int i) => { return (short)i; }));
-# endregion
-
-# region helper object functions
-			SetGlobal("new_mod", new Func<short, Modifier>((short m) => { return new Modifier(m); }));
-			SetGlobal("new_roll", new Func<ushort, ushort, Roll>((ushort n, ushort d) => { return new Roll(n, d); }));
-# endregion
-
-# region accessors
-			SetGlobal("_class", new Func<string, Class>(Data.GetClass));
-			SetGlobal("_feat", new Func<string, Feat>(Data.GetFeat));
-			SetGlobal("_i", new Func<string, Item>(Data.GetItem));
-			SetGlobal("_n", new Func<string, NPC>(Data.GetNPC));
-			SetGlobal("_py", new Func<string, RawPyScript>(Data.GetPy));
-			SetGlobal("_pyf", new Func<string, object>(Data.GetPyF));
-# endregion
-
-# region initializers and instantiators
-			SetGlobal("def_c", new Func<string, string, PlayerCharacter>((string c, string p) => { return new PlayerCharacter(c, p); }));
-			SetGlobal("def_class", new Func<string, Class>((string n) => { return new Class(n); }));
-			SetGlobal("def_feat", new Func<string, Feat>((string n) => { return new Feat(n); }));
-			SetGlobal("def_i", new Func<string, Item>((string n) => { return new Item(n); }));
-# endregion
-
-# region checkers
-			SetGlobal("has_class", new Func<string, bool>(Data.HasClass));
-			SetGlobal("has_feat", new Func<string, bool>(Data.HasFeat));
-			SetGlobal("has_i", new Func<string, bool>(Data.HasItem));
-			SetGlobal("has_n", new Func<string, bool>(Data.HasNPC));
-			SetGlobal("has_py", new Func<string, bool>(Data.HasPy));
-			SetGlobal("has_pyf", new Func<string, bool>(Data.HasPyF));
-# endregion
-
-# region metaprogrammatical functions
-			SetGlobal("set_pyf", new Action<string, object>(Data.SetPyF));
-			SetGlobal("edit_py", new Action<string>(CodeScript));
 # endregion
 
 # region finalize
@@ -167,7 +133,7 @@ namespace VirtualCharacterSheet {
 		private static dynamic GetGlobal(string n) { return engine.GetBuiltinModule().GetVariable(n); }
 		internal static void Remove(dynamic obj, string key) { ((IDictionary<string, object>)obj).Remove(key); }
 
-		private static void CodeScript(string key) {
+		internal static void CodeScript(string key) {
 			File temp = FileLoad.GetTempFile("vcs_py_" + key + ".py");
 			if(Data.HasPy(key))
 				temp.WriteText(Data.GetPy(key).src);
@@ -226,13 +192,35 @@ namespace VirtualCharacterSheet {
 # region accessors
 		public static Brew _brew(string id) { return Data.GetBrew(id); }
 		public static Character _c(string id) { return Data.GetCharacter(id); }
+		public static Class _class(string id) { return Data.GetClass(id); }
+		public static Item _i(string id) { return Data.GetItem(id); }
+		public static NPC _n(string id) { return Data.GetNPC(id); }
+		public static RawPyScript _py(string id) { return Data.GetPy(id); }
+		public static dynamic _pyf(string id) { return Data.GetPyF(id); }
 # endregion
 
 # region checkers
 		public static bool has_brew(string id) { return Data.HasBrew(id); }
 		public static bool has_c(string id) { return Data.HasCharacter(id); }
+		public static bool has_class(string id) { return Data.HasClass(id); }
+		public static bool has_feat(string id) { return Data.HasFeat(id); }
+		public static bool has_i(string id) { return Data.HasItem(id); }
+		public static bool has_n(string id) { return Data.HasNPC(id); }
+		public static bool has_py(string id) { return Data.HasPy(id); }
+		public static bool has_pyf(string id) { return Data.HasPyF(id); }
 # endregion
 
+# region initializers
+		public static PlayerCharacter def_c(string name, string player) { return new PlayerCharacter(name, player); }
+		public static Class def_class(string name) { return new Class(name); }
+		public static Feat def_feat(string name) { return new Feat(name); }
+		public static Item def_i(string name) { return new Item(name); }
+# endregion
+
+# region metafunction
+		public static void set_pyf(string id, object func) { Data.SetPyF(id, func); }
+		public static void edit_py(string id) { Scripting.CodeScript(id); }
+# endregion
 
 	}
 
