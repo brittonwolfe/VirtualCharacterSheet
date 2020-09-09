@@ -1,5 +1,6 @@
 clr.AddReference('vcs')
-from VirtualCharacterSheet.Forms import AbstractUi, AbstractUiFactory
+clr.AddReference('GtkSharp')
+from VirtualCharacterSheet.Forms import AbstractGui, AbstractUiFactory
 from VirtualCharacterSheet.Terminal import AbstractTui
 
 class PyUiFactory(AbstractUiFactory):
@@ -16,17 +17,14 @@ class PyTui(AbstractTui):
 	def Render(self):
 		pass
 
-class PyGui(AbstractUi):
-	#window = Tk()
-	components = []
-	def __init__(self):
-		pass
+class PyGui(AbstractGui):
+	content = None
+	def __init__(self, name = None, **kwargs):
+		AbstractGui.__init__(self, name = name or 'VCS Generic PyGui')
+		self.content = {item for item in kwargs}
 	def append(self, component):
-		self.components.append(component)
-	def pack(self):
-		for component in self.components:
-			component.pack()
-	def Render(self):
-		self.pack()
-	def Close(self):
-		self.window.destroy()
+		self.Components.append(component)
+		self.Window.Add(component)
+	def resize(self, x = None, y = None):
+		tup = AbstractGui.GetSize(self)
+		self.Window.Resize(x or tup.Item1, y or tup.Item2)

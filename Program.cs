@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace VirtualCharacterSheet {
 
 	class Program {
+		internal static List<Gtk.Window> Windows = new List<Gtk.Window>();
 
 		static void Main(string[] args) {
 			Console.Title = "Virtual Character Sheet";
 			Console.OutputEncoding = Encoding.Unicode;
-			Console.WriteLine("VCS TUI");
 			Scripting.init();
 
 			var delete_temp = Data.GetConfig("main", "delete_temp");
@@ -23,7 +22,15 @@ namespace VirtualCharacterSheet {
 			if(save_open_c != null ? bool.Parse(save_open_c) : false)
 				AddExitEvent(SaveOpenCharacters);
 
-			Core.StartSandbox();
+			if(args.Contains("--nogui")) {
+				Console.WriteLine("VCS CLI");
+				Core.StartSandbox();
+			} else {
+				Gtk.Application.Init();
+				var splash = new Forms.Gui.Splash();
+				splash.Render();
+				Gtk.Application.Run();
+			}
 
 		}
 
@@ -50,6 +57,14 @@ namespace VirtualCharacterSheet {
 				string path = Console.ReadLine();
 				PlayerCharacter.Serialize(pc, new IO.File(path).GetBinaryWriter());
 			}
+		}
+
+		internal static void OnWindowClose(object sender, EventArgs e) {
+			Gtk.Window obj = (Gtk.Window)sender;
+			if(Windows.Contains(obj))
+				Windows.Remove(obj);
+			if(Windows.Count == 0)
+				Gtk.Application.Quit();
 		}
 
 	}

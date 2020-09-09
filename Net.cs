@@ -17,7 +17,7 @@ namespace VirtualCharacterSheet.Net {
 		}
 
 		public static Task StartHost(string[] args = null) {
-			var host = new Task(() => Start(args != null ? args : new string[0]));
+			var host = new Task(() => Start(args ?? new string[0]));
 			host.Start();
 			return host;
 		}

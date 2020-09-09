@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Gtk;
+
 using VirtualCharacterSheet.Terminal;
 
 using PyList = IronPython.Runtime.List;
 using PyTuple = IronPython.Runtime.PythonTuple;
+using Action = System.Action;
 
 namespace VirtualCharacterSheet.Forms {
 
@@ -18,6 +21,19 @@ namespace VirtualCharacterSheet.Forms {
 
 		public abstract void Render();
 		public abstract void Close();
+
+	}
+
+	public readonly struct WrappedWidget {
+		public readonly Widget widget;
+		public readonly int x;
+		public readonly int y;
+
+		public WrappedWidget(Widget widget, int x = 0, int y = 0) {
+			this.widget = widget;
+			this.x = x;
+			this.y = y;
+		}
 
 	}
 
@@ -73,7 +89,6 @@ namespace VirtualCharacterSheet.Forms {
 
 	}
 	
-
 	public class TerminalView {
 		protected TerminalGraphic[] Graphics;
 		protected dynamic Renderer;
@@ -118,16 +133,6 @@ namespace VirtualCharacterSheet.Forms {
 		public Cli GetCliHandler() { return Handler; }
 
 		public override void Close() { DisposeIdentity(); }
-
-	}
-
-	public partial class Splash {
-
-		private void NewCharacter() {
-			
-		}
-
-		private void LoadModule(string mod) { Scripting.Brew(new FileScript(new IO.File(mod))); }
 
 	}
 
