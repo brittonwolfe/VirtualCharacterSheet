@@ -230,6 +230,10 @@ namespace VirtualCharacterSheet {
 			Console.WriteLine("script created at _py(\"" + key + "\")");
 		}
 
+		public static class Util {
+			public static readonly dynamic locals = new ExpandoObject();
+		}
+
 	}
 
 	public class PyFScript : Script {
