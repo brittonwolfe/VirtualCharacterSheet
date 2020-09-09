@@ -14,15 +14,18 @@ namespace VirtualCharacterSheet {
 			Console.OutputEncoding = Encoding.Unicode;
 			Scripting.init();
 
-			var delete_temp = Data.GetConfig("main", "delete_temp");
-			var save_open_c = Data.GetConfig("main", "save_open_c");
+			var delete_temp			=	Data.GetConfig("main", "delete_temp");
+			var prefer_cli			=	Data.GetConfig("main", "prefer_cli");
+			var save_open_c			=	Data.GetConfig("main", "save_open_c");
 
 			if(delete_temp != null ? bool.Parse(delete_temp) : true)
 				AddExitEvent(DisposeTempFiles);
 			if(save_open_c != null ? bool.Parse(save_open_c) : false)
 				AddExitEvent(SaveOpenCharacters);
 
-			if(args.Contains("--nogui")) {
+			prefer_cli = (prefer_cli != null ? bool.Parse(prefer_cli) : false) || args.Contains("--nogui");
+
+			if((bool)prefer_cli) {
 				Console.WriteLine("VCS CLI");
 				Core.StartSandbox();
 			} else {

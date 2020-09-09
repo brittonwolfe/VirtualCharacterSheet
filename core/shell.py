@@ -5,11 +5,10 @@ from shlex import split
 from traceback import print_exc
 
 from VirtualCharacterSheet import PlayerCharacter
-from VirtualCharacterSheet.Core import View
 from VirtualCharacterSheet.Data import AllBrews, AllCharacters, GetBrew, GetCharacter, GetItem, HasBrew, HasCharacter, HasItem
 from VirtualCharacterSheet.IO import File, Dir
 from VirtualCharacterSheet.Net.ApiHost import StartNetShell
-from VirtualCharacterSheet.Util import brew, local, readl, roll, rolln
+from VirtualCharacterSheet.Util import brew, local, readl, roll, rolln, view
 from VirtualCharacterSheet.Terminal import AbstractCli
 
 class PyCli(AbstractCli):
@@ -217,7 +216,7 @@ def cmd_save(args, **kwargs):
 	
 def cmd_view(args, **kwargs):
 	resolve_ref(args)
-	View(args[0])
+	view(args[0])
 
 def cmd_which(args, **kwargs):
 	if len(args) == 0:

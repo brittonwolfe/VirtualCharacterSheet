@@ -132,7 +132,7 @@ namespace VirtualCharacterSheet {
 			SetGlobal("def_class", new Func<string, Class>((string n) => { return new Class(n); }));
 			SetGlobal("def_feat", new Func<string, Feat>((string n) => { return new Feat(n); }));
 			SetGlobal("def_i", new Func<string, Item>((string n) => { return new Item(n); }));
-			#endregion
+# endregion
 
 # region checkers
 			SetGlobal("has_c", new Func<string, bool>(Data.HasCharacter));
@@ -142,10 +142,6 @@ namespace VirtualCharacterSheet {
 			SetGlobal("has_n", new Func<string, bool>(Data.HasNPC));
 			SetGlobal("has_py", new Func<string, bool>(Data.HasPy));
 			SetGlobal("has_pyf", new Func<string, bool>(Data.HasPyF));
-# endregion
-
-# region viewers
-			SetGlobal("view", new Action<object, Brew>(Core.View));
 # endregion
 
 # region metaprogrammatical functions
@@ -172,18 +168,14 @@ namespace VirtualCharacterSheet {
 		private static dynamic GetGlobal(string n) { return engine.GetBuiltinModule().GetVariable(n); }
 		internal static void Remove(dynamic obj, string key) { ((IDictionary<string, object>)obj).Remove(key); }
 
-
-		public static Modifier CreateModifier() { return new Modifier(); }
-		public static Modifier CreateModifier(short m) { return new Modifier(m); }
-		public static Modifier CreateModifier(Script s) { return new Modifier(s); }
-
 		private static void CodeScript(string key) {
 			File temp = FileLoad.GetTempFile("vcs_py_" + key + ".py");
 			if(Data.HasPy(key))
 				temp.WriteText(Data.GetPy(key).src);
 			else
 				temp.WriteText("");
-			try { Core.Run("code \"" + temp.Path + "\""); }
+			string command = (string)(Data.GetConfig("main", "editor") ?? "code");
+			try { Core.Run($"{command} \"{temp.Path}\""); }
 			catch { ScriptEditor(key); }
 			Console.WriteLine("Press enter to resume after editing...");
 			Console.ReadLine();
@@ -195,7 +187,7 @@ namespace VirtualCharacterSheet {
 		private static void ScriptEditor(string key) {
 			bool wantsbreak = false;
 			Console.Clear();
-			Console.Title = "You should install Visual Studio Code";
+			Console.Title = "You can set an editor in your config file";
 			string output = "";
 			while(true) {
 				string nl = Console.ReadLine();
