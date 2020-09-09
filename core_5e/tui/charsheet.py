@@ -8,7 +8,7 @@ from VirtualCharacterSheet.Util import brew, _brew, readl
 from core.ui import PyTui, PyUiFactory
 from core.shell import non_loop_shell
 
-from shell import character_cli
+from core_5e.shell import character_cli
 
 core = _brew('core_5e')
 

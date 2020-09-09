@@ -59,7 +59,10 @@ namespace VirtualCharacterSheet {
 
 			ICollection<string> paths = engine.GetSearchPaths();
 			var dir = src.File.Directory;
+			var parent = src.File.Directory.Parent();
 			paths.Add(dir.Path);
+			if(!paths.Contains(parent.Path))
+				paths.Add(parent.Path);
 			engine.SetSearchPaths(paths);
 
 			homebrew.def_brew = new Func<string, Brew>((string n) => { return new Brew(n); });
