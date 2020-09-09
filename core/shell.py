@@ -32,10 +32,13 @@ class PyCli(AbstractCli):
 			print('command not found')
 		print(self.commands[command].__doc__)
 	def Handle(self, command, **kwargs):
-		if len(command) < 1:
+		if command == '':
 			return
 		if self.colon_escape and command.startswith(':'):
-			exec(command[1:])
+			if command[1] in self.commands:
+				exec(command[1:])
+			else:
+				print(command[1] + ' not found')
 			return
 		full = split(command)
 		if full[0] == 'help':
@@ -45,7 +48,8 @@ class PyCli(AbstractCli):
 			if len(full) > 2:
 				print('too many arguments supplied')
 				return
-			self.help_command(full[1], **kwargs)
+			if full[1] in self.commands:
+				self.help_command(full[1], **kwargs)
 			return
 		output = None
 		try:
