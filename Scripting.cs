@@ -48,7 +48,6 @@ namespace VirtualCharacterSheet {
 		}
 
 		public static void Sandbox() {
-			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/io.py").Path, ShellScope);
 			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/shell.py").Path, ShellScope);
 			try { ShellScope.GetVariable("shell")(); }
 			catch(Exception e) {
@@ -59,7 +58,8 @@ namespace VirtualCharacterSheet {
 		public static void Brew(FileScript src) {
 
 			ICollection<string> paths = engine.GetSearchPaths();
-			paths.Add(src.File.Directory.Path);
+			var dir = src.File.Directory;
+			paths.Add(dir.Path);
 			engine.SetSearchPaths(paths);
 
 			homebrew.def_brew = new Func<string, Brew>((string n) => { return new Brew(n); });
@@ -75,6 +75,8 @@ namespace VirtualCharacterSheet {
 			try { engine.ExecuteFile(src.File.Path, BrewScope); }
 			catch(Exception e) { Console.WriteLine(e); }
 
+			paths.Remove(dir.Path);
+			engine.SetSearchPaths(paths);
 			Remove(homebrew, "def_brew");
 			Remove(homebrew, "Path");
 		}
@@ -97,6 +99,7 @@ namespace VirtualCharacterSheet {
 				break;
 			}
 			searchpaths.Add(pypath);
+			searchpaths.Add(FileLoad.WorkingDirectory().Path);
 			engine.SetSearchPaths(searchpaths);
 # endregion
 

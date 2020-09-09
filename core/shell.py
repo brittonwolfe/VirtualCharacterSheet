@@ -11,8 +11,10 @@ from VirtualCharacterSheet.Net.ApiHost import StartNetShell
 from VirtualCharacterSheet.Util import brew, local, readl, roll, rolln, view
 from VirtualCharacterSheet.Terminal import AbstractCli
 
+from core.io import load_object, save_object
+
 class PyCli(AbstractCli):
-	"""Used to create a shell interface for interacting with the VCS environment."""
+	"""Used to create a command line interface for interacting with the VCS environment."""
 	commands = {}
 	show_output = False
 	colon_escape = False
@@ -143,6 +145,9 @@ def cmd_brew(args, **kwargs):
 				print('no brew called ' + brew_name + ' was found')
 
 def cmd_list(args, **kwargs):
+	"""list [-C]
+	-C - list all loaded characters
+	"""
 	if len(args) == 0:
 		return
 	if len(args) > 1:
@@ -156,6 +161,8 @@ def cmd_list(args, **kwargs):
 	print('No list for type ' + args[0])
 
 def cmd_load(args, **kwargs):
+	"""load 
+	"""
 	typeof = None
 	if not args[0].startswith('-'):
 		print('invalid argument', args[0])
