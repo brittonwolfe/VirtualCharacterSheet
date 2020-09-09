@@ -7,7 +7,6 @@ using VirtualCharacterSheet.Exceptions;
 using VirtualCharacterSheet.IO;
 using VirtualCharacterSheet.IO.Serialization;
 
-using BinaryReader = System.IO.BinaryReader;
 using BinaryWriter = System.IO.BinaryWriter;
 
 namespace VirtualCharacterSheet {
