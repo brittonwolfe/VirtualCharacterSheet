@@ -2,7 +2,7 @@ clr.AddReference('vcs')
 from os import system
 
 from VirtualCharacterSheet import PlayerCharacter
-from VirtualCharacterSheet.Forms import TerminalForm, TerminalView
+from VirtualCharacterSheet.Forms import TerminalForm
 from VirtualCharacterSheet.Util import _brew, readl
 
 from core.ui import PyTui, PyUiFactory
