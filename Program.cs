@@ -12,7 +12,7 @@ namespace VirtualCharacterSheet {
 		static void Main(string[] args) {
 			Console.Title = "Virtual Character Sheet";
 			Console.OutputEncoding = Encoding.Unicode;
-			Scripting.init();
+			Scripting.Init();
 
 			var delete_temp			=	Data.GetConfig("main", "delete_temp");
 			var prefer_cli			=	Data.GetConfig("main", "prefer_cli");

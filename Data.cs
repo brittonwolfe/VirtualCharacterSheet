@@ -140,13 +140,6 @@ namespace VirtualCharacterSheet {
 
 		public static void Load(File src) { Scripting.Brew(new FileScript(src)); }
 
-		public void AddPage(string subpath) {
-			var pagefolder = FileLoad.WorkingDirectory().GetSubdir("Pages");
-			var new_path = pagefolder.Get(subpath);
-			System.IO.File.Copy(Meta.Dir.Get("Pages/" + subpath).Path, new_path.Path);
-			Core.temp_files.Add(new_path);
-		}
-
 	}
 
 	public class MiscObject {

@@ -66,14 +66,7 @@ namespace VirtualCharacterSheet {
 			engine.SetSearchPaths(paths);
 
 			homebrew.def_brew = new Func<string, Brew>((string n) => { return new Brew(n); });
-
 			homebrew.Path = src.File.Directory;
-			homebrew.import_absolute = new Func<string, string, dynamic>(
-				(subpath, item) => {
-					engine.ExecuteFile(src.File.Directory.Get(subpath).Path, BrewScope);
-					return BrewScope.GetVariable(item);
-				}
-			);
 
 			try { engine.ExecuteFile(src.File.Path, BrewScope); }
 			catch(Exception e) {
@@ -88,7 +81,7 @@ namespace VirtualCharacterSheet {
 			Remove(homebrew, "Path");
 		}
 
-		internal static void init() {
+		internal static void Init() {
 			if(Initialized)
 				return;
 # region python engine
