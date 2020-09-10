@@ -6,6 +6,7 @@ using Microsoft.Scripting.Hosting;
 
 using IronPython.Hosting;
 using PyList = IronPython.Runtime.List;
+using PyFunc = IronPython.Runtime.PythonFunction;
 
 using VirtualCharacterSheet.IO;
 using VirtualCharacterSheet.Event;
@@ -221,7 +222,7 @@ namespace VirtualCharacterSheet {
 # endregion
 
 # region metafunction
-		public static void set_pyf(string id, object func) { Data.SetPyF(id, func); }
+		public static void set_pyf(string id, PyFunc func) { Data.SetPyF(id, func); }
 		public static void edit_py(string id) { Scripting.CodeScript(id); }
 # endregion
 

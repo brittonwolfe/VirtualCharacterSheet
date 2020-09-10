@@ -8,8 +8,22 @@ using VirtualCharacterSheet.IO;
 using VirtualCharacterSheet.IO.Serialization;
 
 using BinaryWriter = System.IO.BinaryWriter;
+using PyFunc = IronPython.Runtime.PythonFunction;
 
 namespace VirtualCharacterSheet {
+
+	public readonly struct IndexSurrogate<T> {
+		private readonly Dictionary<string, T> source;
+
+		internal IndexSurrogate(ref Dictionary<string, T> dict) { source = dict; }
+
+		public T this[string str] {
+			get => source[str];
+		}		
+
+		public bool Has(string id) { return source.ContainsKey(id); }
+
+	}
 
 	public static class Data {
 		internal static dynamic Config = null;
@@ -20,9 +34,20 @@ namespace VirtualCharacterSheet {
 		private static Dictionary<string, Item> item = new Dictionary<string, Item>();
 		private static Dictionary<string, NPC> npc = new Dictionary<string, NPC>();
 		private static Dictionary<string, RawPyScript> py = new Dictionary<string, RawPyScript>();
-		private static Dictionary<string, object> pyf = new Dictionary<string, object>();
+		private static Dictionary<string, PyFunc> pyf = new Dictionary<string, PyFunc>();
 
 		private static Dictionary<string, Brew> brew = new Dictionary<string, Brew>();
+
+# region indexers
+		public static readonly IndexSurrogate<Brew> _brew = new IndexSurrogate<Brew>(ref brew);
+		public static readonly IndexSurrogate<PlayerCharacter> _C = new IndexSurrogate<PlayerCharacter>(ref character);
+		public static readonly IndexSurrogate<Class> _class;
+		public static readonly IndexSurrogate<Feat> _feat;
+		public static readonly IndexSurrogate<Item> _i = new IndexSurrogate<Item>(ref item);
+		public static readonly IndexSurrogate<NPC> _n;
+		public static readonly IndexSurrogate<RawPyScript> _py = new IndexSurrogate<RawPyScript>(ref py);
+		public static readonly IndexSurrogate<PyFunc> _pyf = new IndexSurrogate<PyFunc>(ref pyf);
+# endregion
 
 		public static event BrewLoadEventHandler BrewLoadEvent;
 
@@ -50,7 +75,7 @@ namespace VirtualCharacterSheet {
 		public static void SetCharacter(PlayerCharacter c) { character[c.Identifier.ToLower()] = c; }
 		public static void SetNPC(string key, NPC n) { npc[key.ToLower()] = n; }
 		public static void SetPy(string key, RawPyScript src) { py[key.ToLower()] = src; }
-		public static void SetPyF(string key, object func) { pyf[key.ToLower()] = func; }
+		public static void SetPyF(string key, PyFunc func) { pyf[key.ToLower()] = func; }
 		internal static void SetClass(string key, Class c) { classes[key.ToLower()] = c; }
 		public static void SetFeat(string key, Feat f) { feat[key.ToLower()] = f; }
 
