@@ -17,6 +17,17 @@ namespace VirtualCharacterSheet {
 
 	}
 
+	public class Item : ScriptedObject {
+		public string Name;
+		public readonly string Identifier;
+
+		public Item(string id) : base() {
+			Identifier = id;
+			Data.SetItem(this);
+		}
+
+	}
+
 	public struct Roll {
 		public List<Modifier> Mods;
 		public (ushort, ushort) Dice;
@@ -44,15 +55,7 @@ namespace VirtualCharacterSheet {
 		public Modifier(short mod) { Behavior = new RawPyScript("return " + mod); }
 		public Modifier(Script script) { Behavior = script; }
 
-	}
-
-	public class Save {
-		public string Name;
-		public string Stat;
-
-		public Save(string name) {
-
-		}
+		public static Modifier Parse(string str) { return new Modifier(short.Parse(str)); }
 
 	}
 

@@ -149,17 +149,6 @@ namespace VirtualCharacterSheet {
 
 	}
 
-	public class Item : ScriptedObject {
-		public string Name;
-		public readonly string Identifier;
-
-		public Item(string id) : base() {
-			Identifier = id;
-			Data.SetItem(this);
-		}
-
-	}
-
 	public class MiscObject {
 		private Dictionary<string, dynamic> Props;
 

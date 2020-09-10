@@ -234,8 +234,6 @@ namespace VirtualCharacterSheet {
 
 	}
 
-	
-
 	public class PyFScript : Script {
 		private dynamic Object;
 
