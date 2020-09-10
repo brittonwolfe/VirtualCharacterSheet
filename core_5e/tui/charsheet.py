@@ -3,7 +3,7 @@ from os import system
 
 from VirtualCharacterSheet import PlayerCharacter
 from VirtualCharacterSheet.Forms import TerminalForm, TerminalView
-from VirtualCharacterSheet.Util import brew, _brew, readl
+from VirtualCharacterSheet.Util import _brew, readl
 
 from core.ui import PyTui, PyUiFactory
 from core.shell import non_loop_shell
