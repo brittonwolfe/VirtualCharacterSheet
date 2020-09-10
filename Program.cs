@@ -29,7 +29,7 @@ namespace VirtualCharacterSheet {
 				Console.WriteLine("VCS CLI");
 				Core.StartSandbox();
 			} else {
-				Gtk.Application.Init();
+				Gtk.Application.Init("VCS", ref args);
 				var splash = new Forms.Gui.Splash();
 				splash.Render();
 				Gtk.Application.Run();

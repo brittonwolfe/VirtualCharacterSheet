@@ -38,6 +38,7 @@ class PyCli(AbstractCli):
 			return
 		if self.colon_escape and command.startswith(':'):
 			exec(command[1:])
+			return
 		full = split(command)
 		if full[0] == 'help':
 			if len(full) == 1:
