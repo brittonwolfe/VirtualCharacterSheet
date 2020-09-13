@@ -49,3 +49,4 @@ brew_object.AddCharacterInjector(inject_sample)
 ```
 
 You can add as many injectors as you'd like, so feel free to organize them as you wish. Just keep in mind that using spaces in the behavior name is discouraged since it limits the accessibility of those behaviors.
+

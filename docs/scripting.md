@@ -1,76 +1,63 @@
 # Python Scripting
-VCS is scripted with IronPython. While everything can be imported through the CLR, VCS's IronPython is initialized with a lot of globals to help make scripting easier.
 
-## Global Accessors
+This documentation is still incomplete and is subject to addition.
 
-### `_c(id)`
+VCS is scripted with IronPython. It provides a lot of helper functions and objects to give developers options and tools for creating brews.
 
-returns the character with the given `id`.
+## Engine Globals
 
-### `_class(name)`
+There are only a few global functions and objects that VCS puts into its Python engine.
 
-returns the class with the given `name`.
+### Casting functions
 
-### `_feat(name)`
+`byte` and `short` are implemented in the same way other Python cast functions are, since Python does not natively support these primitives. Just like other conversions, it's as simple as `byte(obj)` or `short(obj)`.
 
-returns the feat with the given `name`.
+### The config object
 
-### `_i(id)`
+`__config__` makes the configuration object visible so that brew developers can easily check the user's preferences and add/remove their own. It's a wrapped `ConfigParser` object with a bit more utility. You can find it in `core.config` if you're curious about its functionality.
 
-returns the item with the given `id`.
+## The Utils class
 
-### `_n(id)`
+The `VirtualCharacterSheet.Util` class provides helper functions and some helper objects.
 
-returns the NPC with the given `id`.
+### Objects
 
-### `_s(id)`
+- `Util.local` exposes the CLR's `Scripting.locals` object to the Python environment. This exists so that developers have options for how they design their functions and brew environment.
 
-returns the spell with the given `id`.
+- `Util.brew` exposes the `Scripting.homebrew` object that provides helper functions for brew development. For brew environments (`brew.py` or any files imported by a `brew.py`), this exposes the following:
 
-## Accessing Local Variables
+  - `brew.Path`: the directory containing the currently initializing `brew.py` file.
+  - `brew.def_brew`: a helper method that creates a new `Brew` object.
 
-Accessing locals is done entirely through the `local` variable. It's a dynamic object, so its values are assignable at runtime.
+  Otherwise, it exposes the `brew.load(string path)` function, which loads a brew.
 
-### `arg`
+- `_setting` is for temporary settings, like whether or not the current shell should print its output.
 
-`local.arg` is the argument sent to the script, if there is one.
+### Methods
 
-## Global Functions
+#### General
 
-### `getopenchar()`
+- `readl(str prompt)`: the `input(str prompt)` global doesn't like IronPython, so use `readl` instead.
+- `roll(ushort sides)`: rolls a `sides`-sided die.
+- `rolln(ushort sides, ushort count)`: rolls an `sides`-sided die `count` times.
+- `view(object obj, Brew brew = null)`: views an object. If the `brew` parameter is specified, it will use the viewer from that `Brew`.
 
-`getopenchar()` returns the `Character` object for the currently loaded by the character sheet viewer, or `null` if there is no character currently open.
+#### Accessors
 
-### `mod(s)`
+- `_brew(str name)`: gets the `Brew` object with the given `name`.
+- `_c(str name)`: gets the `PlayerCharacter` object with the given `name`.
+- `_class(str name)`: gets the `Class` object with the given `name`.
+- `_i(str name)`: gets the `Item` object with the given `name`.
+- `_n(str name)`: gets the `NPC` object with the given `name`.
+- `_py(str name)`: gets the `RawPyScript` object with the given `name`. You probably don't need to use this.
+- `_pyf(str name)`: gets a Python function with the given name. You probably don't need to use this.
 
-`mod(s)` returns the modifier of a score `s`. It accepts a score, `s `, as a `byte` and returns a `short` back.
+#### Checkers
 
-### `roll(d)`
-`roll(d)` is used to roll a single `d`-sided die. It accepts any .NET `ushort` for the number of sides, and returns a `ushort`.
+- `has_brew(str name)`: returns a `bool` indicating if a `Brew` with the given `name` already exists.
+- `has_c(str name)`: returns a `bool` indicating if a `PlayerCharacter` with the given `name` already exists.
+- /TODO: the rest/
 
-### `rolln(n,d)`
-`rolln(n,d)` rolls `n` `d`-sided dice. It accepts a `byte` for the number, `n`, of dice, and, like the `roll(d)` method, it accepts a `ushort` for the number of sides, and returns a `ushort`.
+## The Data class
 
-## Metascripting Tools
-
-Metascripting is a weird idea, but I wanted to at least include an explanation: the scripting engine has the capability to add or change scripted behaviors at runtime through a file or direct input through the console. This basically means that you can script stuff through the console without needing any external editor.
-
-### Naming Conventions
-
-I'd like to at least try to have some rules and best practices put forward for consistency and sanity; if you are defining scripts during runtime through a module, please use the naming structure `"package;name"` to avoid conflicts at runtime.
-
-### `_py(name)`
-
-Returns the runtime-defined Python script with the given name. 
-
-### `edit_py(name)`
-
-Edits the given Python script in Visual Studio Code if it is installed, or in the terminal script editor if not. The advantage to VS Code is that it doesn't clear the script before editing.
-
-### `_pyf(name)`
-
-Gets the Python function at the given key. The difference between `_py` and `_pyf` is that `_pyf` is an actual function *object* rather than a string of interpretable code.
-
-### `set_pyf(name, func)`
-
-Assigns a Python function to the given key.
+`VirtualCharacterSheet.Data` also exposes some useful functions and indexers.

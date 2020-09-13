@@ -67,7 +67,7 @@ namespace VirtualCharacterSheet {
 		public static PlayerCharacter GetCharacter(string key) { return character[key.ToLower()]; }
 		public static NPC GetNPC(string key) { return npc[key.ToLower()]; }
 		public static RawPyScript GetPy(string key) { return py[key.ToLower()]; }
-		public static object GetPyF(string key) { return pyf[key.ToLower()]; }
+		public static PyFunc GetPyF(string key) { return pyf[key.ToLower()]; }
 		public static Class GetClass(string key) { return classes[key.ToLower()]; }
 		public static Feat GetFeat(string key) { return feat[key.ToLower()]; }
 

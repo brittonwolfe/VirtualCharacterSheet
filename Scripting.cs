@@ -114,8 +114,16 @@ namespace VirtualCharacterSheet {
 # endregion
 
 # region casts
-			SetGlobal("byte", new Func<int, byte>((int i) => { return (byte)i; }));
-			SetGlobal("short", new Func<int, short>((int i) => { return (short)i; }));
+			SetGlobal("byte", new Func<object, byte>((object num) => {
+				if(num is string)
+					return byte.Parse(num as string);
+				return (byte)num;
+			}));
+			SetGlobal("short", new Func<object, short>((object num) => {
+				if(num is string)
+					return short.Parse(num as string);
+				return (short)num;
+			}));
 # endregion
 
 # region finalize
@@ -185,7 +193,8 @@ namespace VirtualCharacterSheet {
 		public static string readl(string prompt) {
 			Console.Write(prompt);
 			return Console.In.ReadLine();
-		}			public static uint roll(ushort sides) { return Die.Roll(sides); }
+		}
+		public static uint roll(ushort sides) { return Die.Roll(sides); }
 		public static uint rolln(ushort sides, ushort count) { return Die.Rolln(sides, count); }
 # endregion
 
@@ -200,7 +209,7 @@ namespace VirtualCharacterSheet {
 		public static Item _i(string id) { return Data.GetItem(id); }
 		public static NPC _n(string id) { return Data.GetNPC(id); }
 		public static RawPyScript _py(string id) { return Data.GetPy(id); }
-		public static dynamic _pyf(string id) { return Data.GetPyF(id); }
+		public static PyFunc _pyf(string id) { return Data.GetPyF(id); }
 # endregion
 
 # region checkers
