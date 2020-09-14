@@ -56,7 +56,26 @@ The `VirtualCharacterSheet.Util` class provides helper functions and some helper
 
 - `has_brew(str name)`: returns a `bool` indicating if a `Brew` with the given `name` already exists.
 - `has_c(str name)`: returns a `bool` indicating if a `PlayerCharacter` with the given `name` already exists.
-- /TODO: the rest/
+- `has_class(str name)`: returns a `bool` indicating if a `Class` with the given `name` already exists.
+- `has_feat(str name)`: returns a `bool` indicating if a `Feat` with the given `name` already exists.
+- `has_i(str name)`: returns a `bool` indicating if an `Item` with the given `name` already exists.
+- `has_n(str name)`: returns a `bool` indicating if an `NPC` with the given `name` already exists.
+- `has_py(str name)`: returns a `bool` indicating if a `RawPyScript` with the given `name` already exists.
+- `has_pyf(str name)`: returns a `bool` indicating if a Python function with the given `name` already exists.
+
+#### Initializers
+
+- `def_c(str name, str player)`: returns a new `PlayerCharacter` with the given `name` and `player` name.
+- `def_class(str name)`: returns a new `Class` with the given `name`.
+- `def_feat(str name)`: returns a new `Feat` with the given `name`.
+- `def_i(str name)`: returns a new `Item` with the given `name`.
+
+#### Metafunction
+
+If you find yourself needing (probably for magic) to manipulate function behaviors, then the following functions exist:
+
+- `set_pyf(str name, function func)`: stores a Python function with the given `name`.
+- `set_py(str name, RawPyScript script)`: stores a `RawPyScript` with the given `name`.
 
 ## The Data class
 

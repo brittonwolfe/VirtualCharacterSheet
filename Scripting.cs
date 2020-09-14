@@ -76,6 +76,16 @@ namespace VirtualCharacterSheet {
 				Console.ReadLine();
 			}
 
+			var varnames = BrewScope.GetVariableNames();
+			foreach(var v in varnames) {
+				if(
+					v == "Popen" ||
+					v == "subprocess" ||
+					v == "run"
+				)
+					Console.WriteLine($"The brew loaded {v}, which can be used for code injection. Proceed with caution and/or check out the brew's source code. Make sure to stay safe!");
+			}
+
 			paths.Remove(dir.Path);
 			engine.SetSearchPaths(paths);
 			Remove(homebrew, "def_brew");
@@ -232,7 +242,7 @@ namespace VirtualCharacterSheet {
 
 # region metafunction
 		public static void set_pyf(string id, PyFunc func) { Data.SetPyF(id, func); }
-		public static void edit_py(string id) { Scripting.CodeScript(id); }
+		public static void set_py(string id, RawPyScript script) { Data.SetPy(id, script); }
 # endregion
 
 	}
