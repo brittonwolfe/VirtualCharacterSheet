@@ -83,7 +83,7 @@ namespace VirtualCharacterSheet {
 					v == "subprocess" ||
 					v == "run"
 				)
-					Console.WriteLine($"The brew loaded {v}, which can be used for code injection. Proceed with caution and/or check out the brew's source code. Make sure to stay safe!");
+					Console.WriteLine($"The brew loaded {v}, which can be used for malicious process execution. Proceed with caution and/or check out the brew's source code. Make sure to stay safe!");
 			}
 
 			paths.Remove(dir.Path);
