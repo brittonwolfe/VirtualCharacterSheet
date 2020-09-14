@@ -76,16 +76,6 @@ namespace VirtualCharacterSheet {
 				Console.ReadLine();
 			}
 
-			var varnames = BrewScope.GetVariableNames();
-			foreach(var v in varnames) {
-				if(
-					v == "Popen" ||
-					v == "subprocess" ||
-					v == "run"
-				)
-					Console.WriteLine($"The brew loaded {v}, which can be used for malicious process execution. Proceed with caution and/or check out the brew's source code. Make sure to stay safe!");
-			}
-
 			paths.Remove(dir.Path);
 			engine.SetSearchPaths(paths);
 			Remove(homebrew, "def_brew");
