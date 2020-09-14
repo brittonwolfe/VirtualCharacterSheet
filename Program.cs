@@ -73,18 +73,15 @@ namespace VirtualCharacterSheet {
 	}
 
 	public static class Core {
-		private static PlayerCharacter currchar = null;
 		internal static bool SandboxAwaits = false;
 		internal static List<IO.File> temp_files = new List<IO.File>();
 		public readonly static PlatformID platform = Environment.OSVersion.Platform;
-
-		public static PlayerCharacter GetCurrentCharacter() { return currchar; }
 
 		public static short Modifier(byte stat) { return (short)((stat / 2) - 5); }
 
 		public static void StartSandbox() { Scripting.Sandbox(); }
 
-		public static Process Run(string command) {
+		internal static Process Run(string command) {
 			var process = new Process();
 			var info = new ProcessStartInfo();
 			if(platform == PlatformID.Unix) {

@@ -61,3 +61,17 @@ The `VirtualCharacterSheet.Util` class provides helper functions and some helper
 ## The Data class
 
 `VirtualCharacterSheet.Data` also exposes some useful functions and indexers.
+
+### Indexers
+
+The indexer surrogates exist to give developers another option more resembling of the way the CLI resolves object references. `_brew`, `_C`, `_class`, `_feat`, `_i`, `_n`, `_py`, and `_pyf` are currently implemented. These objects also provide a `bool has(str id)` method to check if a name exists (this method also exists as `bool Has(string id)`, but both are included for ease of use between different languages).
+
+### Methods
+
+For all intents and purposes, I'm excluding any methods that don't already have equivalents elsewhere (such as the `__config__` object or `Util` class) which abide by Python naming conventions.
+
+- `AllCharacters()`: returns a new-line separated string listing all `PlayerCharacter` IDs. Meant to be human-readable. Less useful than `GetAllCharacters`.
+- `AllBrews()`: returns a space-separated string listing all `Brew` names. Meant to be human-readable. Less useful than `GetAllBrews`.
+- `GetAllCharacters()`: returns a `List` of all `PlayerCharacter` objects. More useful than `AllCharacters`.
+- `GetAllBrews()`: returns a `List` of all `Brew` objects. More useful than `AllBrews`.
+- `GetCellar()`: gets a `Cellar` object for serialization. This likely isn't particularly useful, but it *does* exist.
