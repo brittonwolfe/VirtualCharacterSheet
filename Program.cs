@@ -15,6 +15,7 @@ namespace VirtualCharacterSheet {
 			Scripting.Init();
 
 			var delete_temp			=	Data.GetConfig("main", "delete_temp");
+			var keep_log			=	Data.GetConfig("main", "keep_log");
 			var prefer_cli			=	Data.GetConfig("main", "prefer_cli");
 			var save_open_c			=	Data.GetConfig("main", "save_open_c");
 
@@ -30,10 +31,14 @@ namespace VirtualCharacterSheet {
 				Core.StartSandbox();
 			} else {
 				Gtk.Application.Init("VCS", ref args);
-				var sout = new System.IO.StreamWriter(FileLoad.GetTempFile("log.txt").Path);
+				var sout = new System.IO.StreamWriter(FileLoad.GetTempFile("vcs_log.txt").Path);
 				Console.SetOut(sout);
 				Console.SetError(sout);
-				AddExitEvent((obj, e) => { sout.Close(); });
+				AddExitEvent((obj, e) => {
+					Console.WriteLine($"exited at {System.DateTime.Now.ToString()}");
+					sout.Close();
+				});
+				Console.WriteLine($"started at {System.DateTime.Now.ToString()}");
 				var splash = new Forms.Gui.Splash();
 				splash.Render();
 				Gtk.Application.Run();
