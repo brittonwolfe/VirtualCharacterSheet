@@ -30,6 +30,10 @@ namespace VirtualCharacterSheet {
 				Core.StartSandbox();
 			} else {
 				Gtk.Application.Init("VCS", ref args);
+				var sout = new System.IO.StreamWriter(FileLoad.GetTempFile("log.txt").Path);
+				Console.SetOut(sout);
+				Console.SetError(sout);
+				AddExitEvent((obj, e) => { sout.Close(); });
 				var splash = new Forms.Gui.Splash();
 				splash.Render();
 				Gtk.Application.Run();

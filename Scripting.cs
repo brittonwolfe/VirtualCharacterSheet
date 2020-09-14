@@ -72,8 +72,10 @@ namespace VirtualCharacterSheet {
 			try { engine.ExecuteFile(src.File.Path, BrewScope); }
 			catch(Exception e) {
 				Console.WriteLine(e);
-				Console.Write("Press any key to continue...");
-				Console.ReadLine();
+				if(Data.GetConfig("main", "prefer_cli")) {
+					Console.Write("Press any key to continue...");
+					Console.ReadLine();
+				}
 			}
 
 			paths.Remove(dir.Path);
