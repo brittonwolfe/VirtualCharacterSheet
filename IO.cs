@@ -211,7 +211,7 @@ namespace VirtualCharacterSheet {
 				public override string ToString() {
 					string output = "Cellar[";
 					foreach (Bottle bottle in bottles)
-						output += (bottle.BrewName + " ");
+						output += ($"{bottle.BrewName} ");
 					return (output.Trim() + "]");
 				}
 

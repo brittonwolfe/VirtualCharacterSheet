@@ -28,19 +28,14 @@ namespace VirtualCharacterSheet {
 		static Scripting() {
 # region main_scope
 			MainScope = engine.CreateScope();
-			MainScope.SetVariable("local", locals);
-			MainScope.SetVariable("brew", homebrew);
 # endregion
 
 # region brew_scope
 			BrewScope = engine.CreateScope();
-			BrewScope.SetVariable("brew", homebrew);
 # endregion
 
 # region shell_scope
 			ShellScope = engine.CreateScope();
-			ShellScope.SetVariable("brew", homebrew);
-			ShellScope.SetVariable("_setting", settings);
 # endregion
 
 # region netapi_scope
@@ -88,7 +83,10 @@ namespace VirtualCharacterSheet {
 			if(Initialized)
 				return;
 # region python engine
-			engine.GetBuiltinModule().ImportModule("clr");
+			MainScope.ImportModule("clr");
+			BrewScope.ImportModule("clr");
+			ShellScope.ImportModule("clr");
+			NetScope.ImportModule("clr");
 			ICollection<string> searchpaths = engine.GetSearchPaths();
 			string pypath = "";
 			switch(Core.platform) {

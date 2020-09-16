@@ -48,6 +48,7 @@ namespace VirtualCharacterSheet {
 
 		internal static void AddExitEvent(EventHandler eventHandler) { AppDomain.CurrentDomain.ProcessExit += eventHandler; }
 
+# region exit events
 		private static void DisposeTempFiles(object sender, EventArgs e) {
 			foreach(IO.File file in Core.temp_files)
 				System.IO.File.Delete(file.Path);
@@ -70,6 +71,7 @@ namespace VirtualCharacterSheet {
 				PlayerCharacter.Serialize(pc, new IO.File(path).GetBinaryWriter());
 			}
 		}
+# endregion
 
 		internal static void OnWindowClose(object sender, EventArgs e) {
 			Gtk.Window obj = (Gtk.Window)sender;
@@ -101,7 +103,7 @@ namespace VirtualCharacterSheet {
 				info.FileName = parts[0];
 				string tmp = "";
 				foreach(string arg in parts.Skip(1).ToArray())
-					tmp += (arg + " ");
+					tmp += ($"{arg} ");
 				info.Arguments = tmp.Trim();
 			}
 			process.StartInfo = info;
@@ -113,7 +115,7 @@ namespace VirtualCharacterSheet {
 			var T = obj.GetType();
 			if(brew != null) {
 				if(!brew.CanView(T))
-					Console.WriteLine(brew.Name + " has no viewer for type " + T);
+					Console.WriteLine($"{brew.Name} has no viewer for type {T}");
 				else
 					View(obj);
 				return;
@@ -123,8 +125,12 @@ namespace VirtualCharacterSheet {
 					b.View(obj);
 					return;
 				}
-			Console.WriteLine("Cannot view object of type " + T + ".");
+			Console.WriteLine($"Cannot view object of type {T}");
 		}
+
+	}
+
+	public static class Logger {
 
 	}
 

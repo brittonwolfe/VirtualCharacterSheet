@@ -169,7 +169,7 @@ namespace VirtualCharacterSheet {
 		public void View(object obj) {
 			var T = obj.GetType();
 			if(!Viewers.ContainsKey(T)) {
-				Console.WriteLine("No viewer for " + T + " was found.");
+				Console.WriteLine($"No viewer for {T} was found.");
 				return;
 			}
 			Viewers[T].Create(obj).Render();
