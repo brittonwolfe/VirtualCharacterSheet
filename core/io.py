@@ -1,4 +1,4 @@
-﻿clr.AddReference('vcs')
+﻿
 from os.path import expanduser
 from VirtualCharacterSheet.IO import File
 

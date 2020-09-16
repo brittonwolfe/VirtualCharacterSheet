@@ -1,4 +1,4 @@
-clr.AddReference('vcs')
+
 from inspect import getargspec
 from os import getcwd
 from shlex import split

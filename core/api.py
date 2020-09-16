@@ -1,4 +1,4 @@
-clr.AddReference('vcs')
+
 from VirtualCharacterSheet.Net.Api import MiscController
 
 class MiscItem:

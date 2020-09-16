@@ -26,21 +26,15 @@ namespace VirtualCharacterSheet {
 		private static bool Initialized = false;
 
 		static Scripting() {
-# region main_scope
+			engine.GetBuiltinModule().ImportModule("clr");
+			engine.Execute("clr.AddReference(\"vcs\")");
+# region scope init
 			MainScope = engine.CreateScope();
-# endregion
-
-# region brew_scope
 			BrewScope = engine.CreateScope();
-# endregion
-
-# region shell_scope
 			ShellScope = engine.CreateScope();
-# endregion
-
-# region netapi_scope
 			NetScope = engine.CreateScope();
 #endregion
+
 		}
 
 		public static void Sandbox() {
@@ -83,10 +77,6 @@ namespace VirtualCharacterSheet {
 			if(Initialized)
 				return;
 # region python engine
-			MainScope.ImportModule("clr");
-			BrewScope.ImportModule("clr");
-			ShellScope.ImportModule("clr");
-			NetScope.ImportModule("clr");
 			ICollection<string> searchpaths = engine.GetSearchPaths();
 			string pypath = "";
 			switch(Core.platform) {

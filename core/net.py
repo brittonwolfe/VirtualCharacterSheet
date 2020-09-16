@@ -1,4 +1,4 @@
-clr.AddReference('vcs')
+
 from VirtualCharacterSheet.Net.ApiHost import StartHost
 
 from core.shell import add_base, PyCli

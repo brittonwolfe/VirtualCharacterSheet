@@ -1,4 +1,4 @@
-clr.AddReference('vcs')
+
 from os import system
 
 from VirtualCharacterSheet import PlayerCharacter

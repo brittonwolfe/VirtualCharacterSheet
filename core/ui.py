@@ -1,4 +1,3 @@
-clr.AddReference('vcs')
 clr.AddReference('GtkSharp')
 from VirtualCharacterSheet.Forms import AbstractGui, AbstractUiFactory
 from VirtualCharacterSheet.Terminal import AbstractTui

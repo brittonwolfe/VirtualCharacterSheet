@@ -1,4 +1,3 @@
-clr.AddReference('vcs')
 
 from VirtualCharacterSheet import PlayerCharacter
 

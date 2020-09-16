@@ -1,4 +1,4 @@
-clr.AddReference('vcs')
+
 from VirtualCharacterSheet import PlayerCharacter
 from VirtualCharacterSheet.IO.Serialization import ScriptedObjectSet
 
