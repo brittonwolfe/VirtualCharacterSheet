@@ -124,6 +124,7 @@ namespace VirtualCharacterSheet.Forms {
 				internal DefaultMenuBar() {
 					this.Name = "vcs";
 
+# region file menu
 					File = new MenuItem("File");
 					var File_Load = new MenuItem("Load");
 					var File_Submenu = new Menu();
@@ -143,7 +144,9 @@ namespace VirtualCharacterSheet.Forms {
 					File.Submenu = File_Submenu;
 					File_Submenu.Add(File_Load);
 					this.Add(File);
+# endregion
 
+# region brew menu
 					Brew = new MenuItem("Brew");
 					var Brew_Load = new MenuItem("Load");
 					Brew_Load.ButtonPressEvent += (obj, e) => {
@@ -165,6 +168,7 @@ namespace VirtualCharacterSheet.Forms {
 					Brew_Submenu.Add(Brew_List);
 					Brew.Submenu = Brew_Submenu;
 					this.Add(Brew);
+# endregion
 
 				}
 

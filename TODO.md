@@ -4,6 +4,7 @@
 
 - [ ] Refactor init to just set up important things, and move helper methods to Scripting.Utils class
 	- [ ] create the class for the homebrew helper object
+- [ ] Make `help` (or `help shell`?) list all commands
 
 ## UI Progress
 
