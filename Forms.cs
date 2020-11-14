@@ -74,6 +74,10 @@ namespace VirtualCharacterSheet.Forms {
 		}
 		public static (int, int) GetCursorPosition() { return (Console.CursorLeft, Console.CursorTop); }
 
+		public static void SetBackgroundColor(ConsoleColor color) { Console.BackgroundColor = color; }
+		public static void SetForegroundColor(ConsoleColor color) { Console.ForegroundColor = color; }
+		public static void ResetColor() { Console.ResetColor(); }
+
 		public static void Clear() { Console.Clear(); }
 
 	}
