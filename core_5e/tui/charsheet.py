@@ -60,19 +60,29 @@ class Core5eCharacterSheet(PyTui):
 		output += ' |\n'
 		output += ('=' * 7)
 		return output
+	def render_skill_section(self):
+		width = TerminalForm.GetTerminalWidth() - 8
+		full_line = '=' * width
+		output = full_line[0:4] + 'Skills' + full_line[10:] + '\n'
+		output += full_line
+		return output
 	def basic_view(self):
 		TerminalForm.SetCursorPosition(x = 0, y = 0)
 		print(self.render_header())
 		TerminalForm.SetCursorPosition(x = 0, y = 3)
 		print(self.render_stat_section())
-		TerminalForm.SetCursorPosition()
+		TerminalForm.SetCursorPosition(x = 8, y = 3)
+		render = self.render_skill_section()
+		for line in render.split('\n'):
+			TerminalForm.SetCursorPosition(x = 8)
+			print(line)
 	def Render(self):
 		TerminalForm.Clear()
 		breaks = False
 		while not breaks:
 			if self.view == 0:
 				self.basic_view()
-			TerminalForm.SetCursorPosition(x = 0)
+			TerminalForm.SetCursorPosition(x = 0, y = 17)
 			breaks = non_loop_shell(character_cli, character = self.content)
 			if not breaks:
 				readl('')

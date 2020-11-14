@@ -27,11 +27,13 @@ class PyCli(AbstractCli):
 		"""help [command]
 	Shows help text for the given command.
 		"""
+		print(command)
 		if command is None or command == '':
 			print(self.help_command.__doc__)
 			return
 		if not command in self.commands:
 			print('command not found')
+			return
 		print(self.commands[command].__doc__)
 	def Handle(self, command, **kwargs):
 		if command == '':
