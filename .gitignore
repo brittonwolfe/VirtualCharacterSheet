@@ -371,3 +371,4 @@ FodyWeavers.xsd
 *.cache
 
 VirtualCharacterSheet/
+.run
