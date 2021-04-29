@@ -8,7 +8,6 @@ using VirtualCharacterSheet.IO;
 using VirtualCharacterSheet.IO.Serialization;
 
 using BinaryWriter = System.IO.BinaryWriter;
-using PyFunc = IronPython.Runtime.PythonFunction;
 
 namespace VirtualCharacterSheet {
 
@@ -36,7 +35,7 @@ namespace VirtualCharacterSheet {
 		private static Dictionary<string, Item> item = new Dictionary<string, Item>();
 		private static Dictionary<string, NPC> npc = new Dictionary<string, NPC>();
 		private static Dictionary<string, RawPyScript> py = new Dictionary<string, RawPyScript>();
-		private static Dictionary<string, PyFunc> pyf = new Dictionary<string, PyFunc>();
+		private static Dictionary<string, dynamic> pyf = new Dictionary<string, dynamic>();
 
 		private static Dictionary<string, Brew> brew = new Dictionary<string, Brew>();
 # endregion
@@ -49,7 +48,7 @@ namespace VirtualCharacterSheet {
 		public static readonly IndexSurrogate<Item> _i = new IndexSurrogate<Item>(ref item);
 		public static readonly IndexSurrogate<NPC> _n;
 		public static readonly IndexSurrogate<RawPyScript> _py = new IndexSurrogate<RawPyScript>(ref py);
-		public static readonly IndexSurrogate<PyFunc> _pyf = new IndexSurrogate<PyFunc>(ref pyf);
+		public static readonly IndexSurrogate<dynamic> _pyf = new IndexSurrogate<dynamic>(ref pyf);
 # endregion
 
 		public static event BrewLoadEventHandler BrewLoadEvent;
@@ -73,7 +72,7 @@ namespace VirtualCharacterSheet {
 		public static PlayerCharacter GetCharacter(string key) { return character[key.ToLower()]; }
 		public static NPC GetNPC(string key) { return npc[key.ToLower()]; }
 		public static RawPyScript GetPy(string key) { return py[key.ToLower()]; }
-		public static PyFunc GetPyF(string key) { return pyf[key.ToLower()]; }
+		public static dynamic GetPyF(string key) { return pyf[key.ToLower()]; }
 		public static Class GetClass(string key) { return classes[key.ToLower()]; }
 		public static Feat GetFeat(string key) { return feat[key.ToLower()]; }
 # endregion
@@ -83,7 +82,7 @@ namespace VirtualCharacterSheet {
 		public static void SetCharacter(PlayerCharacter c) { character[c.Identifier.ToLower()] = c; }
 		public static void SetNPC(string key, NPC n) { npc[key.ToLower()] = n; }
 		public static void SetPy(string key, RawPyScript src) { py[key.ToLower()] = src; }
-		public static void SetPyF(string key, PyFunc func) { pyf[key.ToLower()] = func; }
+		public static void SetPyF(string key, dynamic func) { pyf[key.ToLower()] = func; }
 		internal static void SetClass(string key, Class c) { classes[key.ToLower()] = c; }
 		public static void SetFeat(string key, Feat f) { feat[key.ToLower()] = f; }
 # endregion

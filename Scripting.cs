@@ -2,11 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
-using Microsoft.Scripting.Hosting;
 
-using IronPython.Hosting;
-using PyList = IronPython.Runtime.List;
-using PyFunc = IronPython.Runtime.PythonFunction;
+using Python.Runtime;
 
 using VirtualCharacterSheet.IO;
 using VirtualCharacterSheet.Event;
@@ -14,8 +11,8 @@ using VirtualCharacterSheet.Event;
 namespace VirtualCharacterSheet {
 
 	public static class Scripting {
-		internal static ScriptEngine engine = Python.CreateEngine();
-		internal static ScriptScope
+		internal static Py.GILState engine = PythonEngine.Py.GIL();
+		internal static PyScope
 			MainScope = null,
 			BrewScope = null,
 			ShellScope = null,
@@ -123,7 +120,7 @@ namespace VirtualCharacterSheet {
 			Initialized = true;
 		}
 
-		public static T[] PyArray<T>(PyList list) {
+		public static T[] PyArray<T>(dynamic list) {
 			T[] output = new T[list.__len__()];
 			uint n = 0;
 			foreach(T item in list)
@@ -199,7 +196,7 @@ namespace VirtualCharacterSheet {
 		public static Item _i(string id) { return Data.GetItem(id); }
 		public static NPC _n(string id) { return Data.GetNPC(id); }
 		public static RawPyScript _py(string id) { return Data.GetPy(id); }
-		public static PyFunc _pyf(string id) { return Data.GetPyF(id); }
+		public static dynamic _pyf(string id) { return Data.GetPyF(id); }
 # endregion
 
 # region checkers
@@ -221,7 +218,7 @@ namespace VirtualCharacterSheet {
 # endregion
 
 # region metafunction
-		public static void set_pyf(string id, PyFunc func) { Data.SetPyF(id, func); }
+		public static void set_pyf(string id, dynamic func) { Data.SetPyF(id, func); }
 		public static void set_py(string id, RawPyScript script) { Data.SetPy(id, script); }
 # endregion
 

@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.Scripting.Hosting;
-
-using IronPython.Hosting;
 
 using VirtualCharacterSheet.Forms;
 
@@ -18,7 +15,6 @@ namespace VirtualCharacterSheet.Terminal {
 
 	public class Cli : AbstractCli {
 		internal Dictionary<string, dynamic> map = new Dictionary<string, dynamic>();
-		internal ScriptEngine engine = Python.CreateEngine();
 
 		public Cli(params (string, dynamic)[] funcs) {
 			foreach((string, dynamic) pair in funcs)

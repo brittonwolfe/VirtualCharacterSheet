@@ -5,8 +5,6 @@ using Gtk;
 
 using VirtualCharacterSheet.Terminal;
 
-using PyList = IronPython.Runtime.List;
-using PyTuple = IronPython.Runtime.PythonTuple;
 using Action = System.Action;
 
 namespace VirtualCharacterSheet.Forms {
@@ -55,7 +53,7 @@ namespace VirtualCharacterSheet.Forms {
 			Handler = new Cli(funcs);
 			Handler.SetThis(this);
 		}
-		public void SetupTui(params PyTuple[] funcs) {
+		public void SetupTui(params dynamic[] funcs) {
 			var tmp = new (string, dynamic)[funcs.Length];
 			for(int x = 0; x < tmp.Length; x++)
 				tmp[x] = ((string)funcs[x][0], funcs[x][1]);
@@ -120,7 +118,7 @@ namespace VirtualCharacterSheet.Forms {
 		public dynamic Setup;
 
 		public CharacterSheet(params (string, TerminalView)[] views) : base(views) { }
-		public CharacterSheet(PyList views) : this(Scripting.PyArray<(string, TerminalView)>(views)) {}
+		public CharacterSheet(dynamic views) : this(Scripting.PyArray<(string, TerminalView)>(views)) {}
 
 		public void SetCharacter(PlayerCharacter c) {
 			DisposeIdentity();
