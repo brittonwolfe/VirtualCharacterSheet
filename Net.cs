@@ -11,8 +11,8 @@ namespace VirtualCharacterSheet.Net {
 	public static class ApiHost {
 
 		public static void StartNetShell() {
-			Scripting.engine.ExecuteFile(FileLoad.WorkingDirectory().Get("core/net.py").Path, Scripting.NetScope);
-			Scripting.ShellScope.GetVariable("shell")(Scripting.NetScope.GetVariable("netshell"));
+			Scripting.DoFile("core/net.py", Scripting.NetScope);
+			//Scripting.ShellScope.Get("shell")(Scripting.NetScope.Get("netshell"));
 		}
 
 		public static Task StartHost(string[] args = null) {

@@ -118,7 +118,7 @@ namespace VirtualCharacterSheet.Forms {
 		public dynamic Setup;
 
 		public CharacterSheet(params (string, TerminalView)[] views) : base(views) { }
-		public CharacterSheet(dynamic views) : this(Scripting.PyArray<(string, TerminalView)>(views)) {}
+		//public CharacterSheet(dynamic views) : this(Scripting.PyArray<(string, TerminalView)>(views)) {}
 
 		public void SetCharacter(PlayerCharacter c) {
 			DisposeIdentity();

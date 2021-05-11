@@ -11,7 +11,7 @@ using VirtualCharacterSheet.Event;
 namespace VirtualCharacterSheet {
 
 	public static class Scripting {
-		internal static Py.GILState engine = PythonEngine.Py.GIL();
+		internal static Py.GILState engine = Py.GIL();
 		internal static PyScope
 			MainScope = null,
 			BrewScope = null,
@@ -23,23 +23,38 @@ namespace VirtualCharacterSheet {
 		private static bool Initialized = false;
 
 		static Scripting() {
-			engine.GetBuiltinModule().ImportModule("clr");
-			engine.Execute("clr.AddReference(\"vcs\")");
+			Py.Import("clr");
+			Py.Eval("clr.AddReference(\"vcs\")");
 # region scope init
-			MainScope = engine.CreateScope();
-			BrewScope = engine.CreateScope();
-			ShellScope = engine.CreateScope();
-			NetScope = engine.CreateScope();
+			MainScope = Py.CreateScope("scope_main");
+			BrewScope = Py.CreateScope("scope_brew");
+			ShellScope = Py.CreateScope("scope_shell");
+			NetScope = Py.CreateScope("scope_net");
 #endregion
 
 		}
 
 		public static void Sandbox() {
-			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/shell.py").Path, ShellScope);
-			try { ShellScope.GetVariable("shell")(); }
+			DoFile("core/shell.py", ShellScope);
+			try { ShellScope.Variables["shell"](); }
 			catch(Exception e) {
 				Console.WriteLine(e);
 			}
+		}
+
+		internal static dynamic DoFile(string path, PyScope scope = null) {
+			var script = engine.Compile("", FileLoad.WorkingDirectory().Get(path).Path);
+			var output = (scope ?? MainScope).Execute(script);
+			return output;
+		}
+		internal static dynamic DoFile(File file, PyScope scope = null) {
+			var script = engine.Compile("", file.Path);
+			var output = (scope ?? MainScope).Execute(script);
+			return output;
+		}
+		internal static dynamic DoString(string src, PyScope scope = null) {
+			var output = (scope ?? MainScope).Eval(src);
+			return output;
 		}
 
 		public static void Brew(FileScript src) {
@@ -55,7 +70,7 @@ namespace VirtualCharacterSheet {
 			homebrew.def_brew = new Func<string, Brew>((string n) => { return new Brew(n); });
 			homebrew.Path = src.File.Directory;
 
-			try { engine.ExecuteFile(src.File.Path, BrewScope); }
+			try { DoFile(src.File.Path, BrewScope); }
 			catch(Exception e) {
 				Console.WriteLine(e);
 				if(Data.GetConfig("main", "prefer_cli")) {
@@ -65,7 +80,6 @@ namespace VirtualCharacterSheet {
 			}
 
 			paths.Remove(dir.Path);
-			engine.SetSearchPaths(paths);
 			Remove(homebrew, "def_brew");
 			Remove(homebrew, "Path");
 		}
@@ -74,25 +88,11 @@ namespace VirtualCharacterSheet {
 			if(Initialized)
 				return;
 # region python engine
-			ICollection<string> searchpaths = engine.GetSearchPaths();
-			string pypath = "";
-			switch(Core.platform) {
-			case PlatformID.Unix:
-				pypath = "/lib/python2.7/";
-				if(!new IO.Dir(pypath).Exists())
-					pypath = "/usr/lib/python2.7/";
-				break;
-			case PlatformID.Win32NT:
-				pypath = "/Python27/Lib/";
-				break;
-			}
-			searchpaths.Add(pypath);
-			searchpaths.Add(FileLoad.WorkingDirectory().Path);
-			engine.SetSearchPaths(searchpaths);
+			
 # endregion
 
 # region configuration
-			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/config.py").Path, ShellScope);
+			Py.Eval("import core.config");
 			Data.Config = ShellScope.GetVariable("__config__");
 #endregion
 
@@ -129,7 +129,7 @@ namespace VirtualCharacterSheet {
 		}
 
 		private static void SetGlobal(string n, object o) { engine.GetBuiltinModule().SetVariable(n, o); }
-		private static dynamic GetGlobal(string n) { return engine.GetBuiltinModule().GetVariable(n); }
+		private static dynamic GetGlobal(string n) { return null; }//engine.(n); }
 		internal static void Remove(dynamic obj, string key) { ((IDictionary<string, object>)obj).Remove(key); }
 
 		internal static void CodeScript(string key) {
@@ -242,7 +242,7 @@ namespace VirtualCharacterSheet {
 
 		public void AddTempFile(File file) { Meta.Add("tempfile", file); }
 
-		public override void Run() { Scripting.engine.Execute(src); }
+		public override void Run() { Scripting.DoString(src); }
 
 	}
 
@@ -255,7 +255,7 @@ namespace VirtualCharacterSheet {
 
 		public override void Run() {
 			Scripting.locals.Path = File;
-			try { Scripting.engine.ExecuteFile(File.Path); }
+			try { Scripting.DoFile(File); }
 			catch(Exception e) { Console.WriteLine(e); }
 			finally { Scripting.Remove(Scripting.locals, "Path"); }
 		}

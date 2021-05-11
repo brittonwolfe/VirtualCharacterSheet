@@ -77,8 +77,10 @@ namespace VirtualCharacterSheet {
 			Gtk.Window obj = (Gtk.Window)sender;
 			if(Windows.Contains(obj))
 				Windows.Remove(obj);
-			if(Windows.Count == 0)
+			if(Windows.Count == 0) {
+				//TODO: dispose of Scripting.*Scope
 				Gtk.Application.Quit();
+			}
 		}
 
 	}
