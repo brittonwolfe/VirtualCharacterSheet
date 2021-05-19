@@ -17,6 +17,7 @@ local = Util.local
 readl = Util.readl
 roll = Util.roll
 view = Util.view
+from VirtualCharacterSheet import Scripting
 from VirtualCharacterSheet import Terminal
 
 from core.io import load_object, save_object
@@ -123,15 +124,16 @@ def cmd_brew(args, **kwargs):
 					return
 			print('the file does not exist!')
 			return
-		brew.load(file.Path)
+		#brew.load(file.Path)
+		Scripting.Brew(file.Path)
 		print('Successfully loaded "' + args[1] + '"')
 	if args[0].lower() == 'list':
 		return Data.AllBrews()
 	if args[0].lower() == 'info':
 		brews = args[1:]
 		for brew_name in brews:
-			if HasBrew(brew_name):
-				obj = GetBrew(brew_name)
+			if Data.HasBrew(brew_name):
+				obj = Data.GetBrew(brew_name)
 				print(brew_name)
 				print(obj.Meta.Title)
 				if hasattr(obj.Meta, 'Version'):

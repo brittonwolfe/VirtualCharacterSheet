@@ -1,6 +1,8 @@
 ﻿
 from VirtualCharacterSheet import Brew
-from VirtualCharacterSheet.Util import brew, roll
+from VirtualCharacterSheet import Util
+brew = Util.brew
+roll = Util.roll
 
 core = Brew('core_5e')
 core.Meta.Title = "D&D Fifth Edition OGL"

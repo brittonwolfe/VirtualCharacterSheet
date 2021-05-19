@@ -31,6 +31,7 @@ namespace VirtualCharacterSheet {
 			if((bool)prefer_cli) {
 				Console.WriteLine("VCS CLI");
 				Core.StartSandbox();
+				Scripting.engine.Dispose();
 			} else {
 				Gtk.Application.Init("VCS", ref args);
 				var sout = new System.IO.StreamWriter(FileLoad.GetTempFile("vcs_log.txt").Path);
@@ -39,6 +40,7 @@ namespace VirtualCharacterSheet {
 				AddExitEvent((obj, e) => {
 					Console.WriteLine($"exited at {System.DateTime.Now.ToString()}");
 					sout.Close();
+					Scripting.engine.Dispose();
 				});
 				Console.WriteLine($"started at {System.DateTime.Now.ToString()}");
 				var splash = new Forms.Gui.Splash();

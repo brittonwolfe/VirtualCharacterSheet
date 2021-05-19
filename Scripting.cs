@@ -40,17 +40,18 @@ namespace VirtualCharacterSheet {
 			return mod;
 		}
 		internal static dynamic DoFile(File file) {
-			return null;
-			//var script = Scope.Compile("", file.Path);
-			//var output = Scope.Execute(script);
-			//return output;
+			var script = PythonEngine.Compile("", filename: file.Path);
+			var output = Scope.Execute(script);
+			return output;
 		}
 		internal static dynamic DoString(string src) {
 			var output = Scope.Eval(src);
 			return output;
 		}
 
+		public static void Brew(string src) { homebrew.load(src); }
 		public static void Brew(FileScript src) {
+			Console.WriteLine($"Brewing from {src.File.Path}");
 
 			var dir = src.File.Directory;
 			var parent = src.File.Directory.Parent();
@@ -58,13 +59,11 @@ namespace VirtualCharacterSheet {
 			homebrew.def_brew = new Func<string, Brew>((string n) => { return new Brew(n); });
 			homebrew.Path = src.File.Directory;
 
-			try { DoFile(src.File.Path); }
+			try { DoFile(src.File); }
 			catch(Exception e) {
 				Console.WriteLine(e);
-				if(Data.GetConfig("main", "prefer_cli")) {
-					Console.Write("Press any key to continue...");
-					Console.ReadLine();
-				}
+				Console.Write("Press any key to continue...");
+				Console.ReadLine();
 			}
 
 			Remove(homebrew, "def_brew");
@@ -75,7 +74,7 @@ namespace VirtualCharacterSheet {
 			if(Initialized)
 				return;
 # region python engine
-
+			//TODO
 # endregion
 
 # region configuration
@@ -102,9 +101,8 @@ namespace VirtualCharacterSheet {
 
 # region finalize
 			settings.ShowOutput = false;
-# endregion
-
 			Initialized = true;
+# endregion
 		}
 
 		public static T[] PyArray<T>(dynamic list) {
@@ -115,8 +113,8 @@ namespace VirtualCharacterSheet {
 			return output;
 		}
 
-		private static void SetGlobal(string n, object o) { return; }
-		private static dynamic GetGlobal(string n) { return null; }//engine.(n); }
+		private static void SetGlobal(string n, object o) { Scope.Set(n, o); }
+		private static dynamic GetGlobal(string n) { return Scope.Get(n); }
 		internal static void Remove(dynamic obj, string key) { ((IDictionary<string, object>)obj).Remove(key); }
 
 		internal static void CodeScript(string key) {
