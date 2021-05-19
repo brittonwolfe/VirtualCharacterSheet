@@ -11,12 +11,8 @@ using VirtualCharacterSheet.Event;
 namespace VirtualCharacterSheet {
 
 	public static class Scripting {
-		internal static Py.GILState engine = Py.GIL();
-		internal static PyScope
-			MainScope = null,
-			BrewScope = null,
-			ShellScope = null,
-			NetScope = null;
+		internal static Py.GILState engine;
+		internal static PyScope Scope;
 		internal static dynamic locals = new ExpandoObject();
 		internal static dynamic homebrew = new ExpandoObject();
 		internal static dynamic settings = new ExpandoObject();
@@ -24,28 +20,24 @@ namespace VirtualCharacterSheet {
 
 		static Scripting() {
 			Py.Import("clr");
-			Py.Eval("clr.AddReference(\"vcs\")");
+			Py.Import("core.__init__");
 # region scope init
-			MainScope = Py.CreateScope("scope_main");
-			BrewScope = Py.CreateScope("scope_brew");
-			ShellScope = Py.CreateScope("scope_shell");
-			NetScope = Py.CreateScope("scope_net");
+			Scope = Py.CreateScope();
 #endregion
 
 		}
 
 		public static void Sandbox() {
-			DoFile("core/shell.py", ShellScope);
-			try { ShellScope.Variables["shell"](); }
+			dynamic shell = Py.Import("core.shell");
+			try { shell.shell(); }
 			catch(Exception e) {
 				Console.WriteLine(e);
 			}
 		}
 
-		internal static dynamic DoFile(string path, PyScope scope = null) {
-			var script = engine.Compile("", FileLoad.WorkingDirectory().Get(path).Path);
-			var output = (scope ?? MainScope).Execute(script);
-			return output;
+		internal static dynamic DoFile(string module) {
+			dynamic mod = Py.Import(module);
+			return mod;
 		}
 		internal static dynamic DoFile(File file, PyScope scope = null) {
 			var script = engine.Compile("", file.Path);
@@ -59,7 +51,6 @@ namespace VirtualCharacterSheet {
 
 		public static void Brew(FileScript src) {
 
-			ICollection<string> paths = engine.GetSearchPaths();
 			var dir = src.File.Directory;
 			var parent = src.File.Directory.Parent();
 			paths.Add(dir.Path);
@@ -88,7 +79,7 @@ namespace VirtualCharacterSheet {
 			if(Initialized)
 				return;
 # region python engine
-			
+
 # endregion
 
 # region configuration

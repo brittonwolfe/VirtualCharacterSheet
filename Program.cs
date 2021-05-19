@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
+using Python.Runtime;
+
 namespace VirtualCharacterSheet {
 
 	class Program {
@@ -28,7 +30,8 @@ namespace VirtualCharacterSheet {
 
 			if((bool)prefer_cli) {
 				Console.WriteLine("VCS CLI");
-				Core.StartSandbox();
+				using(Scripting.engine = Py.GIL())
+					Core.StartSandbox();
 			} else {
 				Gtk.Application.Init("VCS", ref args);
 				var sout = new System.IO.StreamWriter(FileLoad.GetTempFile("vcs_log.txt").Path);
