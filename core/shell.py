@@ -4,16 +4,24 @@ from os import getcwd
 from shlex import split
 from traceback import print_exc
 
+import clr
+clr.AddReference("vcs")
+
 from VirtualCharacterSheet import PlayerCharacter
-from VirtualCharacterSheet.Data import AllBrews, AllCharacters, GetBrew, GetCharacter, GetItem, HasBrew, HasCharacter, HasItem
+from VirtualCharacterSheet import Data
 from VirtualCharacterSheet.IO import File, Dir
-from VirtualCharacterSheet.Net.ApiHost import StartNetShell
-from VirtualCharacterSheet.Util import brew, local, readl, roll, rolln, view
-from VirtualCharacterSheet.Terminal import AbstractCli
+#from VirtualCharacterSheet.Net.ApiHost import StartNetShell
+from VirtualCharacterSheet import Util
+brew = Util.brew
+local = Util.local
+readl = Util.readl
+roll = Util.roll
+view = Util.view
+from VirtualCharacterSheet import Terminal
 
 from core.io import load_object, save_object
 
-class PyCli(AbstractCli):
+class PyCli(Terminal.AbstractCli):
 	"""Used to create a command line interface for interacting with the VCS environment."""
 	commands = {}
 	show_output = False
@@ -65,6 +73,8 @@ class PyCli(AbstractCli):
 		if self.show_output and output is not None:
 			print(output)
 		return output
+	def Clear(self):
+		super().Clear()
 
 def resolve_ref(args, **kwargs):
 	for i in range(len(args)):
@@ -72,14 +82,14 @@ def resolve_ref(args, **kwargs):
 		replace_function = None
 		check_function = lambda s: True
 		if arg.startswith('-C[') and arg.endswith(']'):
-			replace_function = GetCharacter
-			check_function = HasCharacter
+			replace_function = Data.GetCharacter
+			check_function = Data.HasCharacter
 		if arg.startswith('-I[') and arg.endswith(']'):
-			replace_function = GetItem
-			check_function = HasItem
+			replace_function = Data.GetItem
+			check_function = Data.HasItem
 		if arg.startswith('-b[') and arg.endswith(']'):
-			replace_function = GetBrew
-			check_function = HasBrew
+			replace_function = Data.GetBrew
+			check_function = Data.HasBrew
 		identity = arg[3:-1]
 		if replace_function is not None:
 			if not check_function(identity):
@@ -117,7 +127,7 @@ def cmd_brew(args, **kwargs):
 		brew.load(file.Path)
 		print('Successfully loaded "' + args[1] + '"')
 	if args[0].lower() == 'list':
-		return AllBrews()
+		return Data.AllBrews()
 	if args[0].lower() == 'info':
 		brews = args[1:]
 		for brew_name in brews:
@@ -155,12 +165,12 @@ def cmd_list(args, **kwargs):
 		return
 	if args[0] == '-C':
 		print('== Characters ==')
-		print(AllCharacters())
+		print(Data.AllCharacters())
 		return
 	print('No list for type ' + args[0])
 
 def cmd_load(args, **kwargs):
-	"""load 
+	"""load
 	"""
 	typeof = None
 	if not args[0].startswith('-'):
@@ -223,7 +233,7 @@ def cmd_save(args, **kwargs):
 		print('saved successfully.')
 	else:
 		print('did not save successfully.')
-	
+
 def cmd_view(args, **kwargs):
 	resolve_ref(args)
 	view(args[0])
@@ -254,7 +264,7 @@ basic_shell_dict = {
 	'brew': cmd_brew,
 	'list': cmd_list,
 	'load': cmd_load,
-	'net': lambda _: StartNetShell(),
+	#'net': lambda _: StartNetShell(),
 	'roll': cmd_roll,
 	'save': cmd_save,
 	'view': cmd_view,
@@ -278,7 +288,7 @@ def non_loop_shell(cli = basic_shell, **kwargs):
 		local.__shellname__ = None
 		return True
 	if line == 'clear':
-		AbstractCli.Clear()
+		Terminal.AbstractCli.Clear()
 		local.__shellname__ = None
 		return False
 	cli.Handle(line, **kwargs)

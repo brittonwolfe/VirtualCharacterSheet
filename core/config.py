@@ -1,5 +1,5 @@
 
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 from os.path import expanduser
 
 class Config():

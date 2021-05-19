@@ -19,18 +19,18 @@ namespace VirtualCharacterSheet.Terminal {
 		public Cli(params (string, dynamic)[] funcs) {
 			foreach((string, dynamic) pair in funcs)
 				map[pair.Item1] = pair.Item2;
-			Scripting.ShellScope.Import("clr");
+			//Scripting.ShellScope.Import("clr");
 			foreach(string key in map.Keys)
 				SetGlobal(key, map[key]);
 		}
 
 		public void Handle(string input) {
-			try { Scripting.ShellScope.Eval(input.StartsWith(':') ? input.Substring(1) : input); }
-			catch(Exception e) { Console.WriteLine(e); }
+			//try { Scripting.ShellScope.Eval(input.StartsWith(':') ? input.Substring(1) : input); }
+			//catch(Exception e) { Console.WriteLine(e); }
 		}
 
-		internal void SetGlobal(string key, dynamic obj) { Scripting.ShellScope.Set(key, obj); }
-		internal void RemoveGlobal(string key) { Scripting.ShellScope.Remove(key); }
+		internal void SetGlobal(string key, dynamic obj) { return; }
+		internal void RemoveGlobal(string key) { return; }
 		internal void SetThis(dynamic obj) { SetGlobal("this", obj); }
 
 	}

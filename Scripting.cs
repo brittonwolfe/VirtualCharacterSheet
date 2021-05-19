@@ -11,7 +11,7 @@ using VirtualCharacterSheet.Event;
 namespace VirtualCharacterSheet {
 
 	public static class Scripting {
-		internal static Py.GILState engine;
+		internal static Py.GILState engine = Py.GIL();
 		internal static PyScope Scope;
 		internal static dynamic locals = new ExpandoObject();
 		internal static dynamic homebrew = new ExpandoObject();
@@ -20,7 +20,7 @@ namespace VirtualCharacterSheet {
 
 		static Scripting() {
 			Py.Import("clr");
-			Py.Import("core.__init__");
+			Py.Import("core");
 # region scope init
 			Scope = Py.CreateScope();
 #endregion
@@ -39,13 +39,14 @@ namespace VirtualCharacterSheet {
 			dynamic mod = Py.Import(module);
 			return mod;
 		}
-		internal static dynamic DoFile(File file, PyScope scope = null) {
-			var script = engine.Compile("", file.Path);
-			var output = (scope ?? MainScope).Execute(script);
-			return output;
+		internal static dynamic DoFile(File file) {
+			return null;
+			//var script = Scope.Compile("", file.Path);
+			//var output = Scope.Execute(script);
+			//return output;
 		}
-		internal static dynamic DoString(string src, PyScope scope = null) {
-			var output = (scope ?? MainScope).Eval(src);
+		internal static dynamic DoString(string src) {
+			var output = Scope.Eval(src);
 			return output;
 		}
 
@@ -53,15 +54,11 @@ namespace VirtualCharacterSheet {
 
 			var dir = src.File.Directory;
 			var parent = src.File.Directory.Parent();
-			paths.Add(dir.Path);
-			if(!paths.Contains(parent.Path))
-				paths.Add(parent.Path);
-			engine.SetSearchPaths(paths);
 
 			homebrew.def_brew = new Func<string, Brew>((string n) => { return new Brew(n); });
 			homebrew.Path = src.File.Directory;
 
-			try { DoFile(src.File.Path, BrewScope); }
+			try { DoFile(src.File.Path); }
 			catch(Exception e) {
 				Console.WriteLine(e);
 				if(Data.GetConfig("main", "prefer_cli")) {
@@ -70,7 +67,6 @@ namespace VirtualCharacterSheet {
 				}
 			}
 
-			paths.Remove(dir.Path);
 			Remove(homebrew, "def_brew");
 			Remove(homebrew, "Path");
 		}
@@ -83,8 +79,8 @@ namespace VirtualCharacterSheet {
 # endregion
 
 # region configuration
-			Py.Eval("import core.config");
-			Data.Config = ShellScope.GetVariable("__config__");
+			dynamic Config = Py.Import("core.config");
+			Data.Config = Config.__config__;
 #endregion
 
 # region globals setup
@@ -119,7 +115,7 @@ namespace VirtualCharacterSheet {
 			return output;
 		}
 
-		private static void SetGlobal(string n, object o) { engine.GetBuiltinModule().SetVariable(n, o); }
+		private static void SetGlobal(string n, object o) { return; }
 		private static dynamic GetGlobal(string n) { return null; }//engine.(n); }
 		internal static void Remove(dynamic obj, string key) { ((IDictionary<string, object>)obj).Remove(key); }
 

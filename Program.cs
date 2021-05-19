@@ -30,8 +30,7 @@ namespace VirtualCharacterSheet {
 
 			if((bool)prefer_cli) {
 				Console.WriteLine("VCS CLI");
-				using(Scripting.engine = Py.GIL())
-					Core.StartSandbox();
+				Core.StartSandbox();
 			} else {
 				Gtk.Application.Init("VCS", ref args);
 				var sout = new System.IO.StreamWriter(FileLoad.GetTempFile("vcs_log.txt").Path);
