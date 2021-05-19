@@ -23,6 +23,7 @@ from core.io import load_object, save_object
 
 class PyCli(Terminal.AbstractCli):
 	"""Used to create a command line interface for interacting with the VCS environment."""
+	__namespace__ = "VirtualCharacterSheet.Terminal"
 	commands = {}
 	show_output = False
 	colon_escape = False
@@ -73,8 +74,6 @@ class PyCli(Terminal.AbstractCli):
 		if self.show_output and output is not None:
 			print(output)
 		return output
-	def Clear(self):
-		super().Clear()
 
 def resolve_ref(args, **kwargs):
 	for i in range(len(args)):
