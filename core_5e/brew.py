@@ -1,17 +1,17 @@
-﻿
+
 from VirtualCharacterSheet import Brew
-from VirtualCharacterSheet import Util
-brew = Util.brew
-roll = Util.roll
+
+from core.util import brew, roll
 
 core = Brew('core_5e')
 core.Meta.Title = "D&D Fifth Edition OGL"
 core.Meta.Description = "The Open Game License SRD for Dungeons and Dragons Fifth Edition"
-core.Meta.Dir = brew.Path
+# core.Meta.Dir = brew.Path
 core.Meta.Owner = 'Wizards of the Coast'
 core.Meta.Website = 'https://github.com/brittonwolfe/virtualcharactersheet'
 core.Meta.GameSite = 'https://dnd.wizards.com/'
 
+print("def injections")
 def InjectMeta(character):
 	character.Meta.classes = []
 	character.Meta.MaxHealth = 0
@@ -71,16 +71,21 @@ def InjectSkills(character):
 	character.AddBehavior("skill_stealth", generate_skill("stealth", character.DexterityCheck))
 	character.AddBehavior("skill_survival", generate_skill("survival", character.WisdomCheck))
 
+print("injecting!")
 core.AddCharacterInjector(InjectMeta)
 core.AddCharacterInjector(InjectChecks)
 core.AddCharacterInjector(InjectSaves)
 core.AddCharacterInjector(InjectSkills)
 
-import serialize
-import design
+print("import serialize")
+import core_5e.serialize
+print("import design")
+import core_5e.design
 
 #import classes
 #import item
 
-import shell
-import tui
+print("import shell")
+import core_5e.shell
+print("import tui")
+import core_5e.tui

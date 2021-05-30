@@ -15,8 +15,3 @@ One of the goals of VCS's included brews is to provide model implementation for 
 ### shell.py
 
 `shell.py` contains the shell-like CLI specific to the package.
-
-
-
-
-

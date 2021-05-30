@@ -13,10 +13,14 @@ namespace VirtualCharacterSheet {
 	public static class Scripting {
 		internal static Py.GILState engine = Py.GIL();
 		internal static PyScope Scope;
-		internal static dynamic locals = new ExpandoObject();
-		internal static dynamic homebrew = new ExpandoObject();
-		internal static dynamic settings = new ExpandoObject();
+		internal static dynamic locals;
+		internal static dynamic homebrew;
+		internal static dynamic settings;
 		private static bool Initialized = false;
+		public static bool Brewing {
+			get;
+			private set;
+		}
 
 		static Scripting() {
 			Py.Import("clr");
@@ -36,11 +40,12 @@ namespace VirtualCharacterSheet {
 		}
 
 		internal static dynamic DoFile(string module) {
+			Console.WriteLine($"Importing {module}");
 			dynamic mod = Py.Import(module);
 			return mod;
 		}
 		internal static dynamic DoFile(File file) {
-			var script = PythonEngine.Compile("", filename: file.Path);
+			var script = PythonEngine.Compile(null, filename: file.Path);
 			var output = Scope.Execute(script);
 			return output;
 		}
@@ -49,32 +54,38 @@ namespace VirtualCharacterSheet {
 			return output;
 		}
 
-		public static void Brew(string src) { homebrew.load(src); }
 		public static void Brew(FileScript src) {
-			Console.WriteLine($"Brewing from {src.File.Path}");
+			Brewing = true;
 
 			var dir = src.File.Directory;
 			var parent = src.File.Directory.Parent();
 
-			homebrew.def_brew = new Func<string, Brew>((string n) => { return new Brew(n); });
-			homebrew.Path = src.File.Directory;
+			var PATH = PythonEngine.PythonPath;
+			if(!PATH.Contains(parent.Path))
+				PATH += $":{parent.Path}";
 
-			try { DoFile(src.File); }
+			//homebrew.Path = dir.Path;
+
+			try { DoFile(dir.ModuleName() + ".brew"); }
 			catch(Exception e) {
 				Console.WriteLine(e);
 				Console.Write("Press any key to continue...");
 				Console.ReadLine();
 			}
 
-			Remove(homebrew, "def_brew");
-			Remove(homebrew, "Path");
+			//homebrew.DelAttr("Path");
+
+			Brewing = false;
 		}
 
 		internal static void Init() {
 			if(Initialized)
 				return;
 # region python engine
-			//TODO
+			dynamic Utility = Py.Import("core.util");
+			homebrew = Utility.brew;
+			locals = Utility.local;
+			settings = Utility._setting;
 # endregion
 
 # region configuration
@@ -83,7 +94,7 @@ namespace VirtualCharacterSheet {
 #endregion
 
 # region globals setup
-			homebrew.load = new Action<string>((string s) => Brew(new FileScript(new File(s))));
+			//homebrew.load = new Action<string>((string s) => Brew(new FileScript(new File(s))));
 # endregion
 
 # region casts
@@ -157,11 +168,8 @@ namespace VirtualCharacterSheet {
 	}
 
 	public static class Util {
-# region globals
-		public static dynamic local { get => Scripting.locals; }
-		public static dynamic brew { get => Scripting.homebrew; }
-		public static dynamic _setting { get => Scripting.settings; }
 
+# region globals
 		public static string readl(string prompt) {
 			Console.Write(prompt);
 			return Console.In.ReadLine();

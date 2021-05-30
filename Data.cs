@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Dynamic;
 
+using Python.Runtime;
+
 using VirtualCharacterSheet.Event;
 using VirtualCharacterSheet.Exceptions;
 using VirtualCharacterSheet.IO;
@@ -18,7 +20,7 @@ namespace VirtualCharacterSheet {
 
 		public T this[string str] {
 			get => source[str];
-		}		
+		}
 
 		public bool Has(string id) { return source.ContainsKey(id); }
 		public bool has(string id) { return Has(id); }
@@ -156,6 +158,9 @@ namespace VirtualCharacterSheet {
 		}
 
 		public void AddCharacterInjector(InjectionEvent e) { Character.Injection += e; }
+		public void AddCharacterInjector(dynamic func) {
+			Character.Injection += (c) => { func(c); };
+		}
 
 		public void AddView(Type T, Forms.AbstractUiFactory ui) {
 			if(Viewers.ContainsKey(T)) {

@@ -59,6 +59,13 @@ namespace VirtualCharacterSheet {
 			public Dir GetSubdir(string sub) { return new Dir(Vpath() + sub); }
 			public Dir Parent() { return new Dir(Directory.GetParent(Path).FullName); }
 			public File Get(string sub) { return new File(Vpath() + sub); }
+			public string ModuleName() {
+				if(!Path.EndsWith('/')) {
+					return Path.Substring(Path.LastIndexOf('/') + 1);
+				} else {
+					return Path.Substring(Path.Substring(0, Path.Length - 1).LastIndexOf('/') + 1);
+				}
+			}
 
 			public bool Exists() { return System.IO.Directory.Exists(this.Path); }
 

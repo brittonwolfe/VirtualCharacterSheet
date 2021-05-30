@@ -11,16 +11,11 @@ from VirtualCharacterSheet import PlayerCharacter
 from VirtualCharacterSheet import Data
 from VirtualCharacterSheet.IO import File, Dir
 #from VirtualCharacterSheet.Net.ApiHost import StartNetShell
-from VirtualCharacterSheet import Util
-brew = Util.brew
-local = Util.local
-readl = Util.readl
-roll = Util.roll
-view = Util.view
 from VirtualCharacterSheet import Scripting
 from VirtualCharacterSheet import Terminal
 
 from core.io import load_object, save_object
+from core.util import brew, local, readl, roll, view
 
 class PyCli(Terminal.AbstractCli):
 	"""Used to create a command line interface for interacting with the VCS environment."""
@@ -124,8 +119,7 @@ def cmd_brew(args, **kwargs):
 					return
 			print('the file does not exist!')
 			return
-		#brew.load(file.Path)
-		Scripting.Brew(file.Path)
+		brew.load(args[1])
 		print('Successfully loaded "' + args[1] + '"')
 	if args[0].lower() == 'list':
 		return Data.AllBrews()
