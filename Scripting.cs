@@ -321,20 +321,14 @@ namespace VirtualCharacterSheet {
 			var type = this.GetType();
 			var prop = type.GetProperty(name);
 			if(prop != null) {
-				Console.WriteLine($"{name} as property");
 				return prop.GetValue(this);
 			}
 			var method = type.GetMethod(name);
 			if(method != null) {
-				Console.WriteLine($"{name} as method");
-				MethodSurrogate surrogate = (args) => {
-					Console.WriteLine($"executing surrogate of {name}");
-					return method.Invoke(this, args);
-				};
+				MethodSurrogate surrogate = (args) => { return method.Invoke(this, args); };
 				return surrogate;
 			}
 			if(type.GetMember(name) != null) {
-				Console.WriteLine($"{name} as member");
 				var binder = Binder.GetMember(CSharpBinderFlags.None, name, this.GetType(), new[] { CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null) });
 				var callsite = CallSite<Func<CallSite, object, object>>.Create(binder);
 				return callsite.Target(callsite, this);
