@@ -111,12 +111,6 @@ def cmd_brew(args, **kwargs):
 				path += 'brew.py'
 				cmd_brew(['load', path])
 				return
-			else:
-				# if for some stupid reason we can't get the relative path, get the absolute one!
-				dir = Dir(getcwd() + '/' + args[1])
-				if dir.Exists():
-					cmd_brew([args[0], args[1]])
-					return
 			print('the file does not exist!')
 			return
 		brew.load(args[1])

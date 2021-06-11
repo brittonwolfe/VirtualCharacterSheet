@@ -58,6 +58,9 @@ namespace VirtualCharacterSheet {
 		}
 
 		public static void AddSerializationHook(string key, SerializationEvent serialize, DeserializationEvent deserialize) { SerializerSets[key] = (serialize, deserialize); }
+		public static void AddSerializationHook(string key, dynamic serialize, dynamic Deserialize) {
+
+		}
 		public static void RemoveSerializationHook(string key) { SerializerSets.Remove(key); }
 		public static bool Serialize(PlayerCharacter pc, BinaryWriter writer, bool shouldclose = true) {
 			Cellar.Serialize(Data.GetCellar(), writer, false);
@@ -112,7 +115,7 @@ namespace VirtualCharacterSheet {
 			return output;
 		}
 
-		public string __str__() { return $"-C[{Player}:{Name}]"; }
+		public string __repr__() { return $"-C[{Player}:{Name}]"; }
 
 	}
 
@@ -164,7 +167,7 @@ namespace VirtualCharacterSheet {
 		public string __str__() { return $"-c[{Identifier}]"; }
 
 	}
-	
+
 	public class ClassInstance {
 		public ushort Level { get; private set; }
 		private Class underlying;

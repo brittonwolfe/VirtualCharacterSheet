@@ -3,10 +3,10 @@ from os import system
 
 from VirtualCharacterSheet import PlayerCharacter
 from VirtualCharacterSheet.Forms import TerminalForm
-from VirtualCharacterSheet.Util import _brew, readl
 
 from core.ui import PyTui, PyUiFactory
 from core.shell import non_loop_shell
+from core.util import _brew, readl
 
 from core_5e.shell import character_cli
 

@@ -9,9 +9,9 @@ using Action = System.Action;
 
 namespace VirtualCharacterSheet.Forms {
 
-	public abstract class AbstractUiFactory {
+	public interface IUiFactory {
 
-		public abstract AbstractUi Create(dynamic content = null);
+		public AbstractUi Create(dynamic content = null);
 
 	}
 
@@ -90,7 +90,7 @@ namespace VirtualCharacterSheet.Forms {
 		public string Draw() { return Renderer(); }
 
 	}
-	
+
 	public class TerminalView {
 		protected TerminalGraphic[] Graphics;
 		protected dynamic Renderer;

@@ -2,6 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
+//using System.Reflection;
+using System.Runtime.CompilerServices;
+
+using Microsoft.CSharp.RuntimeBinder;
 
 using Python.Runtime;
 
@@ -283,6 +287,9 @@ namespace VirtualCharacterSheet {
 
 	}
 
+	///	<summary>
+	///	This class represents an object with scripted behaviors.
+	///	</summary>
 	public abstract class ScriptedObject : DynamicObject {
 		protected dynamic Behavior;
 		public dynamic Info, Meta;
@@ -302,12 +309,50 @@ namespace VirtualCharacterSheet {
 		public dynamic DoBehavior(string name) { return Behavior.Do(name); }
 
 		public override bool TryGetMember(GetMemberBinder binder, out object result) {
-			if (base.TryGetMember(binder, out result))
+			if(base.TryGetMember(binder, out result))
 				return true;
-			else if (HasBehavior(binder.Name))
+			else if(HasBehavior(binder.Name))
 				return Behavior.TryGetMember(binder, out result);
 			result = null;
 			return false;
+		}
+
+		public dynamic __getattr__(string name) {
+			var type = this.GetType();
+			var prop = type.GetProperty(name);
+			if(prop != null) {
+				Console.WriteLine($"{name} as property");
+				return prop.GetValue(this);
+			}
+			var method = type.GetMethod(name);
+			if(method != null) {
+				Console.WriteLine($"{name} as method");
+				MethodSurrogate surrogate = (args) => {
+					Console.WriteLine($"executing surrogate of {name}");
+					return method.Invoke(this, args);
+				};
+				return surrogate;
+			}
+			if(type.GetMember(name) != null) {
+				Console.WriteLine($"{name} as member");
+				var binder = Binder.GetMember(CSharpBinderFlags.None, name, this.GetType(), new[] { CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null) });
+				var callsite = CallSite<Func<CallSite, object, object>>.Create(binder);
+				return callsite.Target(callsite, this);
+			}
+			return null;
+		}
+		public void __setattr__(string name, dynamic value) {
+			var type = this.GetType();
+			var prop = type.GetProperty(name);
+			if(prop != null)
+				prop.SetValue(this, value);
+				return;
+			var member = type.GetMember(name);
+			if(member != null) {
+				member.SetValue(this, value);
+				return;
+			}
+			this.Behavior[name] = value;
 		}
 
 	}

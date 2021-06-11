@@ -1,6 +1,8 @@
 
 from VirtualCharacterSheet import Brew
+from VirtualCharacterSheet.Event import InjectionEvent
 
+from core.object import dyn
 from core.util import brew, roll
 
 core = Brew('core_5e')
@@ -11,7 +13,6 @@ core.Meta.Owner = 'Wizards of the Coast'
 core.Meta.Website = 'https://github.com/brittonwolfe/virtualcharactersheet'
 core.Meta.GameSite = 'https://dnd.wizards.com/'
 
-print("def injections")
 def InjectMeta(character):
 	character.Meta.classes = []
 	character.Meta.MaxHealth = 0
@@ -34,6 +35,8 @@ def generate_save(name, check):
 	return output
 
 def InjectSaves(character):
+	if character is not dyn:
+		character = dyn(character)
 	character.Info.proficient_saves = []
 	character.AddBehavior("save_strength", generate_save("strength", character.StrengthCheck))
 	character.AddBehavior("save_dexterity", generate_save("dexterity", character.DexterityCheck))
@@ -51,7 +54,10 @@ def generate_skill(name, check):
 	return output
 
 def InjectSkills(character):
+	if character is not dyn:
+		character = dyn(character)
 	character.Info.proficient_skills = []
+
 	character.AddBehavior("skill_acrobatics", generate_skill("acrobatics", character.DexterityCheck))
 	character.AddBehavior("skill_animal_handling", generate_skill("animal handling", character.WisdomCheck))
 	character.AddBehavior("skill_arcana", generate_skill("arcana", character.IntelligenceCheck))
@@ -71,21 +77,16 @@ def InjectSkills(character):
 	character.AddBehavior("skill_stealth", generate_skill("stealth", character.DexterityCheck))
 	character.AddBehavior("skill_survival", generate_skill("survival", character.WisdomCheck))
 
-print("injecting!")
-core.AddCharacterInjector(InjectMeta)
-core.AddCharacterInjector(InjectChecks)
-core.AddCharacterInjector(InjectSaves)
-core.AddCharacterInjector(InjectSkills)
+core.AddCharacterInjector(InjectionEvent(InjectMeta))
+core.AddCharacterInjector(InjectionEvent(InjectChecks))
+core.AddCharacterInjector(InjectionEvent(InjectSaves))
+core.AddCharacterInjector(InjectionEvent(InjectSkills))
 
-print("import serialize")
 import core_5e.serialize
-print("import design")
 import core_5e.design
 
 #import classes
 #import item
 
-print("import shell")
 import core_5e.shell
-print("import tui")
 import core_5e.tui

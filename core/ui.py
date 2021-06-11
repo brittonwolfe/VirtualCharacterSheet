@@ -1,8 +1,14 @@
-clr.AddReference('GtkSharp')
-from VirtualCharacterSheet.Forms import AbstractGui, AbstractUiFactory
+# We don't actually use GTKSharp yet so...
+# import clr
+# clr.AddReference('GtkSharp')
+import abc
+
+from VirtualCharacterSheet.Forms import AbstractGui, IUiFactory
 from VirtualCharacterSheet.Terminal import AbstractTui
 
-class PyUiFactory(AbstractUiFactory):
+class PyUiFactory(IUiFactory):
+	__metaclass__ = IUiFactory
+	__namespace__ = "PyUiFactory"
 	constructor = None
 	def __init__(self, constructor):
 		self.constructor = constructor
@@ -11,6 +17,7 @@ class PyUiFactory(AbstractUiFactory):
 
 class PyTui(AbstractTui):
 	content = None
+	__namespace__ = "PyTui"
 	def __init__(self, content):
 		self.content = content
 	def Render(self):

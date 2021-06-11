@@ -67,7 +67,7 @@ namespace VirtualCharacterSheet {
 			if(GetResponse() != "y")
 				return;
 			foreach(PlayerCharacter pc in Data.GetAllCharacters()) {
-				Console.Write($"Would you like to save {pc.__str__()} (y/n)? ");
+				Console.Write($"Would you like to save {pc.__repr__()} (y/n)? ");
 				if(GetResponse() != "y")
 					continue;
 				Console.Write("Please enter a path: ");

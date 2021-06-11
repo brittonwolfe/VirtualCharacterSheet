@@ -11,6 +11,8 @@ namespace VirtualCharacterSheet.Event {
 	public delegate object DeserializationEvent(BinaryReader reader, bool shouldclose = true);
 	public delegate void BrewLoadEventHandler(Brew brew);
 
+	public delegate dynamic MethodSurrogate(params dynamic[] args);
+
 	public sealed class EventData {
 		public readonly string Type;
 		public readonly IDictionary<string, dynamic> Args;
@@ -60,6 +62,13 @@ namespace VirtualCharacterSheet.Event {
 				Behaviors.Add(key, (DynamicBehavior)obj);
 			else
 				Behaviors.Add(key, new DynamicBehavior(this, obj));
+		}
+
+		public dynamic __getattribute__(string name) {
+			return this[name];
+		}
+		public void __setattr__(string name, dynamic value) {
+			this[name] = value;
 		}
 
 	}

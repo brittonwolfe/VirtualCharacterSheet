@@ -1,4 +1,5 @@
 from VirtualCharacterSheet import Brew
+from VirtualCharacterSheet import PlayerCharacter
 from VirtualCharacterSheet import Scripting
 from VirtualCharacterSheet import Util
 
@@ -19,8 +20,8 @@ def def_brew(string):
 def is_brewing():
 	return Scripting.Brewing
 def load_brew(name: str):
-	mod = name.replace("/",".")
-	__import__(mod)
+	mod = name.replace("/",".").rstrip(".py")
+	return __import__(mod)
 
 brew.load = load_brew
 
@@ -35,3 +36,11 @@ def rolln(sides, count):
 # def viewers
 def view(obj: object, brew: Brew = None):
 	return Util.view(obj, brew)
+
+# def getters
+def _brew(name):
+	return Util._brew(name)
+
+# def object methods
+def def_c(name: str, player: str):
+	return PlayerCharacter(name, player)
