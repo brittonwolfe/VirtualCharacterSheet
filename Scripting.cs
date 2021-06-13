@@ -318,6 +318,22 @@ namespace VirtualCharacterSheet {
 		}
 
 		public dynamic __getattr__(string name) {
+			/*	I feel like this method is a complete
+			 *	nightmare to read and parse. Basically:
+			 *	PythonNet hates dynamic types and doesn't
+			 *	properly reflect classes that override
+			 *	TryGetMember, leading to a lot of TypeErrors
+			 *	getting thrown when they shouldn't. To
+			 *	work around this, I made core.object.dyn,
+			 *	which will let object specify their own
+			 *	__getattr__ and __setattr__, which doesn't
+			 *	get handled correctly for CLR types.
+			 *	So, core.object.dyn overrides those methods
+			 *	to use its inner object's methods.
+			 *	The order we try to get things in is important,
+			 *	though, so the control flow is:
+			 *	Properties -> Methods -> Members -> Behaviors.
+			 */
 			var type = this.GetType();
 			var prop = type.GetProperty(name);
 			if(prop != null) {
@@ -336,6 +352,11 @@ namespace VirtualCharacterSheet {
 			return null;
 		}
 		public void __setattr__(string name, dynamic value) {
+			/*	Similar control flow to __getattr__, but since
+			 *	we can't override methods, that's one step we
+			 *	don't have to worry about!
+			 *	Properties -> members -> Behaviors.
+			 */
 			var type = this.GetType();
 			var prop = type.GetProperty(name);
 			if(prop != null)

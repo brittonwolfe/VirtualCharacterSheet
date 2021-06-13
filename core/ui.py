@@ -1,10 +1,11 @@
 # We don't actually use GTKSharp yet so...
 # import clr
 # clr.AddReference('GtkSharp')
-import abc
 
 from VirtualCharacterSheet.Forms import AbstractGui, IUiFactory
 from VirtualCharacterSheet.Terminal import AbstractTui
+
+from core.util import dynobj, local
 
 class PyUiFactory(IUiFactory):
 	__metaclass__ = IUiFactory

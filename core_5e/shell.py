@@ -1,10 +1,14 @@
 from core.shell import PyCli, add_base, cmd_roll
 from core.util import local
 
+from VirtualCharacterSheet import PlayerCharacter
+
 STAT_LIST = [ 'str', 'strength', 'dex', 'dexterity', 'con', 'constitution', 'int', 'intelligence', 'wis', 'wisdom', 'cha', 'charisma']
 SHORTHAND_MAP = { 'str': 'Strength', 'dex': 'Dexterity', 'con': 'Constitution', 'int': 'Intelligence', 'wis': 'Wisdom', 'cha': 'Charisma' }
 
 def get_default_local_character():
+	if local.This is dyn and local.This == type(PlayerCharacter):
+		return local.This
 	if hasattr(local.This, 'Character'):
 		return local.This.Character
 	elif hasattr(local.This, 'character'):

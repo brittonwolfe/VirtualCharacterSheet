@@ -4,8 +4,9 @@ from os import system
 from VirtualCharacterSheet import PlayerCharacter
 from VirtualCharacterSheet.Forms import TerminalForm
 
+from core.object import dyn
 from core.ui import PyTui, PyUiFactory
-from core.shell import non_loop_shell
+from core.shell import local, non_loop_shell
 from core.util import _brew, readl
 
 from core_5e.shell import character_cli
@@ -15,7 +16,10 @@ core = _brew('core_5e')
 class Core5eCharacterSheet(PyTui):
 	def __init__(self, content):
 		self.content = content
+		if self.content is not dyn:
+			self.content = dyn(self.content)
 		self.view = 0
+		print(f'created new viewer for {content}')
 	def render_header(self):
 		width = TerminalForm.GetTerminalWidth()
 		full_line = '=' * width
@@ -78,6 +82,7 @@ class Core5eCharacterSheet(PyTui):
 			print(line)
 	def Render(self):
 		TerminalForm.Clear()
+		local.This = content
 		breaks = False
 		while not breaks:
 			if self.view == 0:
@@ -87,5 +92,9 @@ class Core5eCharacterSheet(PyTui):
 			if not breaks:
 				readl('')
 				TerminalForm.Clear()
+		delattr(local, "This")
 
-core.AddView(PlayerCharacter, PyUiFactory(lambda content: Core5eCharacterSheet(content)))
+def creator(content):
+	return Core5eCharacterSheet(content)
+
+core.AddView(PlayerCharacter, lambda content: Core5eCharacterSheet(content))

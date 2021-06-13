@@ -146,14 +146,14 @@ namespace VirtualCharacterSheet {
 
 	public class Brew {
 		public dynamic Meta = new ExpandoObject();
-		public Dictionary<Type, Forms.IUiFactory> Viewers;
+		public Dictionary<Type, dynamic> Viewers;
 		public readonly string Name;
 
 		public Brew(string name) {
 			Name = name;
 			if(Data.HasBrew(name))
 				throw new BrewKeyOccupiedException(this);
-			Viewers = new Dictionary<Type, Forms.IUiFactory>();
+			Viewers = new Dictionary<Type, dynamic>();
 			Data.AddBrew(this);
 		}
 
@@ -162,7 +162,7 @@ namespace VirtualCharacterSheet {
 		//	Character.Injection += (c) => { func(c); };
 		//}
 
-		public void AddView(Type T, Forms.IUiFactory ui) {
+		public void AddView(Type T, dynamic ui) {
 			if(Viewers.ContainsKey(T)) {
 				Console.WriteLine("Can't set more than one viewer for a type!");
 				return;
@@ -176,7 +176,9 @@ namespace VirtualCharacterSheet {
 				Console.WriteLine($"No viewer for {T} was found.");
 				return;
 			}
-			Viewers[T].Create(obj).Render();
+			dynamic viewer = Viewers[T](obj);
+			Console.WriteLine($"{viewer}");
+			viewer.Render();
 		}
 		public bool CanView(Type T) { return Viewers.ContainsKey(T); }
 
