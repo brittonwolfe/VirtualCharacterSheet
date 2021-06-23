@@ -58,7 +58,7 @@ namespace VirtualCharacterSheet {
 		}
 
 		public static void AddSerializationHook(string key, SerializationEvent serialize, DeserializationEvent deserialize) { SerializerSets[key] = (serialize, deserialize); }
-		public static void AddSerializationHook(string key, dynamic serialize, dynamic Deserialize) {
+		public static void AddSerializationHook(string key, dynamic serialize, dynamic deserialize) {
 
 		}
 		public static void RemoveSerializationHook(string key) { SerializerSets.Remove(key); }

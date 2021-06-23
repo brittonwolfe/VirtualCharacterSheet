@@ -6,3 +6,4 @@ The Virtual Character Sheet is a project for better online and local TTRPG bookk
 - PythonNet
 - AspNetCore
 - GTK#3
+
