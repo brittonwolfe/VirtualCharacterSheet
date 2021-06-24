@@ -372,3 +372,5 @@ FodyWeavers.xsd
 
 VirtualCharacterSheet/
 .run
+.goto
+.open
