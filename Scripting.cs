@@ -5,7 +5,7 @@ using System.Dynamic;
 using Microsoft.Scripting.Hosting;
 
 using IronPython.Hosting;
-using PyList = IronPython.Runtime.List;
+//using PyList = IronPython.Runtime.List;
 using PyFunc = IronPython.Runtime.PythonFunction;
 
 using VirtualCharacterSheet.IO;
@@ -15,11 +15,7 @@ namespace VirtualCharacterSheet {
 
 	public static class Scripting {
 		internal static ScriptEngine engine = Python.CreateEngine();
-		internal static ScriptScope
-			MainScope = null,
-			BrewScope = null,
-			ShellScope = null,
-			NetScope = null;
+		internal static ScriptScope Scope;
 		internal static dynamic locals = new ExpandoObject();
 		internal static dynamic homebrew = new ExpandoObject();
 		internal static dynamic settings = new ExpandoObject();
@@ -28,18 +24,12 @@ namespace VirtualCharacterSheet {
 		static Scripting() {
 			engine.GetBuiltinModule().ImportModule("clr");
 			engine.Execute("clr.AddReference(\"vcs\")");
-# region scope init
-			MainScope = engine.CreateScope();
-			BrewScope = engine.CreateScope();
-			ShellScope = engine.CreateScope();
-			NetScope = engine.CreateScope();
-#endregion
-
+			Scope = engine.CreateScope();
 		}
 
 		public static void Sandbox() {
-			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/shell.py").Path, ShellScope);
-			try { ShellScope.GetVariable("shell")(); }
+			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/shell.py").Path);
+			try { Scope.GetVariable("shell")(); }
 			catch(Exception e) {
 				Console.WriteLine(e);
 			}
@@ -58,7 +48,7 @@ namespace VirtualCharacterSheet {
 			homebrew.def_brew = new Func<string, Brew>((string n) => { return new Brew(n); });
 			homebrew.Path = src.File.Directory;
 
-			try { engine.ExecuteFile(src.File.Path, BrewScope); }
+			try { engine.ExecuteFile(src.File.Path, Scope); }
 			catch(Exception e) {
 				Console.WriteLine(e);
 				if(Data.GetConfig("main", "prefer_cli")) {
@@ -78,25 +68,18 @@ namespace VirtualCharacterSheet {
 				return;
 # region python engine
 			ICollection<string> searchpaths = engine.GetSearchPaths();
-			string pypath = "";
-			switch(Core.platform) {
-			case PlatformID.Unix:
-				pypath = "/lib/python2.7/";
-				if(!new IO.Dir(pypath).Exists())
-					pypath = "/usr/lib/python2.7/";
-				break;
-			case PlatformID.Win32NT:
-				pypath = "/Python27/Lib/";
-				break;
-			}
-			searchpaths.Add(pypath);
+			// Add Python3.4
+			searchpaths.Add(FileLoad.WorkingDirectory().GetSubdir("py34").Path);
+			// Add working directory, I'll probably change this later to a dot/appdata folder
 			searchpaths.Add(FileLoad.WorkingDirectory().Path);
 			engine.SetSearchPaths(searchpaths);
 # endregion
 
 # region configuration
-			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/config.py").Path, ShellScope);
-			Data.Config = ShellScope.GetVariable("__config__");
+			try {
+			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/config.py").Path, Scope);
+			} catch(Exception e) { Console.WriteLine(e.ToString()); }
+			Data.Config = Scope.GetVariable("__config__");
 #endregion
 
 # region globals setup
@@ -123,13 +106,13 @@ namespace VirtualCharacterSheet {
 			Initialized = true;
 		}
 
-		public static T[] PyArray<T>(PyList list) {
+		/*public static T[] PyArray<T>(PyList list) {
 			T[] output = new T[list.__len__()];
 			uint n = 0;
 			foreach(T item in list)
 				output[n++] = item;
 			return output;
-		}
+		}*/
 
 		private static void SetGlobal(string n, object o) { engine.GetBuiltinModule().SetVariable(n, o); }
 		private static dynamic GetGlobal(string n) { return engine.GetBuiltinModule().GetVariable(n); }
@@ -258,7 +241,7 @@ namespace VirtualCharacterSheet {
 
 		public override void Run() {
 			Scripting.locals.Path = File;
-			try { Scripting.engine.ExecuteFile(File.Path); }
+			try { Scripting.engine.ExecuteFile(File.Path, Scripting.Scope); }
 			catch(Exception e) { Console.WriteLine(e); }
 			finally { Scripting.Remove(Scripting.locals, "Path"); }
 		}

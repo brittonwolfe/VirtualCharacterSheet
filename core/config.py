@@ -1,5 +1,5 @@
 
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 from os.path import expanduser
 
 class Config():
@@ -27,5 +27,4 @@ class Config():
 	def __getitem__(self, key):
 		return self.values[key]
 
-global __config__
 __config__ = Config()
