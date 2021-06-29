@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace VCS {
 
 	public class Die {
-		public static Random rng = new Random();
 
-		public static uint Roll(ushort d) { return (ushort)rng.Next(1, d); }
+		public static uint Roll(ushort d) { return ((uint)RNGCryptoServiceProvider.GetInt32(0, d) + 1); }
 		public static uint Rolln(ushort n, ushort d) {
 			uint output = 0;
 			for(ushort x = 0; x < n; x++)
