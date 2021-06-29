@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
 
-namespace VirtualCharacterSheet.Net.API {
+namespace VCS.Net.API {
 
 	public static class Misc {
 		internal static Dictionary<string, dynamic> Handlers = new Dictionary<string, dynamic>();

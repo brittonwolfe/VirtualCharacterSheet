@@ -7,7 +7,7 @@ The brew setup script should be named `brew.py`. This standardizes things so the
 Two ways to provide brews are provided: the first is to import the `Brew` class from the application:
 
 ```python
-from VirtualCharacterSheet import Brew
+from VCS import Brew
 brew_object = Brew('unique name')
 ```
 

@@ -18,7 +18,7 @@ There are only a few global functions and objects that VCS puts into its Python 
 
 ## The Utils class
 
-The `VirtualCharacterSheet.Util` class provides helper functions and some helper objects.
+The `VCS.Util` class provides helper functions and some helper objects.
 
 ### Objects
 
@@ -79,7 +79,7 @@ If you find yourself needing (probably for magic) to manipulate function behavio
 
 ## The Data class
 
-`VirtualCharacterSheet.Data` also exposes some useful functions and indexers.
+`VCS.Data` also exposes some useful functions and indexers.
 
 ### Indexers
 

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 
-using VirtualCharacterSheet.Event;
-using VirtualCharacterSheet.Exceptions;
-using VirtualCharacterSheet.IO.Serialization;
+using VCS.Event;
+using VCS.Exceptions;
+using VCS.IO.Serialization;
 
-namespace VirtualCharacterSheet {
+namespace VCS {
 
 	public class HitDice {
 		public ushort Die;

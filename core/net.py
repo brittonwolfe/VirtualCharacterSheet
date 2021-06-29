@@ -1,5 +1,5 @@
 
-from VirtualCharacterSheet.Net.ApiHost import StartHost
+from VCS.Net.ApiHost import StartHost
 
 from core.shell import add_base, PyCli
 

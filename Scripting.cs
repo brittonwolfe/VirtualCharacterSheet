@@ -8,10 +8,10 @@ using IronPython.Hosting;
 //using PyList = IronPython.Runtime.List;
 using PyFunc = IronPython.Runtime.PythonFunction;
 
-using VirtualCharacterSheet.IO;
-using VirtualCharacterSheet.Event;
+using VCS.IO;
+using VCS.Event;
 
-namespace VirtualCharacterSheet {
+namespace VCS {
 
 	public static class Scripting {
 		internal static ScriptEngine engine = Python.CreateEngine();

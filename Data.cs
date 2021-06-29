@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Dynamic;
 
-using VirtualCharacterSheet.Event;
-using VirtualCharacterSheet.Exceptions;
-using VirtualCharacterSheet.IO;
-using VirtualCharacterSheet.IO.Serialization;
+using VCS.Event;
+using VCS.Exceptions;
+using VCS.IO;
+using VCS.IO.Serialization;
 
 using BinaryWriter = System.IO.BinaryWriter;
 using PyFunc = IronPython.Runtime.PythonFunction;
 
-namespace VirtualCharacterSheet {
+namespace VCS {
 
 	public readonly struct IndexSurrogate<T> {
 		private readonly Dictionary<string, T> source;

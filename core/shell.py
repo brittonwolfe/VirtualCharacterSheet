@@ -4,12 +4,12 @@ from os import getcwd
 from shlex import split
 from traceback import print_exc
 
-from VirtualCharacterSheet import PlayerCharacter
-from VirtualCharacterSheet.Data import AllBrews, AllCharacters, GetBrew, GetCharacter, GetItem, HasBrew, HasCharacter, HasItem
-from VirtualCharacterSheet.IO import File, Dir
-from VirtualCharacterSheet.Net.ApiHost import StartNetShell
-from VirtualCharacterSheet.Util import brew, local, readl, roll, rolln, view
-from VirtualCharacterSheet.Terminal import AbstractCli
+from VCS import PlayerCharacter
+from VCS.Data import AllBrews, AllCharacters, GetBrew, GetCharacter, GetItem, HasBrew, HasCharacter, HasItem
+from VCS.IO import File, Dir
+from VCS.Net.ApiHost import StartNetShell
+from VCS.Util import brew, local, readl, roll, rolln, view
+from VCS.Terminal import AbstractCli
 
 from core.io import load_object, save_object
 

@@ -1,6 +1,6 @@
 ﻿
 from os.path import expanduser
-from VirtualCharacterSheet.IO import File
+from VCS.IO import File
 
 def save_object(obj, file):
 	objtype = type(obj)

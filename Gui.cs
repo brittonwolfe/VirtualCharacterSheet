@@ -5,7 +5,7 @@ using Gtk;
 
 using Action = System.Action;
 
-namespace VirtualCharacterSheet.Forms {
+namespace VCS.Forms {
 
 	public abstract class AbstractGui : AbstractUi {
 		protected Window Window;
@@ -85,7 +85,7 @@ namespace VirtualCharacterSheet.Forms {
 
 		public sealed class Splash : AbstractGui {
 
-			public Splash() : base(name: "VirtualCharacterSheet") {
+			public Splash() : base(name: "VCS") {
 				Window.Resize(600,400);
 				Put(new Component.DefaultMenuBar());
 				Pack();

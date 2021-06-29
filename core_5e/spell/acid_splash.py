@@ -1,5 +1,5 @@
 ﻿
-from VirtualCharacterSheet.Util import _pyf, set_pyf, def_s, roll
+from VCS.Util import _pyf, set_pyf, def_s, roll
 
 spell = def_s("Core_5e:Acid Splash")
 spell.Description = "You hurl a bubble of acid. Choose one creature within range, or two creatures within range that are within five feet of each other. A target must succeed on a Dexterity saving throw or take 1D6 acid damage."

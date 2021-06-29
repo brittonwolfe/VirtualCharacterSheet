@@ -1,5 +1,5 @@
 
-from VirtualCharacterSheet.Net.Api import MiscController
+from VCS.Net.Api import MiscController
 
 class MiscItem:
 	typename = None

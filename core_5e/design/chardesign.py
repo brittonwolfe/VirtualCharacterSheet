@@ -1,5 +1,5 @@
 
-from VirtualCharacterSheet import PlayerCharacter
+from VCS import PlayerCharacter
 
 from core.ui import PyTui
 

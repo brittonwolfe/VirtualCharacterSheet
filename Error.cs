@@ -1,7 +1,7 @@
 ﻿using System;
-using VirtualCharacterSheet.IO.Serialization;
+using VCS.IO.Serialization;
 
-namespace VirtualCharacterSheet.Exceptions {
+namespace VCS.Exceptions {
 
 	public class OccupiedIdentityException : Exception {
 		public readonly Type Type;

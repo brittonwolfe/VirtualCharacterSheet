@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace VirtualCharacterSheet.Net {
+namespace VCS.Net {
 
 	public static class ApiHost {
 

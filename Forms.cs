@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 using Gtk;
 
-using VirtualCharacterSheet.Terminal;
+using VCS.Terminal;
 
 using PyTuple = IronPython.Runtime.PythonTuple;
 using Action = System.Action;
 
-namespace VirtualCharacterSheet.Forms {
+namespace VCS.Forms {
 
 	public abstract class AbstractUiFactory {
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace VirtualCharacterSheet {
+namespace VCS {
 
 	public class Die {
 		public static Random rng = new Random();

@@ -1,6 +1,6 @@
 
-from VirtualCharacterSheet import PlayerCharacter
-from VirtualCharacterSheet.IO.Serialization import ScriptedObjectSet
+from VCS import PlayerCharacter
+from VCS.IO.Serialization import ScriptedObjectSet
 
 def char_serialize(target, writer, shouldclose = True):
 	if type(target) is not PlayerCharacter:

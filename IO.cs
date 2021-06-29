@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 
-namespace VirtualCharacterSheet {
+namespace VCS {
 
 	public static class FileLoad {
 		public static readonly string TempPath = Path.GetTempPath();

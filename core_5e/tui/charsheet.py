@@ -1,9 +1,9 @@
 
 from os import system
 
-from VirtualCharacterSheet import PlayerCharacter
-from VirtualCharacterSheet.Forms import TerminalForm
-from VirtualCharacterSheet.Util import _brew, readl
+from VCS import PlayerCharacter
+from VCS.Forms import TerminalForm
+from VCS.Util import _brew, readl
 
 from core.ui import PyTui, PyUiFactory
 from core.shell import non_loop_shell

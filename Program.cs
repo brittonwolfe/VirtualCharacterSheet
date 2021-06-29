@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace VirtualCharacterSheet {
+namespace VCS {
 
 	class Program {
 		internal static List<Gtk.Window> Windows = new List<Gtk.Window>();

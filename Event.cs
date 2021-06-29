@@ -2,7 +2,7 @@
 using System.Dynamic;
 using System.IO;
 
-namespace VirtualCharacterSheet.Event {
+namespace VCS.Event {
 
 	public delegate short CheckEvent(byte ability);
 	public delegate short SkillCheckEvent(string skill);

@@ -4,9 +4,9 @@ using Microsoft.Scripting.Hosting;
 
 using IronPython.Hosting;
 
-using VirtualCharacterSheet.Forms;
+using VCS.Forms;
 
-namespace VirtualCharacterSheet.Terminal {
+namespace VCS.Terminal {
 
 	public interface AbstractCli {
 

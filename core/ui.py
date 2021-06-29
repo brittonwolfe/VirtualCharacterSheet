@@ -1,6 +1,6 @@
 clr.AddReference('GtkSharp')
-from VirtualCharacterSheet.Forms import AbstractGui, AbstractUiFactory
-from VirtualCharacterSheet.Terminal import AbstractTui
+from VCS.Forms import AbstractGui, AbstractUiFactory
+from VCS.Terminal import AbstractTui
 
 class PyUiFactory(AbstractUiFactory):
 	constructor = None
