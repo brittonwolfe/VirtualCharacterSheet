@@ -28,7 +28,7 @@ namespace VirtualCharacterSheet {
 		}
 
 		public static void Sandbox() {
-			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/shell.py").Path);
+			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/shell.py").Path, Scope);
 			try { Scope.GetVariable("shell")(); }
 			catch(Exception e) {
 				Console.WriteLine(e);
@@ -80,7 +80,7 @@ namespace VirtualCharacterSheet {
 			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/config.py").Path, Scope);
 			} catch(Exception e) { Console.WriteLine(e.ToString()); }
 			Data.Config = Scope.GetVariable("__config__");
-#endregion
+# endregion
 
 # region globals setup
 			homebrew.load = new Action<string>((string s) => Brew(new FileScript(new File(s))));
