@@ -17,6 +17,7 @@
 - [ ] Implement a way to make TUI templates similar to Django's
 - [ ] Make TUIs live-update
 - [ ] Make TUIs have responsive design to reflect the space they have in the terminal?
+- [ ] ASCIImatics?
 
 ## Serialization
 
@@ -25,13 +26,10 @@
 
 ## NI/O
 
-- [x] Write a host for networking and communicating game state, preferably RESTful.
-- [ ] Finish writing other API controllers
-- [ ] Write a client for connecting to the host to synchronize and communicate the game state.
+- [ ] Start implementing WASM serving
 
 ## Experimental
 
-- [ ] Add support for Glade# for another brew UI option
 - [ ] Add scripting support for Lua
 - [ ] Add scripting support for Ruby
 - [ ] Add support for [C# scripting through the JIT IL](https://docs.microsoft.com/en-us/dotnet/standard/managed-execution-process)???

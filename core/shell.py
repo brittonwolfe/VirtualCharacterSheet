@@ -8,10 +8,10 @@ from VCS import PlayerCharacter
 from VCS.Data import AllBrews, AllCharacters, GetBrew, GetCharacter, GetItem, HasBrew, HasCharacter, HasItem
 from VCS.IO import File, Dir
 from VCS.Net.ApiHost import StartNetShell
-from VCS.Util import brew, local, readl, roll, rolln, view
 from VCS.Terminal import AbstractCli
 
-from core.io import load_object, save_object
+from core.io.serialize import load_object, save_object
+from core.util import brew, local, readl, roll, view
 
 class PyCli(AbstractCli):
 	"""Used to create a command line interface for interacting with the VCS environment."""
@@ -160,7 +160,7 @@ def cmd_list(args, **kwargs):
 	print('No list for type ' + args[0])
 
 def cmd_load(args, **kwargs):
-	"""load 
+	"""load
 	"""
 	typeof = None
 	if not args[0].startswith('-'):
@@ -211,7 +211,7 @@ def cmd_roll(args, **kwargs):
 		print('not enough arguments!')
 		return
 	else:
-		return rolln(n, d)
+		return roll(n, d)
 
 def cmd_save(args, **kwargs):
 	if len(args) > 2:
@@ -223,7 +223,7 @@ def cmd_save(args, **kwargs):
 		print('saved successfully.')
 	else:
 		print('did not save successfully.')
-	
+
 def cmd_view(args, **kwargs):
 	resolve_ref(args)
 	view(args[0])

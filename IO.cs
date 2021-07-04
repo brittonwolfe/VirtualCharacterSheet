@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using static System.Environment;
 using System.IO;
 using System.Reflection;
 
@@ -6,10 +7,14 @@ namespace VCS {
 
 	public static class FileLoad {
 		public static readonly string TempPath = Path.GetTempPath();
+		public static readonly string DataPath = (GetFolderPath(SpecialFolder.ApplicationData) + "/vcs/");
+
 		public static IO.File GetTempFile(string name) { return new IO.File(TempPath + name); }
 		public static IO.File GetInternalFile(string name) { return new IO.File(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/" + name); }
+		public static IO.File GetDataFile(string path) { return new IO.File(DataPath + path); }
 
 		public static IO.Dir WorkingDirectory() { return new IO.Dir(Directory.GetCurrentDirectory()); }
+		public static IO.Dir DataDirectory() { return new IO.Dir(DataPath); }
 
 		public static Stream GetStream(IO.File file) { return new FileStream(file.Path, FileMode.OpenOrCreate, FileAccess.ReadWrite); }
 

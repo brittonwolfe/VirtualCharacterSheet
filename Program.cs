@@ -96,7 +96,7 @@ namespace VCS {
 			var process = new Process();
 			var info = new ProcessStartInfo();
 			if(platform == PlatformID.Unix) {
-				info.FileName = "/bin/bash";
+				info.FileName = "/usr/bin/bash";
 				info.Arguments = command;
 			} else {
 				var parts = command.Split();

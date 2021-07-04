@@ -1,6 +1,6 @@
 # Creating a Brew Module
 
-The brew setup script should be named `brew.py`. This standardizes things so the user can just input the path to the folder the module is in.
+The brew setup script *must* be named `brew.py`. This makes it easy to find modules and load them. `brew.py` should contain all of your initialization; creating the `Brew` object, registering your character injectors, and importing/initializing the rest of your module.
 
 ## Defining the object
 
@@ -11,10 +11,11 @@ from VCS import Brew
 brew_object = Brew('unique name')
 ```
 
-... and the second is to use the built-in `brew` object:
+... and the second is to use the `core` library:
 
 ```python
-brew_object = brew.def_brew('unique name')
+from core.util import def_brew
+brew_object = def_brew('unique name')
 ```
 
 ## Optional: Metadata

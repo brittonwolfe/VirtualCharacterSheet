@@ -2,11 +2,7 @@
 
 This documentation is still incomplete and is subject to addition.
 
-VCS is scripted with IronPython. It provides a lot of helper functions and objects to give developers options and tools for creating brews.
-
-## Engine Globals
-
-There are only a few global functions and objects that VCS puts into its Python engine.
+VCS uses IronPython to embed Python. It provides a wide and redundant library to welcome developers of all kinds.
 
 ### Casting functions
 

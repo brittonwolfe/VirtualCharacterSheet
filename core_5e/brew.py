@@ -77,8 +77,8 @@ core.AddCharacterInjector(InjectSkills)
 import serialize
 import design
 
-#import classes
-#import item
+import classes
+import item
 
 import shell
 import tui

@@ -5,7 +5,6 @@ using System.Dynamic;
 using Microsoft.Scripting.Hosting;
 
 using IronPython.Hosting;
-//using PyList = IronPython.Runtime.List;
 using PyFunc = IronPython.Runtime.PythonFunction;
 
 using VCS.IO;
@@ -67,17 +66,20 @@ namespace VCS {
 			if(Initialized)
 				return;
 # region python engine
-			ICollection<string> searchpaths = engine.GetSearchPaths();
-			// Add Python3.4
+			ICollection<string> searchpaths = new List<string>();
+			// Add Python3.4 bundled with application
 			searchpaths.Add(FileLoad.WorkingDirectory().GetSubdir("py34").Path);
 			// Add working directory, I'll probably change this later to a dot/appdata folder
+		# if dev
 			searchpaths.Add(FileLoad.WorkingDirectory().Path);
+		# endif
+			searchpaths.Add(FileLoad.DataDirectory().Path);
 			engine.SetSearchPaths(searchpaths);
 # endregion
 
 # region configuration
 			try {
-			engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/config.py").Path, Scope);
+				engine.ExecuteFile(FileLoad.WorkingDirectory().Get(@"core/config.py").Path, Scope);
 			} catch(Exception e) { Console.WriteLine(e.ToString()); }
 			Data.Config = Scope.GetVariable("__config__");
 # endregion

@@ -2,12 +2,12 @@
 
 ## For the User
 
-Your config folder is found at `~/.config/vcs/`. The default configuration file is `config`, but brews are allowed to use their own configuration files to avoid confusion or conflicts, but this is optional. VCS has some configuration options you can change in the default file:
+The config and data folder is found at `~/.config/vcs/`. The default configuration file is `config`, but brews are allowed to use their own configuration files to avoid confusion or conflicts, but this is optional. VCS has some configuration options you can change in the default file:
 
 ```ini
 [main]
 delete_temp = true
-editor = code
+editor = atom
 prefer_cli = false
 save_open_c = true
 ```

@@ -3,6 +3,13 @@ from configparser import ConfigParser
 from os.path import expanduser
 
 class Config():
+	"""	Configuration File object.
+		The class itself is a high-level wrapper for
+		`ConfigParser` with methods for IO.
+		See Also
+		--------
+		__config__ : Application config object.
+	"""
 	values = None
 	parser = None
 	def __init__(self, path = '~/.config/vcs/config'):
